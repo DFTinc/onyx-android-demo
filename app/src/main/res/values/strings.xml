@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Onyx5.0HelloWorld</string>
+    <string name="onyx_license">@string/license_key_value</string>
+</resources>

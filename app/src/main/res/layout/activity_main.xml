@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    tools:context="com.dft.onyx50helloworld.MainActivity">
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="5dp"
+        app:layout_constraintGuide_end="5dp"/>
+
+    <CheckBox
+        android:id="@+id/returnRawBitmap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="Return Raw Image"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <CheckBox
+        android:id="@+id/returnProcessedBitmap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="Return Processed Image"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/returnRawBitmap" />
+
+    <CheckBox
+        android:id="@+id/returnEnhancedBitmap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="Return Enhanced Image"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/returnProcessedBitmap" />
+
+    <CheckBox
+        android:id="@+id/returnWSQ"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="false"
+        android:text="Return WSQ Image"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/returnEnhancedBitmap" />
+
+    <CheckBox
+        android:id="@+id/returnFingerprintTemplate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="false"
+        android:text="Return Fingerprint Template"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/returnWSQ" />
+
+    <CheckBox
+        android:id="@+id/showLoadingSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="Show Loading Spinner"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/returnFingerprintTemplate" />
+
+    <CheckBox
+        android:id="@+id/shouldSegment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="false"
+        android:text="Segment image (experimental)"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/showLoadingSpinner" />
+
+    <CheckBox
+        android:id="@+id/cropSize"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="false"
+        android:text="Set crop size"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/shouldSegment" />
+
+    <EditText
+        android:id="@+id/widthEditText"
+        android:layout_width="125dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:ems="10"
+        android:inputType="number"
+        android:text="512"
+        android:textAlignment="center"
+        app:layout_constraintBaseline_toBaselineOf="@id/cropSize"
+        app:layout_constraintLeft_toRightOf="@+id/cropSize"
+        tools:text="width" />
+
+    <EditText
+        android:id="@+id/heightEditText"
+        android:layout_width="125dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:ems="10"
+        android:inputType="number"
+        android:text="300"
+        android:textAlignment="center"
+        app:layout_constraintBaseline_toBaselineOf="@id/cropSize"
+        app:layout_constraintLeft_toRightOf="@+id/widthEditText"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="height" />
+
+    <CheckBox
+        android:id="@+id/cropFactor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="false"
+        android:text="Set crop factor"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cropSize" />
+
+    <EditText
+        android:id="@+id/cropFactorEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:ems="10"
+        android:inputType="number"
+        android:text="1.0"
+        android:textAlignment="center"
+        app:layout_constraintBaseline_toBaselineOf="@id/cropFactor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/cropFactor" />
+
+    <CheckBox
+        android:id="@+id/reticleScale"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="false"
+        android:text="Set reticle scale"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cropFactor" />
+
+    <EditText
+        android:id="@+id/reticleScaleEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:ems="10"
+        android:inputType="number"
+        android:text="1.0"
+        android:textAlignment="center"
+        app:layout_constraintBaseline_toBaselineOf="@id/reticleScale"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/reticleScale" />
+
+    <CheckBox
+        android:id="@+id/layoutPreferenceFullScreen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="false"
+        android:text="Use full screen layout"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/reticleScale" />
+
+    <TextView
+        android:id="@+id/imageRotationTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingRight="5dp"
+        android:text="Image Rotation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Spinner
+        android:id="@+id/imageRotation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:entries="@array/image_rotation"
+        android:paddingRight="5dp"
+        android:tooltipText="Image Rotation"
+        app:layout_constraintTop_toBottomOf="@+id/imageRotationTextView"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/reticleOrientationTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingRight="5dp"
+        android:text="Reticle Orientation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageRotation" />
+
+    <Spinner
+        android:id="@+id/reticleOrientationSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:entries="@array/reticle_orientation"
+        android:paddingRight="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/reticleOrientationTextView" />
+
+    <TextView
+        android:id="@+id/reticleAngleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingRight="5dp"
+        android:text="Reticle Angle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/reticleOrientationSpinner" />
+
+    <EditText
+        android:id="@+id/reticleAngleEditText"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_gravity="end"
+        android:layout_weight="1"
+        android:ems="10"
+        android:inputType="number"
+        android:paddingRight="5dp"
+        android:textAlignment="viewEnd"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/reticleAngleTextView"
+        tools:text="replaces orientation" />
+
+    <CheckBox
+        android:id="@+id/useOnyxLive"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="false"
+        android:paddingRight="5dp"
+        android:text="Use Onyx Live"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/reticleAngleEditText" />
+
+    <CheckBox
+        android:id="@+id/useFlash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="Use Flash"
+        app:layout_constraintStart_toStartOf="@id/useOnyxLive"
+        app:layout_constraintTop_toBottomOf="@+id/useOnyxLive" />
+
+    <TextView
+        android:id="@+id/livenessResult"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="Liveness Result"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/layoutPreferenceFullScreen"
+        app:layout_constraintTop_toBottomOf="@+id/reticleScaleEditText"
+        tools:text="Liveness Result" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:gravity="bottom|center_vertical|center_horizontal"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/button_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:id="@+id/rawImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:scaleType="fitXY" />
+
+        <ImageView
+            android:id="@+id/processedImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:scaleType="fitXY" />
+
+        <ImageView
+            android:id="@+id/enhancedImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:scaleType="fitXY" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/button_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:gravity="bottom|center_vertical|center_horizontal"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/refresh_config"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Refresh Configuration"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:text="Refresh configuration" />
+
+        <Button
+            android:id="@+id/start_onyx"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:text="Start Onyx"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:text="Start Onyx" />
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

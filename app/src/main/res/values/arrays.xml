@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="image_rotation">
+        <item>0</item>
+        <item>90</item>
+        <item>180</item>
+        <item>270</item>
+    </string-array>
+
+    <string-array name="reticle_orientation">
+        <item>LEFT</item>
+        <item>RIGHT</item>
+    </string-array>
+
+</resources>
