@@ -5,6 +5,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.dft.onyxcamera.config.OnyxConfiguration;
 import com.dft.onyxcamera.ui.OnyxFragment;
 import com.dft.onyxcamera.ui.reticles.Reticle;
 
@@ -14,15 +15,15 @@ import com.dft.onyxcamera.ui.reticles.Reticle;
 
 public class ValuesUtil {
 
-    public static boolean getReturnRawBitmap(Activity a) {
+    public static boolean getReturnRawImage(Activity a) {
         return ((CheckBox) a.findViewById(R.id.returnRawBitmap)).isChecked();
     }
 
-    public static boolean getReturnProcessedBitmap(Activity a) {
+    public static boolean getReturnProcessedImage(Activity a) {
         return ((CheckBox) a.findViewById(R.id.returnProcessedBitmap)).isChecked();
     }
 
-    public static boolean getReturnEnhancedBitmap(Activity a) {
+    public static boolean getReturnEnhancedImage(Activity a) {
         return ((CheckBox) a.findViewById(R.id.returnEnhancedBitmap)).isChecked();
     }
 
@@ -99,11 +100,11 @@ public class ValuesUtil {
         }
     }
 
-    public static OnyxFragment.LayoutPreference getLayoutPreference(Activity a) {
+    public static OnyxConfiguration.LayoutPreference getLayoutPreference(Activity a) {
         if (((CheckBox) a.findViewById(R.id.layoutPreferenceFullScreen)).isChecked()) {
-            return OnyxFragment.LayoutPreference.FULL;
+            return OnyxConfiguration.LayoutPreference.FULL;
         } else {
-            return OnyxFragment.LayoutPreference.UPPER_THIRD;
+            return OnyxConfiguration.LayoutPreference.UPPER_THIRD;
         }
     }
 }

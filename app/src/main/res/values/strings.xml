@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">Onyx5.0HelloWorld</string>
+    <string name="app_name">Onyx 5.0 Demo</string>
     <string name="onyx_license">@string/license_key_value</string>
 </resources>
