@@ -6,7 +6,7 @@ android {
             keyAlias 'onyx50demo'
             keyPassword 'onyx50demo'
             storePassword 'onyx50demo'
-            storeFile file('C:/AndroidstudioProjects/onyx-5.0-demo/onyx50demo.jks')
+            storeFile file('./onyx50demo.jks')
         }
     }
     compileSdkVersion 27
@@ -49,5 +49,10 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-    implementation 'com.dft.android:onyx-camera:5.0.0'
+//    implementation 'com.dft.android:onyx-camera:5.0.1-SNAPSHOT'
+    debugImplementation project(':onyxcamera') // For setting up locally
 }
+
+
+// apply the Google Services Plugin - must be at the bottom
+apply plugin: "com.google.gms.google-services"

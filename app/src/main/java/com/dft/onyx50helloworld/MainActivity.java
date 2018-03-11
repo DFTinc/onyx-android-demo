@@ -1,6 +1,7 @@
 package com.dft.onyx50helloworld;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -67,7 +68,9 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void onConfigured(Onyx configuredOnyx) {
-                    onyx = configuredOnyx;
+                    MainApplication application = new MainApplication();
+                    application.setConfiguredOnyx(configuredOnyx);
+//                    onyx = configuredOnyx;
                     startOnyxButton.setEnabled(true);
                 }
             });
@@ -80,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startOnyx() {
-        onyx.create();
+        onyx.create(this);
         onyx.capture();
     }
 
@@ -114,7 +117,8 @@ public class MainActivity extends AppCompatActivity {
         startOnyxButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startOnyx();
+                startActivity(new Intent(activity, OnyxActivity.class));
+//                startOnyx();
             }
         });
         Button refreshConfigButton = findViewById(R.id.refresh_config);

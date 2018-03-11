@@ -5,6 +5,7 @@
       <module fileurl="file://C:\AndroidstudioProjects\onyx-5.0-demo\Onyx50HelloWorld.iml" filepath="C:\AndroidstudioProjects\onyx-5.0-demo\Onyx50HelloWorld.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/onyx-5.0-demo.iml" filepath="$PROJECT_DIR$/onyx-5.0-demo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../onyx-camera-sdk/onyxcamera/onyxcamera.iml" filepath="$PROJECT_DIR$/../onyx-camera-sdk/onyxcamera/onyxcamera.iml" />
     </modules>
   </component>
 </project>

@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "518732180644",
+    "firebase_url": "https://onyx-50-demo.firebaseio.com",
+    "project_id": "onyx-50-demo",
+    "storage_bucket": "onyx-50-demo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:518732180644:android:7107b92da8d8fc44",
+        "android_client_info": {
+          "package_name": "com.dft.onyx50demo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "518732180644-6f7k3hdv7uihm3bfe7dpm5a4v9v0kftm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dft.onyx50demo",
+            "certificate_hash": "d3dbf106c0a7cf74bd4c7f044baf74d5f18bd7da"
+          }
+        },
+        {
+          "client_id": "518732180644-j3tru5n2b1icsssulllqqldl0dt55fi5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBnSVkSRfsy7eF97UlaD2I-tUbAlcDgCSs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "518732180644-j3tru5n2b1icsssulllqqldl0dt55fi5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
