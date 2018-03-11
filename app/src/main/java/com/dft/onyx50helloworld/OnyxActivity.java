@@ -1,6 +1,7 @@
 package com.dft.onyx50helloworld;
 
 import android.app.Activity;
+import android.os.Bundle;
 
 import com.dft.onyxcamera.config.Onyx;
 
@@ -11,9 +12,13 @@ import com.dft.onyxcamera.config.Onyx;
 public class OnyxActivity extends Activity {
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
-        setContentView(R.layout.activity_onyx);
         Onyx configuredOnyx = MainApplication.getConfiguredOnyx();
         configuredOnyx.create(this);
         configuredOnyx.capture();
