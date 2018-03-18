@@ -53,8 +53,8 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-//    implementation 'com.dft.android:onyx-camera:5.0.1-SNAPSHOT'
-    debugImplementation project(':onyxcamera') // For setting up locally
+    implementation 'com.dft.android:onyx-camera:5.0.2-SNAPSHOT'
+//    debugImplementation project(':onyxcamera') // For setting up locally
 }
 
 
