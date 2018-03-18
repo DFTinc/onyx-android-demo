@@ -12,8 +12,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="5dp"
-        app:layout_constraintGuide_end="5dp"/>
+        app:layout_constraintGuide_begin="331dp"
+        app:layout_constraintGuide_end="5dp" />
 
     <CheckBox
         android:id="@+id/returnRawBitmap"
@@ -113,8 +113,8 @@
         android:text="300"
         android:textAlignment="center"
         app:layout_constraintBaseline_toBaselineOf="@id/cropSize"
-        app:layout_constraintLeft_toRightOf="@+id/widthEditText"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/widthEditText"
         tools:text="height" />
 
     <CheckBox
@@ -151,7 +151,7 @@
     <EditText
         android:id="@+id/reticleScaleEditText"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:layout_weight="1"
         android:ems="10"
         android:inputType="number"
@@ -186,8 +186,8 @@
         android:entries="@array/image_rotation"
         android:paddingRight="5dp"
         android:tooltipText="Image Rotation"
-        app:layout_constraintTop_toBottomOf="@+id/imageRotationTextView"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageRotationTextView" />
 
     <TextView
         android:id="@+id/reticleOrientationTextView"
@@ -218,8 +218,8 @@
 
     <EditText
         android:id="@+id/reticleAngleEditText"
+        android:layout_width="135dp"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
         android:layout_gravity="end"
         android:layout_weight="1"
         android:ems="10"
@@ -252,11 +252,9 @@
     <TextView
         android:id="@+id/livenessResult"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_height="21dp"
         android:text="Liveness Result"
-        android:visibility="invisible"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/layoutPreferenceFullScreen"
         app:layout_constraintTop_toBottomOf="@+id/reticleScaleEditText"

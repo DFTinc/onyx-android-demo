@@ -68,9 +68,9 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void onConfigured(Onyx configuredOnyx) {
-                    MainApplication application = new MainApplication();
-                    application.setConfiguredOnyx(configuredOnyx);
-//                    onyx = configuredOnyx;
+//                    MainApplication application = new MainApplication();
+//                    application.setConfiguredOnyx(configuredOnyx);
+                    onyx = configuredOnyx;
                     startOnyxButton.setEnabled(true);
                 }
             });
@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
             enhancedImageView.setImageBitmap(onyxResult.getEnhancedFingerprintBitmap());
         }
         if (onyxResult.getMetrics() != null) {
-//            livenessResultTextView.setText(onyxResult.getMetrics().getLiveness());
+            livenessResultTextView.setText(Double.toString(onyxResult.getMetrics().getLivenessConfidence()));
         }
     }
 
@@ -111,14 +111,15 @@ public class MainActivity extends AppCompatActivity {
         rawImageView = findViewById(R.id.rawImageView);
         processedImageView = findViewById(R.id.processedImageView);
         enhancedImageView = findViewById(R.id.enhancedImageView);
+        livenessResultTextView = findViewById(R.id.livenessResult);
         startOnyxButton = findViewById(R.id.start_onyx);
         startOnyxButton.setEnabled(false);
         startOnyxButton.bringToFront();
         startOnyxButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(activity, OnyxActivity.class));
-//                startOnyx();
+//                startActivity(new Intent(activity, OnyxActivity.class));
+                startOnyx();
             }
         });
         Button refreshConfigButton = findViewById(R.id.refresh_config);
