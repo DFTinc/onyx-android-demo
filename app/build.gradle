@@ -64,7 +64,7 @@ dependencies {
     implementation "com.google.firebase:firebase-firestore:${playServicesVersion}"
     implementation "com.google.firebase:firebase-storage:${playServicesVersion}"
     implementation "com.google.firebase:firebase-auth:${playServicesVersion}"
-    implementation 'com.dft.android:onyx-camera:5.0.2-SNAPSHOT'
+    implementation 'com.dft.android:onyx-camera:5.0.2'
 //    debugImplementation project(':onyxcamera') // For setting up locally
 }
 
