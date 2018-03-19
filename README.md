@@ -9,7 +9,13 @@ If you don't already have Android Studio, you can download it <a href="http://de
 Once Android Studio is installed, please get your free ONYX trial-license <a href="http://www.diamondfortress.com/sdk" target="_blank">here</a>. <br />
 **Note: Make sure you have updated to the latest Android SDK via the SDK Manager.**
 
-You should receive a trial license of the form XXXX-XXXX-XXXX-X-X at your provided e-mail address.
+Onyx 5.0 currently requires Firebase be added to the application.  To connect your Application to
+Firebase, in Android Studio, go to Tools->Firebase.  The Firebase Assistant should open up.
+In Firebase Assistant, select one of the tools such as "Analytics".  Click the hyperlink "Log an Analytics event".
+Follow the instructions to "Connect your app to Firebase".  This is as far as you need to go unless
+you want to add Firebase Analytics to your application.
+
+You should receive a license of the form XXXX-XXXX-XXXX-X-X at your provided e-mail address.
 <br />
 Next, you can clone our sample repository on the command-line using the following commands:
 
