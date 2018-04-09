@@ -40,18 +40,11 @@ repositories {
     maven {
         url 'http://nexus.diamondfortress.com/nexus/content/repositories/snapshots/'
     }
-
-    maven {
-        url 'https://maven.google.com/'
-        name 'Google'
-    }
 }
 
 configurations.all {
     resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
 }
-
-def playServicesVersion = "11.8.0"
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
@@ -60,14 +53,6 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-    implementation "com.google.firebase:firebase-core:${playServicesVersion}"
-    implementation "com.google.firebase:firebase-firestore:${playServicesVersion}"
-    implementation "com.google.firebase:firebase-storage:${playServicesVersion}"
-    implementation "com.google.firebase:firebase-auth:${playServicesVersion}"
-    implementation 'com.dft.android:onyx-camera:5.0.2'
+    implementation 'com.dft.android:onyx-camera:5.0.3-SNAPSHOT'
 //    debugImplementation project(':onyxcamera') // For setting up locally
 }
-
-
-// apply the Google Services Plugin - must be at the bottom
-apply plugin: "com.google.gms.google-services"

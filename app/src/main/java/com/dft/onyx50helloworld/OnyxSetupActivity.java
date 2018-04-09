@@ -2,6 +2,7 @@ package com.dft.onyx50helloworld;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -12,13 +13,18 @@ import android.widget.TextView;
 import com.dft.onyxcamera.config.Onyx;
 import com.dft.onyxcamera.config.OnyxConfiguration;
 import com.dft.onyxcamera.config.OnyxConfigurationBuilder;
+import com.dft.onyxcamera.config.OnyxError;
 import com.dft.onyxcamera.config.OnyxResult;
 
 import static com.dft.onyx50helloworld.ValuesUtil.*;
 
-public class MainActivity extends AppCompatActivity {
+public class OnyxSetupActivity extends AppCompatActivity {
+    private static final int ONYX_REQUEST_CODE = 1337;
+    MainApplication application = new MainApplication();
+    OnyxConfiguration.SuccessCallback successCallback;
+    OnyxConfiguration.ErrorCallback errorCallback;
+    OnyxConfiguration.OnyxCallback onyxCallback;
     private Activity activity;
-    private Onyx onyx = null;
     private Button startOnyxButton;
     private ImageView rawImageView;
     private ImageView processedImageView;
@@ -26,10 +32,36 @@ public class MainActivity extends AppCompatActivity {
     private TextView livenessResultTextView;
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setupUI();
+        setupCallbacks();
         setupOnyx(this);
+    }
+
+    private void setupCallbacks() {
+        successCallback = new OnyxConfiguration.SuccessCallback() {
+            @Override
+            public void onSuccess(OnyxResult onyxResult) {
+                application.setOnyxResult(onyxResult);
+            }
+        };
+
+        errorCallback = new OnyxConfiguration.ErrorCallback() {
+            @Override
+            public void onError(OnyxError onyxError) {
+                Log.e("OnyxError", onyxError.getErrorMessage());
+                application.setOnyxError(onyxError);
+            }
+        };
+
+        onyxCallback = new OnyxConfiguration.OnyxCallback() {
+            @Override
+            public void onConfigured(Onyx configuredOnyx) {
+                application.setConfiguredOnyx(configuredOnyx);
+                startOnyxButton.setEnabled(true);
+            }
+        };
     }
 
     private void setupOnyx(final Activity activity) {
@@ -52,28 +84,9 @@ public class MainActivity extends AppCompatActivity {
             .setCropFactor(getCropFactor(this))
             .setReticleScale(getReticleScale(this))
             .setLayoutPreference(getLayoutPreference(this))
-            .setSuccessCallback(new OnyxConfiguration.SuccessCallback() {
-                @Override
-                public void onSuccess(OnyxResult onyxResult) {
-                    displayResults(onyxResult);
-                }
-            })
-            .setErrorCallback(new OnyxConfiguration.ErrorCallback() {
-                @Override
-                public void onError(Error error, String errorMessage, Exception exception) {
-                    Log.e("MainActivity", errorMessage);
-                }
-            })
-            .setOnyxCallback(new OnyxConfiguration.OnyxCallback() {
-
-                @Override
-                public void onConfigured(Onyx configuredOnyx) {
-//                    MainApplication application = new MainApplication();
-//                    application.setConfiguredOnyx(configuredOnyx);
-                    onyx = configuredOnyx;
-                    startOnyxButton.setEnabled(true);
-                }
-            });
+            .setSuccessCallback(successCallback)
+            .setErrorCallback(errorCallback)
+            .setOnyxCallback(onyxCallback);
         // Reticle Angle overrides Reticle Orientation so have to set this separately
         if (getReticleAngle(this) != null) {
             onyxConfigurationBuilder.setReticleAngle(getReticleAngle(this));
@@ -82,9 +95,13 @@ public class MainActivity extends AppCompatActivity {
         onyxConfigurationBuilder.buildOnyxConfiguration();
     }
 
-    private void startOnyx() {
-        onyx.create(this);
-        onyx.capture();
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == ONYX_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                displayResults(application.getOnyxResult());
+            }
+        }
     }
 
     private void displayResults(OnyxResult onyxResult) {
@@ -118,8 +135,7 @@ public class MainActivity extends AppCompatActivity {
         startOnyxButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                startActivity(new Intent(activity, OnyxActivity.class));
-                startOnyx();
+                startActivityForResult(new Intent(activity, OnyxActivity.class), ONYX_REQUEST_CODE);
             }
         });
         Button refreshConfigButton = findViewById(R.id.refresh_config);
