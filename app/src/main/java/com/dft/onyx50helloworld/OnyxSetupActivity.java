@@ -36,7 +36,6 @@ public class OnyxSetupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setupUI();
         setupCallbacks();
-        setupOnyx(this);
     }
 
     private void setupCallbacks() {
