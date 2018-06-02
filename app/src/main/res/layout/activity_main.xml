@@ -295,6 +295,63 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/metrics_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:gravity="center_horizontal|center"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layoutPreferenceFullScreen">
+
+        <TextView
+            android:id="@+id/nfiq"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="NFIQ Score:"
+            tools:text="NFIQ Score:" />
+
+        <TextView
+            android:id="@+id/nfiqScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/focus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Focus Score:" />
+
+        <TextView
+            android:id="@+id/focusScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/mlp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MLP Score:" />
+
+        <TextView
+            android:id="@+id/mlpScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/button_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

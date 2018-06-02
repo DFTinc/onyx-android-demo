@@ -15,6 +15,7 @@ import com.dft.onyxcamera.config.OnyxConfiguration;
 import com.dft.onyxcamera.config.OnyxConfigurationBuilder;
 import com.dft.onyxcamera.config.OnyxError;
 import com.dft.onyxcamera.config.OnyxResult;
+import com.dft.onyxcamera.config.remoteconfig.RemoteConfigSharedPrefs;
 
 import static com.dft.onyx50helloworld.ValuesUtil.*;
 
@@ -30,6 +31,9 @@ public class OnyxSetupActivity extends AppCompatActivity {
     private ImageView processedImageView;
     private ImageView enhancedImageView;
     private TextView livenessResultTextView;
+    private TextView nfiqScoreTextView;
+    private TextView focusScoreTextView;
+    private TextView mlpScoreTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,17 +111,20 @@ public class OnyxSetupActivity extends AppCompatActivity {
         rawImageView.setImageDrawable(null);
         processedImageView.setImageDrawable(null);
         enhancedImageView.setImageDrawable(null);
-        if (onyxResult.getRawFingerprintBitmap() != null) {
-            rawImageView.setImageBitmap(onyxResult.getRawFingerprintBitmap());
+        if (onyxResult.getRawFingerprintImage() != null) {
+            rawImageView.setImageBitmap(onyxResult.getRawFingerprintImage());
         }
-        if (onyxResult.getProcessedFingerprintBitmap() != null) {
-            processedImageView.setImageBitmap(onyxResult.getProcessedFingerprintBitmap());
+        if (onyxResult.getProcessedFingerprintImage() != null) {
+            processedImageView.setImageBitmap(onyxResult.getProcessedFingerprintImage());
         }
-        if (onyxResult.getEnhancedFingerprintBitmap() != null) {
-            enhancedImageView.setImageBitmap(onyxResult.getEnhancedFingerprintBitmap());
+        if (onyxResult.getEnhancedFingerprintImage() != null) {
+            enhancedImageView.setImageBitmap(onyxResult.getEnhancedFingerprintImage());
         }
         if (onyxResult.getMetrics() != null) {
             livenessResultTextView.setText(Double.toString(onyxResult.getMetrics().getLivenessConfidence()));
+            nfiqScoreTextView.setText(Integer.toString(onyxResult.getMetrics().getNfiqMetrics().getNfiqScore()));
+            focusScoreTextView.setText(Double.toString(Math.round(onyxResult.getMetrics().getFocusQuality() * 100.0) / 100.0));
+            mlpScoreTextView.setText(Double.toString(Math.round(onyxResult.getMetrics().getNfiqMetrics().getMlpScore() * 100.0) / 100.0));
         }
     }
 
@@ -128,6 +135,9 @@ public class OnyxSetupActivity extends AppCompatActivity {
         processedImageView = findViewById(R.id.processedImageView);
         enhancedImageView = findViewById(R.id.enhancedImageView);
         livenessResultTextView = findViewById(R.id.livenessResult);
+        nfiqScoreTextView = findViewById(R.id.nfiqScore);
+        focusScoreTextView = findViewById(R.id.focusScore);
+        mlpScoreTextView = findViewById(R.id.mlpScore);
         startOnyxButton = findViewById(R.id.start_onyx);
         startOnyxButton.setEnabled(false);
         startOnyxButton.bringToFront();

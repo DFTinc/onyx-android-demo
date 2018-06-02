@@ -8,6 +8,12 @@ android {
             storePassword 'onyx50demo'
             storeFile file('./onyx50demo.jks')
         }
+        release {
+            keyAlias 'onyx50demo'
+            keyPassword 'onyx50demo'
+            storeFile file('C:/AndroidstudioProjects/onyx-5.0-demo/onyx50demo.jks')
+            storePassword 'onyx50demo'
+        }
     }
     compileSdkVersion 27
     defaultConfig {
@@ -53,6 +59,6 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-    implementation 'com.dft.android:onyx-camera:5.0.3'
-//    debugImplementation project(':onyxcamera') // For setting up locally
+    implementation 'com.dft.android:onyx-camera:5.0.5'
+//        debugImplementation project(':onyxcamera') // For setting up locally
 }
