@@ -22,9 +22,6 @@ import static com.dft.onyx50helloworld.ValuesUtil.*;
 public class OnyxSetupActivity extends AppCompatActivity {
     private static final int ONYX_REQUEST_CODE = 1337;
     MainApplication application = new MainApplication();
-    OnyxConfiguration.SuccessCallback successCallback;
-    OnyxConfiguration.ErrorCallback errorCallback;
-    OnyxConfiguration.OnyxCallback onyxCallback;
     private Activity activity;
     private Button startOnyxButton;
     private ImageView rawImageView;
@@ -43,28 +40,28 @@ public class OnyxSetupActivity extends AppCompatActivity {
     }
 
     private void setupCallbacks() {
-        successCallback = new OnyxConfiguration.SuccessCallback() {
+        application.setSuccessCallback(new OnyxConfiguration.SuccessCallback() {
             @Override
             public void onSuccess(OnyxResult onyxResult) {
                 application.setOnyxResult(onyxResult);
             }
-        };
+        });
 
-        errorCallback = new OnyxConfiguration.ErrorCallback() {
+        application.setErrorCallback(new OnyxConfiguration.ErrorCallback() {
             @Override
             public void onError(OnyxError onyxError) {
                 Log.e("OnyxError", onyxError.getErrorMessage());
                 application.setOnyxError(onyxError);
             }
-        };
+        });
 
-        onyxCallback = new OnyxConfiguration.OnyxCallback() {
+        application.setOnyxCallback(new OnyxConfiguration.OnyxCallback() {
             @Override
             public void onConfigured(Onyx configuredOnyx) {
                 application.setConfiguredOnyx(configuredOnyx);
                 startOnyxButton.setEnabled(true);
             }
-        };
+        });
     }
 
     private void setupOnyx(final Activity activity) {
@@ -87,9 +84,9 @@ public class OnyxSetupActivity extends AppCompatActivity {
             .setCropFactor(getCropFactor(this))
             .setReticleScale(getReticleScale(this))
             .setLayoutPreference(getLayoutPreference(this))
-            .setSuccessCallback(successCallback)
-            .setErrorCallback(errorCallback)
-            .setOnyxCallback(onyxCallback);
+            .setSuccessCallback(application.getSuccessCallback())
+            .setErrorCallback(application.getErrorCallback())
+            .setOnyxCallback(application.getOnyxCallback());
         // Reticle Angle overrides Reticle Orientation so have to set this separately
         if (getReticleAngle(this) != null) {
             onyxConfigurationBuilder.setReticleAngle(getReticleAngle(this));
