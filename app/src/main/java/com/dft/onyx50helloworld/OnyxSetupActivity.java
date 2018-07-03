@@ -21,7 +21,7 @@ import com.google.android.gms.security.ProviderInstaller;
 
 import static com.dft.onyx50helloworld.ValuesUtil.*;
 
-public class OnyxSetupActivity extends AppCompatActivity implements ProviderInstaller.ProviderInstallListener{
+public class OnyxSetupActivity extends AppCompatActivity implements ProviderInstaller.ProviderInstallListener {
     private static final int ONYX_REQUEST_CODE = 1337;
     MainApplication application = new MainApplication();
     private Activity activity;
@@ -162,7 +162,7 @@ public class OnyxSetupActivity extends AppCompatActivity implements ProviderInst
      * The below is for updating the device's security provider to protect against SSL exploits
      * See https://developer.android.com/training/articles/security-gms-provider#java
      */
-    private static final int ERROR_DIALOG_REQUEST_CODE = 1111111111;
+    private static final int ERROR_DIALOG_REQUEST_CODE = 11111;
     private boolean mRetryProviderInstall;
 
     /**
