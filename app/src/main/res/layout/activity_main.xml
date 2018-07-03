@@ -321,34 +321,6 @@
             android:paddingRight="5dp"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/focus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Focus Score:" />
-
-        <TextView
-            android:id="@+id/focusScore"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/mlp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="MLP Score:" />
-
-        <TextView
-            android:id="@+id/mlpScore"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:textStyle="bold" />
-
     </LinearLayout>
 
     <LinearLayout

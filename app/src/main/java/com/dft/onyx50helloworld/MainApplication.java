@@ -12,7 +12,6 @@ import com.dft.onyxcamera.config.OnyxResult;
  */
 
 public class MainApplication extends Application {
-
     private static OnyxConfiguration.SuccessCallback successCallback;
     private static OnyxConfiguration.ErrorCallback errorCallback;
     private static OnyxConfiguration.OnyxCallback onyxCallback;
@@ -21,7 +20,7 @@ public class MainApplication extends Application {
     private static OnyxError onyxError;
 
     public void setSuccessCallback(OnyxConfiguration.SuccessCallback successCallback) {
-        this.successCallback = successCallback;
+        MainApplication.successCallback = successCallback;
     }
 
     public static OnyxConfiguration.SuccessCallback getSuccessCallback() {
@@ -29,7 +28,7 @@ public class MainApplication extends Application {
     }
 
     public void setErrorCallback(OnyxConfiguration.ErrorCallback errorCallback) {
-        this.errorCallback = errorCallback;
+        MainApplication.errorCallback = errorCallback;
     }
 
     public static OnyxConfiguration.ErrorCallback getErrorCallback() {
@@ -37,7 +36,7 @@ public class MainApplication extends Application {
     }
 
     public void setOnyxCallback(OnyxConfiguration.OnyxCallback onyxCallback) {
-        this.onyxCallback = onyxCallback;
+        MainApplication.onyxCallback = onyxCallback;
     }
 
     public OnyxConfiguration.OnyxCallback getOnyxCallback() {
@@ -45,18 +44,18 @@ public class MainApplication extends Application {
     }
 
     public void setConfiguredOnyx(Onyx configuredOnyx) {
-        this.configuredOnyx = configuredOnyx;
+        MainApplication.configuredOnyx = configuredOnyx;
     }
 
     public static Onyx getConfiguredOnyx() {
         return configuredOnyx;
     }
 
-    public void setOnyxResult(OnyxResult onyxResult) { this.onyxResult = onyxResult; }
+    public void setOnyxResult(OnyxResult onyxResult) { MainApplication.onyxResult = onyxResult; }
 
     public static OnyxResult getOnyxResult() { return onyxResult; }
 
-    public void setOnyxError(OnyxError onyxError) { this.onyxError = onyxError; }
+    public void setOnyxError(OnyxError onyxError) { MainApplication.onyxError = onyxError; }
 
     public static OnyxError getOnyxError() { return onyxError; }
 }

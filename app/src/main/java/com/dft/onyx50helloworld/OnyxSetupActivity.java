@@ -1,6 +1,7 @@
 package com.dft.onyx50helloworld;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -15,11 +16,12 @@ import com.dft.onyxcamera.config.OnyxConfiguration;
 import com.dft.onyxcamera.config.OnyxConfigurationBuilder;
 import com.dft.onyxcamera.config.OnyxError;
 import com.dft.onyxcamera.config.OnyxResult;
-import com.dft.onyxcamera.config.remoteconfig.RemoteConfigSharedPrefs;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.security.ProviderInstaller;
 
 import static com.dft.onyx50helloworld.ValuesUtil.*;
 
-public class OnyxSetupActivity extends AppCompatActivity {
+public class OnyxSetupActivity extends AppCompatActivity implements ProviderInstaller.ProviderInstallListener{
     private static final int ONYX_REQUEST_CODE = 1337;
     MainApplication application = new MainApplication();
     private Activity activity;
@@ -29,12 +31,11 @@ public class OnyxSetupActivity extends AppCompatActivity {
     private ImageView enhancedImageView;
     private TextView livenessResultTextView;
     private TextView nfiqScoreTextView;
-    private TextView focusScoreTextView;
-    private TextView mlpScoreTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ProviderInstaller.installIfNeededAsync(this, this); // This is needed in order for SSL to work on Android 5.1 devices and lower
         setupUI();
         setupCallbacks();
     }
@@ -97,6 +98,13 @@ public class OnyxSetupActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == ERROR_DIALOG_REQUEST_CODE) {
+            // Adding a fragment via GoogleApiAvailability.showErrorDialogFragment
+            // before the instance state is restored throws an error. So instead,
+            // set a flag here, which will cause the fragment to delay until
+            // onPostResume.
+            mRetryProviderInstall = true;
+        }
         if (requestCode == ONYX_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 displayResults(application.getOnyxResult());
@@ -120,8 +128,6 @@ public class OnyxSetupActivity extends AppCompatActivity {
         if (onyxResult.getMetrics() != null) {
             livenessResultTextView.setText(Double.toString(onyxResult.getMetrics().getLivenessConfidence()));
             nfiqScoreTextView.setText(Integer.toString(onyxResult.getMetrics().getNfiqMetrics().getNfiqScore()));
-            focusScoreTextView.setText(Double.toString(Math.round(onyxResult.getMetrics().getFocusQuality() * 100.0) / 100.0));
-            mlpScoreTextView.setText(Double.toString(Math.round(onyxResult.getMetrics().getNfiqMetrics().getMlpScore() * 100.0) / 100.0));
         }
     }
 
@@ -133,8 +139,6 @@ public class OnyxSetupActivity extends AppCompatActivity {
         enhancedImageView = findViewById(R.id.enhancedImageView);
         livenessResultTextView = findViewById(R.id.livenessResult);
         nfiqScoreTextView = findViewById(R.id.nfiqScore);
-        focusScoreTextView = findViewById(R.id.focusScore);
-        mlpScoreTextView = findViewById(R.id.mlpScore);
         startOnyxButton = findViewById(R.id.start_onyx);
         startOnyxButton.setEnabled(false);
         startOnyxButton.bringToFront();
@@ -152,5 +156,69 @@ public class OnyxSetupActivity extends AppCompatActivity {
                 startOnyxButton.setEnabled(false);
             }
         });
+    }
+
+    /**
+     * The below is for updating the device's security provider to protect against SSL exploits
+     * See https://developer.android.com/training/articles/security-gms-provider#java
+     */
+    private static final int ERROR_DIALOG_REQUEST_CODE = 1111111111;
+    private boolean mRetryProviderInstall;
+
+    /**
+     * This method is only called if the provider is successfully updated
+     * (or is already up-to-date).
+     */
+    @Override
+    public void onProviderInstalled() {
+        Log.i("OnyxSetupActivity","Provider is up-to-date, app can make secure network calls.");
+    }
+
+    /**
+     * This method is called if updating fails; the error code indicates
+     * whether the error is recoverable.
+     */
+    @Override
+    public void onProviderInstallFailed(int errorCode, Intent recoveryIntent) {
+        GoogleApiAvailability availability = GoogleApiAvailability.getInstance();
+        if (availability.isUserResolvableError(errorCode)) {
+            // Recoverable error. Show a dialog prompting the user to
+            // install/update/enable Google Play services.
+            availability.showErrorDialogFragment(
+                    this,
+                    errorCode,
+                    ERROR_DIALOG_REQUEST_CODE,
+                    new DialogInterface.OnCancelListener() {
+                        @Override
+                        public void onCancel(DialogInterface dialog) {
+                            // The user chose not to take the recovery action
+                            onProviderInstallerNotAvailable();
+                        }
+                    });
+        } else {
+            // Google Play services is not available.
+            onProviderInstallerNotAvailable();
+        }
+    }
+
+    /**
+     * On resume, check to see if we flagged that we need to reinstall the
+     * provider.
+     */
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        if (mRetryProviderInstall) {
+            // We can now safely retry installation.
+            ProviderInstaller.installIfNeededAsync(this, this);
+        }
+        mRetryProviderInstall = false;
+    }
+
+    private void onProviderInstallerNotAvailable() {
+        // This is reached if the provider cannot be updated for some reason.
+        // App should consider all HTTP communication to be vulnerable, and take
+        // appropriate action.
+        Log.i("OnyxSetupActivity","ProviderInstaller not available, device cannot make secure network calls.");
     }
 }
