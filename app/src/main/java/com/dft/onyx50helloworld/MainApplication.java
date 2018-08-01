@@ -12,36 +12,9 @@ import com.dft.onyxcamera.config.OnyxResult;
  */
 
 public class MainApplication extends Application {
-    private static OnyxConfiguration.SuccessCallback successCallback;
-    private static OnyxConfiguration.ErrorCallback errorCallback;
-    private static OnyxConfiguration.OnyxCallback onyxCallback;
     private static Onyx configuredOnyx;
     private static OnyxResult onyxResult;
     private static OnyxError onyxError;
-
-    public void setSuccessCallback(OnyxConfiguration.SuccessCallback successCallback) {
-        MainApplication.successCallback = successCallback;
-    }
-
-    public static OnyxConfiguration.SuccessCallback getSuccessCallback() {
-        return successCallback;
-    }
-
-    public void setErrorCallback(OnyxConfiguration.ErrorCallback errorCallback) {
-        MainApplication.errorCallback = errorCallback;
-    }
-
-    public static OnyxConfiguration.ErrorCallback getErrorCallback() {
-        return errorCallback;
-    }
-
-    public void setOnyxCallback(OnyxConfiguration.OnyxCallback onyxCallback) {
-        MainApplication.onyxCallback = onyxCallback;
-    }
-
-    public OnyxConfiguration.OnyxCallback getOnyxCallback() {
-        return onyxCallback;
-    }
 
     public void setConfiguredOnyx(Onyx configuredOnyx) {
         MainApplication.configuredOnyx = configuredOnyx;

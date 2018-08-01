@@ -1,6 +1,8 @@
 package com.dft.onyx50helloworld;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,11 +28,16 @@ public class OnyxSetupActivity extends AppCompatActivity implements ProviderInst
     MainApplication application = new MainApplication();
     private Activity activity;
     private Button startOnyxButton;
+    private AlertDialog alertDialog;
     private ImageView rawImageView;
     private ImageView processedImageView;
     private ImageView enhancedImageView;
     private TextView livenessResultTextView;
     private TextView nfiqScoreTextView;
+
+    private OnyxConfiguration.SuccessCallback successCallback;
+    private OnyxConfiguration.ErrorCallback errorCallback;
+    private OnyxConfiguration.OnyxCallback onyxCallback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,28 +48,34 @@ public class OnyxSetupActivity extends AppCompatActivity implements ProviderInst
     }
 
     private void setupCallbacks() {
-        application.setSuccessCallback(new OnyxConfiguration.SuccessCallback() {
+        successCallback = new OnyxConfiguration.SuccessCallback() {
             @Override
             public void onSuccess(OnyxResult onyxResult) {
                 application.setOnyxResult(onyxResult);
             }
-        });
+        };
 
-        application.setErrorCallback(new OnyxConfiguration.ErrorCallback() {
+        errorCallback = new OnyxConfiguration.ErrorCallback() {
             @Override
             public void onError(OnyxError onyxError) {
                 Log.e("OnyxError", onyxError.getErrorMessage());
                 application.setOnyxError(onyxError);
+                showAlertDialog(onyxError);
             }
-        });
+        };
 
-        application.setOnyxCallback(new OnyxConfiguration.OnyxCallback() {
+        onyxCallback = new OnyxConfiguration.OnyxCallback() {
             @Override
             public void onConfigured(Onyx configuredOnyx) {
                 application.setConfiguredOnyx(configuredOnyx);
-                startOnyxButton.setEnabled(true);
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        startOnyxButton.setEnabled(true);
+                    }
+                });
             }
-        });
+        };
     }
 
     private void setupOnyx(final Activity activity) {
@@ -85,9 +98,9 @@ public class OnyxSetupActivity extends AppCompatActivity implements ProviderInst
             .setCropFactor(getCropFactor(this))
             .setReticleScale(getReticleScale(this))
             .setLayoutPreference(getLayoutPreference(this))
-            .setSuccessCallback(application.getSuccessCallback())
-            .setErrorCallback(application.getErrorCallback())
-            .setOnyxCallback(application.getOnyxCallback());
+            .setSuccessCallback(successCallback)
+            .setErrorCallback(errorCallback)
+            .setOnyxCallback(onyxCallback);
         // Reticle Angle overrides Reticle Orientation so have to set this separately
         if (getReticleAngle(this) != null) {
             onyxConfigurationBuilder.setReticleAngle(getReticleAngle(this));
@@ -106,7 +119,7 @@ public class OnyxSetupActivity extends AppCompatActivity implements ProviderInst
             mRetryProviderInstall = true;
         }
         if (requestCode == ONYX_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
+            if (resultCode == RESULT_OK && application.getOnyxResult() != null) {
                 displayResults(application.getOnyxResult());
             }
         }
@@ -156,6 +169,32 @@ public class OnyxSetupActivity extends AppCompatActivity implements ProviderInst
                 startOnyxButton.setEnabled(false);
             }
         });
+    }
+
+    /**
+     * This displays an AlertDialog upon receiving an OnyxError, please handle appropriately for
+     * your application
+     * @param onyxError
+     */
+    private void showAlertDialog(OnyxError onyxError) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);
+        alertDialogBuilder.setCancelable(true);
+        alertDialogBuilder.setTitle("Onyx Error");
+        alertDialogBuilder.setMessage(onyxError.getErrorMessage());
+        alertDialogBuilder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                alertDialog.dismiss();
+            }
+        });
+        alertDialogBuilder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialogInterface) {
+                alertDialog.dismiss();
+            }
+        });
+        alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 
     /**
