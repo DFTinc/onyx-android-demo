@@ -1,5 +1,6 @@
 package com.dft.onyx50helloworld;
 
+import android.app.Activity;
 import android.app.Application;
 
 import com.dft.onyxcamera.config.Onyx;
@@ -15,6 +16,15 @@ public class MainApplication extends Application {
     private static Onyx configuredOnyx;
     private static OnyxResult onyxResult;
     private static OnyxError onyxError;
+    private static Activity activityForRunningOnyx;
+
+    public static void setActivityForRunningOnyx(OnyxActivity activityForRunningOnyx) {
+        MainApplication.activityForRunningOnyx = activityForRunningOnyx;
+    }
+
+    public static Activity getActivityForRunningOnyx() {
+        return activityForRunningOnyx;
+    }
 
     public void setConfiguredOnyx(Onyx configuredOnyx) {
         MainApplication.configuredOnyx = configuredOnyx;

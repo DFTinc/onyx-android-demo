@@ -52,6 +52,7 @@ public class OnyxSetupActivity extends AppCompatActivity implements ProviderInst
             @Override
             public void onSuccess(OnyxResult onyxResult) {
                 application.setOnyxResult(onyxResult);
+                finishActivityForRunningOnyx();
             }
         };
 
@@ -61,6 +62,7 @@ public class OnyxSetupActivity extends AppCompatActivity implements ProviderInst
                 Log.e("OnyxError", onyxError.getErrorMessage());
                 application.setOnyxError(onyxError);
                 showAlertDialog(onyxError);
+                finishActivityForRunningOnyx();
             }
         };
 
@@ -76,6 +78,12 @@ public class OnyxSetupActivity extends AppCompatActivity implements ProviderInst
                 });
             }
         };
+    }
+
+    private void finishActivityForRunningOnyx() {
+        if (MainApplication.getActivityForRunningOnyx() != null) {
+            MainApplication.getActivityForRunningOnyx().finish();
+        }
     }
 
     private void setupOnyx(final Activity activity) {
@@ -110,6 +118,14 @@ public class OnyxSetupActivity extends AppCompatActivity implements ProviderInst
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if (MainApplication.getOnyxResult() != null) {
+            displayResults(MainApplication.getOnyxResult());
+        }
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == ERROR_DIALOG_REQUEST_CODE) {
             // Adding a fragment via GoogleApiAvailability.showErrorDialogFragment
@@ -117,11 +133,6 @@ public class OnyxSetupActivity extends AppCompatActivity implements ProviderInst
             // set a flag here, which will cause the fragment to delay until
             // onPostResume.
             mRetryProviderInstall = true;
-        }
-        if (requestCode == ONYX_REQUEST_CODE) {
-            if (resultCode == RESULT_OK && application.getOnyxResult() != null) {
-                displayResults(application.getOnyxResult());
-            }
         }
     }
 
@@ -194,7 +205,12 @@ public class OnyxSetupActivity extends AppCompatActivity implements ProviderInst
             }
         });
         alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                alertDialog.show();
+            }
+        });
     }
 
     /**
@@ -240,10 +256,6 @@ public class OnyxSetupActivity extends AppCompatActivity implements ProviderInst
         }
     }
 
-    /**
-     * On resume, check to see if we flagged that we need to reinstall the
-     * provider.
-     */
     @Override
     protected void onPostResume() {
         super.onPostResume();
