@@ -1,11 +1,14 @@
 package com.dft.onyx50helloworld;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -24,6 +27,7 @@ import com.google.android.gms.security.ProviderInstaller;
 import static com.dft.onyx50helloworld.ValuesUtil.*;
 
 public class OnyxSetupActivity extends AppCompatActivity implements ProviderInstaller.ProviderInstallListener {
+    private static final String TAG = "OnyxSetupActivity";
     private static final int ONYX_REQUEST_CODE = 1337;
     MainApplication application = new MainApplication();
     private Activity activity;
@@ -43,6 +47,7 @@ public class OnyxSetupActivity extends AppCompatActivity implements ProviderInst
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ProviderInstaller.installIfNeededAsync(this, this); // This is needed in order for SSL to work on Android 5.1 devices and lower
+        getWriteExternalStoragePermission(); // This is for file writing permission on SDK >= 23
         setupUI();
         setupCallbacks();
     }
@@ -89,26 +94,26 @@ public class OnyxSetupActivity extends AppCompatActivity implements ProviderInst
     private void setupOnyx(final Activity activity) {
         // Create an OnyxConfigurationBuilder and configure it with desired options
         OnyxConfigurationBuilder onyxConfigurationBuilder = new OnyxConfigurationBuilder()
-            .setActivity(activity)
-            .setLicenseKey(getResources().getString(R.string.onyx_license))
-            .setReturnRawImage(getReturnRawImage(this))
-            .setReturnProcessedImage(getReturnProcessedImage(this))
-            .setReturnEnhancedImage(getReturnEnhancedImage(this))
-            .setReturnWSQ(getReturnWSQ(this))
-            .setReturnFingerprintTemplate(getReturnFingerprintTemplate(this))
-            .setShowLoadingSpinner(getShowLoadingSpinner(this))
-            .setUseOnyxLive(getUseOnyxLive(this))
-            .setUseFlash(getUseFlash(this))
-            .setShouldSegment(getShouldSegment(this))
-            .setImageRotation(getImageRotation(this))
-            .setReticleOrientation(getReticleOrientation(this))
-            .setCropSize(getCropSizeWidth(this), getCropSizeHeight(this))
-            .setCropFactor(getCropFactor(this))
-            .setReticleScale(getReticleScale(this))
-            .setLayoutPreference(getLayoutPreference(this))
-            .setSuccessCallback(successCallback)
-            .setErrorCallback(errorCallback)
-            .setOnyxCallback(onyxCallback);
+                .setActivity(activity)
+                .setLicenseKey(getResources().getString(R.string.onyx_license))
+                .setReturnRawImage(getReturnRawImage(this))
+                .setReturnProcessedImage(getReturnProcessedImage(this))
+                .setReturnEnhancedImage(getReturnEnhancedImage(this))
+                .setReturnWSQ(getReturnWSQ(this))
+                .setReturnFingerprintTemplate(getReturnFingerprintTemplate(this))
+                .setShowLoadingSpinner(getShowLoadingSpinner(this))
+                .setUseOnyxLive(getUseOnyxLive(this))
+                .setUseFlash(getUseFlash(this))
+                .setShouldSegment(getShouldSegment(this))
+                .setImageRotation(getImageRotation(this))
+                .setReticleOrientation(getReticleOrientation(this))
+                .setCropSize(getCropSizeWidth(this), getCropSizeHeight(this))
+                .setCropFactor(getCropFactor(this))
+                .setReticleScale(getReticleScale(this))
+                .setLayoutPreference(getLayoutPreference(this))
+                .setSuccessCallback(successCallback)
+                .setErrorCallback(errorCallback)
+                .setOnyxCallback(onyxCallback);
         // Reticle Angle overrides Reticle Orientation so have to set this separately
         if (getReticleAngle(this) != null) {
             onyxConfigurationBuilder.setReticleAngle(getReticleAngle(this));
@@ -149,9 +154,42 @@ public class OnyxSetupActivity extends AppCompatActivity implements ProviderInst
         if (onyxResult.getEnhancedFingerprintImage() != null) {
             enhancedImageView.setImageBitmap(onyxResult.getEnhancedFingerprintImage());
         }
+        if (onyxResult.getWsqData() != null && getWriteExternalStoragePermission()) {
+            FileUtil fileUtil = new FileUtil();
+            fileUtil.checkExternalMedia(this);
+            fileUtil.writeToSDFile(this, onyxResult.getWsqData());
+        }
         if (onyxResult.getMetrics() != null) {
             livenessResultTextView.setText(Double.toString(onyxResult.getMetrics().getLivenessConfidence()));
             nfiqScoreTextView.setText(Integer.toString(onyxResult.getMetrics().getNfiqMetrics().getNfiqScore()));
+        }
+    }
+
+    private boolean getWriteExternalStoragePermission() {
+        boolean hasPermission;
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (this.checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                Log.v(TAG,"Permission is granted");
+                hasPermission = true;
+            } else {
+                Log.v(TAG,"Permission is revoked");
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                hasPermission = false;
+            }
+        }
+        else { //permission is automatically granted on sdk<23 upon installation
+            Log.v(TAG,"Permission is granted");
+            hasPermission = true;
+        }
+        return hasPermission;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(grantResults[0]== PackageManager.PERMISSION_GRANTED){
+            Log.v(TAG,"Permission: "+permissions[0]+ " was " + grantResults[0]);
         }
     }
 
