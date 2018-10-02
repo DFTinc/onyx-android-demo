@@ -1,4 +1,4 @@
-package com.dft.onyx50helloworld;
+package com.dft.onyx50demo;
 
 import android.app.Activity;
 import android.os.Bundle;

@@ -1,4 +1,4 @@
-package com.dft.onyx50helloworld;
+package com.dft.onyx50demo;
 
 import android.Manifest;
 import android.app.Activity;
@@ -8,14 +8,21 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.dft.onyx.FingerprintTemplate;
+import com.dft.onyx50demo.matching.EnrollUtil;
 import com.dft.onyxcamera.config.Onyx;
 import com.dft.onyxcamera.config.OnyxConfiguration;
 import com.dft.onyxcamera.config.OnyxConfigurationBuilder;
@@ -24,13 +31,32 @@ import com.dft.onyxcamera.config.OnyxResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.security.ProviderInstaller;
 
-import static com.dft.onyx50helloworld.ValuesUtil.*;
+import static com.dft.onyx50demo.ValuesUtil.getCropFactor;
+import static com.dft.onyx50demo.ValuesUtil.getCropSizeHeight;
+import static com.dft.onyx50demo.ValuesUtil.getCropSizeWidth;
+import static com.dft.onyx50demo.ValuesUtil.getImageRotation;
+import static com.dft.onyx50demo.ValuesUtil.getLayoutPreference;
+import static com.dft.onyx50demo.ValuesUtil.getReticleAngle;
+import static com.dft.onyx50demo.ValuesUtil.getReticleOrientation;
+import static com.dft.onyx50demo.ValuesUtil.getReticleScale;
+import static com.dft.onyx50demo.ValuesUtil.getReturnEnhancedImage;
+import static com.dft.onyx50demo.ValuesUtil.getReturnFingerprintTemplate;
+import static com.dft.onyx50demo.ValuesUtil.getReturnProcessedImage;
+import static com.dft.onyx50demo.ValuesUtil.getReturnRawImage;
+import static com.dft.onyx50demo.ValuesUtil.getReturnWSQ;
+import static com.dft.onyx50demo.ValuesUtil.getShouldSegment;
+import static com.dft.onyx50demo.ValuesUtil.getShowLoadingSpinner;
+import static com.dft.onyx50demo.ValuesUtil.getUseFlash;
+import static com.dft.onyx50demo.ValuesUtil.getUseOnyxLive;
 
 public class OnyxSetupActivity extends AppCompatActivity implements ProviderInstaller.ProviderInstallListener {
     private static final String TAG = "OnyxSetupActivity";
     private static final int ONYX_REQUEST_CODE = 1337;
     MainApplication application = new MainApplication();
     private Activity activity;
+    private ImageView fingerprintView;
+    private Animation fadeIn;
+    private Animation fadeOut;
     private Button startOnyxButton;
     private AlertDialog alertDialog;
     private ImageView rawImageView;
@@ -142,6 +168,8 @@ public class OnyxSetupActivity extends AppCompatActivity implements ProviderInst
     }
 
     private void displayResults(OnyxResult onyxResult) {
+        FileUtil fileUtil = new FileUtil();
+        fileUtil.checkExternalMedia(this);
         rawImageView.setImageDrawable(null);
         processedImageView.setImageDrawable(null);
         enhancedImageView.setImageDrawable(null);
@@ -150,19 +178,25 @@ public class OnyxSetupActivity extends AppCompatActivity implements ProviderInst
         }
         if (onyxResult.getProcessedFingerprintImage() != null) {
             processedImageView.setImageBitmap(onyxResult.getProcessedFingerprintImage());
+            fingerprintView.setImageBitmap(onyxResult.getProcessedFingerprintImage());
+            showFingerprintAnimation();
         }
         if (onyxResult.getEnhancedFingerprintImage() != null) {
             enhancedImageView.setImageBitmap(onyxResult.getEnhancedFingerprintImage());
         }
         if (onyxResult.getWsqData() != null && getWriteExternalStoragePermission()) {
-            FileUtil fileUtil = new FileUtil();
-            fileUtil.checkExternalMedia(this);
             fileUtil.writeToSDFile(this, onyxResult.getWsqData());
         }
         if (onyxResult.getMetrics() != null) {
             livenessResultTextView.setText(Double.toString(onyxResult.getMetrics().getLivenessConfidence()));
             nfiqScoreTextView.setText(Integer.toString(onyxResult.getMetrics().getNfiqMetrics().getNfiqScore()));
         }
+    }
+
+    private void showFingerprintAnimation() {
+        createFadeInAnimation();
+        createFadeOutAnimation();
+        fingerprintView.startAnimation(fadeIn);
     }
 
     private boolean getWriteExternalStoragePermission() {
@@ -196,6 +230,9 @@ public class OnyxSetupActivity extends AppCompatActivity implements ProviderInst
     private void setupUI() {
         activity = this;
         setContentView(R.layout.activity_main);
+        fingerprintView = new ImageView(this);
+        LayoutParams layoutParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+        addContentView(fingerprintView, layoutParams);
         rawImageView = findViewById(R.id.rawImageView);
         processedImageView = findViewById(R.id.processedImageView);
         enhancedImageView = findViewById(R.id.enhancedImageView);
@@ -207,6 +244,7 @@ public class OnyxSetupActivity extends AppCompatActivity implements ProviderInst
         startOnyxButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                MainApplication.setOnyxResult(null);
                 startActivityForResult(new Intent(activity, OnyxActivity.class), ONYX_REQUEST_CODE);
             }
         });
@@ -309,5 +347,61 @@ public class OnyxSetupActivity extends AppCompatActivity implements ProviderInst
         // App should consider all HTTP communication to be vulnerable, and take
         // appropriate action.
         Log.i("OnyxSetupActivity","ProviderInstaller not available, device cannot make secure network calls.");
+    }
+
+    public void createFadeInAnimation() {
+        fadeIn = (new AlphaAnimation(0.0f, 1.0f));
+        fadeIn.setDuration(500);
+        fadeIn.setAnimationListener(new Animation.AnimationListener() {
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                new CountDownTimer(1000, 1000) {
+
+                    @Override
+                    public void onFinish() {
+                        final OnyxResult onyxResult = MainApplication.getOnyxResult();
+                        if (onyxResult.getFingerprintTemplate() != null) {
+                            fingerprintView.startAnimation(fadeOut);
+                        }
+                    }
+
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                    }
+
+                }.start();
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationStart(Animation animation) {
+                fingerprintView.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+    public void createFadeOutAnimation() {
+        fadeOut = new AlphaAnimation(1.0f, 0.0f);
+        fadeOut.setDuration(500);
+        fadeOut.setAnimationListener(new Animation.AnimationListener() {
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                fingerprintView.setVisibility(View.INVISIBLE);
+                new EnrollUtil().createEnrollQuestionDialog(activity);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+        });
     }
 }

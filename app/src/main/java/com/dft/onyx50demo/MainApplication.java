@@ -1,22 +1,35 @@
-package com.dft.onyx50helloworld;
+package com.dft.onyx50demo;
 
 import android.app.Activity;
 import android.app.Application;
+import android.util.Log;
 
+import com.dft.onyx.core;
 import com.dft.onyxcamera.config.Onyx;
-import com.dft.onyxcamera.config.OnyxConfiguration;
 import com.dft.onyxcamera.config.OnyxError;
 import com.dft.onyxcamera.config.OnyxResult;
+
+import org.opencv.android.OpenCVLoader;
 
 /**
  * Main application to hold Onyx objects
  */
 
 public class MainApplication extends Application {
+    private static final String TAG = "MainApplication";
     private static Onyx configuredOnyx;
     private static OnyxResult onyxResult;
     private static OnyxError onyxError;
     private static Activity activityForRunningOnyx;
+
+    static {
+        if (!OpenCVLoader.initDebug()) {
+            Log.d(TAG, "Unable to load OpenCV!");
+        } else {
+            Log.i(TAG, "OpenCV loaded successfully");
+            core.initOnyx();
+        }
+    }
 
     public static void setActivityForRunningOnyx(OnyxActivity activityForRunningOnyx) {
         MainApplication.activityForRunningOnyx = activityForRunningOnyx;
@@ -34,7 +47,7 @@ public class MainApplication extends Application {
         return configuredOnyx;
     }
 
-    public void setOnyxResult(OnyxResult onyxResult) { MainApplication.onyxResult = onyxResult; }
+    public static void setOnyxResult(OnyxResult onyxResult) { MainApplication.onyxResult = onyxResult; }
 
     public static OnyxResult getOnyxResult() { return onyxResult; }
 

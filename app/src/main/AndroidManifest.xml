@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.dft.onyx50helloworld">
+    package="com.dft.onyx50demo">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -11,8 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:name=".MainApplication">
-        <activity android:name=".OnyxSetupActivity"
+        android:name="com.dft.onyx50demo.MainApplication">
+        <activity android:name="com.dft.onyx50demo.OnyxSetupActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,7 +20,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".OnyxActivity" />
+        <activity android:name="com.dft.onyx50demo.OnyxActivity" />
     </application>
 
 </manifest>

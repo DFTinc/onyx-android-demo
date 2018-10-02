@@ -1,4 +1,4 @@
-package com.dft.onyx50helloworld;
+package com.dft.onyx50demo;
 
 import android.app.Activity;
 import android.os.Environment;
@@ -9,7 +9,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 public class FileUtil {
     private static final String TAG = "FileUtil";

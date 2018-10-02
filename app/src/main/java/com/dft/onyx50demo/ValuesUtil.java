@@ -1,4 +1,4 @@
-package com.dft.onyx50helloworld;
+package com.dft.onyx50demo;
 
 import android.app.Activity;
 import android.widget.CheckBox;
@@ -6,7 +6,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.dft.onyxcamera.config.OnyxConfiguration;
-import com.dft.onyxcamera.ui.OnyxFragment;
 import com.dft.onyxcamera.ui.reticles.Reticle;
 
 /**
