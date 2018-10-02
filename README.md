@@ -40,6 +40,7 @@ The gist of it is to have an activity that implements ProviderInstaller.Provider
 
 In your onCreate() method, add a call to "ProviderInstaller.installIfNeededAsync(this, this);".
 Then add the following code:
+```
     /**
      * The below is for updating the device's security provider to protect against SSL exploits
      * See https://developer.android.com/training/articles/security-gms-provider#java
@@ -103,8 +104,9 @@ Then add the following code:
         // appropriate action.
         Log.i("OnyxSetupActivity","ProviderInstaller not available, device cannot make secure network calls.");
     }
-
+```
 Finally, in your onActivityResult(int requestCode, int resultCode, Intent data), include the following:
+```
     if (requestCode == ERROR_DIALOG_REQUEST_CODE) {
         // Adding a fragment via GoogleApiAvailability.showErrorDialogFragment
         // before the instance state is restored throws an error. So instead,
@@ -112,6 +114,7 @@ Finally, in your onActivityResult(int requestCode, int resultCode, Intent data),
         // onPostResume.
         mRetryProviderInstall = true;
     }
+```
 
 For an example, see OnyxSetupActivity.java.
 
