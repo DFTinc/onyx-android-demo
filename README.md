@@ -38,7 +38,10 @@ This is implemented in this project by adding a dependency on 'com.google.androi
 
 The gist of it is to have an activity that implements ProviderInstaller.ProviderInstallListener.
 
-In your onCreate() method, add a call to "ProviderInstaller.installIfNeededAsync(this, this);".
+In your onCreate() method, add a call to:
+ ```
+ ProviderInstaller.installIfNeededAsync(this, this);
+ ```
 Then add the following code:
 ```
     /**
