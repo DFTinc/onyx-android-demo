@@ -14,7 +14,7 @@ You should receive a license of the form XXXX-XXXX-XXXX-X-X at your provided e-m
 Next, you can clone our sample repository on the command-line using the following commands:
 
     > cd <YOUR_DEVELOPMENT_ROOT>
-    > git clone https://github.com/DFTinc/onyx-demo-detailed-sample-android.git
+    > git clone https://github.com/DFTinc/onyx-5.0-demo.git
 
 Alternatively, you can clone the project via Android Studio:
 <br/>
@@ -35,10 +35,12 @@ Important addendum:  Update your security provider to protect against SSL exploi
 Please see the article here: https://developer.android.com/training/articles/security-gms-provider
 
 This is implemented in this project by adding a dependency on 'com.google.android.gms:play-services-base'.
+
 The gist of it is to have an activity that implements ProviderInstaller.ProviderInstallListener.
+
 In your onCreate() method, add a call to "ProviderInstaller.installIfNeededAsync(this, this);".
 Then add the following code:
-/**
+    /**
      * The below is for updating the device's security provider to protect against SSL exploits
      * See https://developer.android.com/training/articles/security-gms-provider#java
      */
