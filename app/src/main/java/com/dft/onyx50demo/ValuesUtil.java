@@ -106,4 +106,8 @@ public class ValuesUtil {
             return OnyxConfiguration.LayoutPreference.UPPER_THIRD;
         }
     }
+
+    public static boolean getUseManualCapture(Activity a) {
+        return ((CheckBox) a.findViewById(R.id.useManualCapture)).isChecked();
+    }
 }

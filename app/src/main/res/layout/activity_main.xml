@@ -170,6 +170,15 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/reticleScale" />
 
+    <CheckBox
+        android:id="@+id/useManualCapture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="false"
+        android:text="Use manual capture"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layoutPreferenceFullScreen" />
+
     <TextView
         android:id="@+id/imageRotationTextView"
         android:layout_width="wrap_content"
@@ -303,7 +312,7 @@
         android:gravity="center_horizontal|center"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/useManualCapture"
         app:layout_constraintTop_toBottomOf="@+id/layoutPreferenceFullScreen">
 
         <TextView

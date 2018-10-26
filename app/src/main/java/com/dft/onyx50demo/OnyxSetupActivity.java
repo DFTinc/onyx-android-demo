@@ -47,6 +47,7 @@ import static com.dft.onyx50demo.ValuesUtil.getReturnWSQ;
 import static com.dft.onyx50demo.ValuesUtil.getShouldSegment;
 import static com.dft.onyx50demo.ValuesUtil.getShowLoadingSpinner;
 import static com.dft.onyx50demo.ValuesUtil.getUseFlash;
+import static com.dft.onyx50demo.ValuesUtil.getUseManualCapture;
 import static com.dft.onyx50demo.ValuesUtil.getUseOnyxLive;
 
 public class OnyxSetupActivity extends AppCompatActivity implements ProviderInstaller.ProviderInstallListener {
@@ -144,6 +145,9 @@ public class OnyxSetupActivity extends AppCompatActivity implements ProviderInst
         if (getReticleAngle(this) != null) {
             onyxConfigurationBuilder.setReticleAngle(getReticleAngle(this));
         }
+        if (getUseManualCapture(this)) {
+            onyxConfigurationBuilder.setUseManualCapture(true);
+        }
         // Finally, build the OnyxConfiguration
         onyxConfigurationBuilder.buildOnyxConfiguration();
     }
@@ -189,7 +193,7 @@ public class OnyxSetupActivity extends AppCompatActivity implements ProviderInst
         }
         if (onyxResult.getMetrics() != null) {
             livenessResultTextView.setText(Double.toString(onyxResult.getMetrics().getLivenessConfidence()));
-            nfiqScoreTextView.setText(Integer.toString(onyxResult.getMetrics().getNfiqMetrics().getNfiqScore()));
+//            nfiqScoreTextView.setText(Integer.toString(onyxResult.getMetrics().getNfiqMetrics().getNfiqScore()));
         }
     }
 
