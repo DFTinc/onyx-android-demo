@@ -10,10 +10,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -21,7 +19,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.dft.onyx.FingerprintTemplate;
 import com.dft.onyx50demo.matching.EnrollUtil;
 import com.dft.onyxcamera.config.Onyx;
 import com.dft.onyxcamera.config.OnyxConfiguration;
@@ -50,7 +47,7 @@ import static com.dft.onyx50demo.ValuesUtil.getUseFlash;
 import static com.dft.onyx50demo.ValuesUtil.getUseManualCapture;
 import static com.dft.onyx50demo.ValuesUtil.getUseOnyxLive;
 
-public class OnyxSetupActivity extends AppCompatActivity implements ProviderInstaller.ProviderInstallListener {
+public class OnyxSetupActivity extends Activity implements ProviderInstaller.ProviderInstallListener {
     private static final String TAG = "OnyxSetupActivity";
     private static final int ONYX_REQUEST_CODE = 1337;
     MainApplication application = new MainApplication();
@@ -138,6 +135,7 @@ public class OnyxSetupActivity extends AppCompatActivity implements ProviderInst
                 .setCropFactor(getCropFactor(this))
                 .setReticleScale(getReticleScale(this))
                 .setLayoutPreference(getLayoutPreference(this))
+                .setFingerDetectMode(OnyxConfiguration.FingerDetectMode.LIVE.ordinal())
                 .setSuccessCallback(successCallback)
                 .setErrorCallback(errorCallback)
                 .setOnyxCallback(onyxCallback);
