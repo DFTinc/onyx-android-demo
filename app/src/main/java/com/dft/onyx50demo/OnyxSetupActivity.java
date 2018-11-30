@@ -135,7 +135,7 @@ public class OnyxSetupActivity extends Activity implements ProviderInstaller.Pro
                 .setCropFactor(getCropFactor(this))
                 .setReticleScale(getReticleScale(this))
                 .setLayoutPreference(getLayoutPreference(this))
-                .setFingerDetectMode(OnyxConfiguration.FingerDetectMode.LIVE.ordinal())
+                .setFingerDetectMode(OnyxConfiguration.FingerDetectMode.LIVE_FINGER.ordinal())
                 .setSuccessCallback(successCallback)
                 .setErrorCallback(errorCallback)
                 .setOnyxCallback(onyxCallback);
