@@ -11,14 +11,14 @@ android {
         release {
             keyAlias 'onyx50demo'
             keyPassword 'onyx50demo'
-            storeFile file('./onyx50demo.jks')
+            storeFile file('C:/AndroidstudioProjects/onyx-5.0-demo/onyx50demo.jks')
             storePassword 'onyx50demo'
         }
     }
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.dft.onyx50demo"
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -70,6 +70,7 @@ configurations.all {
 dependencies {
     api 'com.android.support.constraint:constraint-layout:1.1.3'
     api 'com.google.android.gms:play-services-base:16.0.1'
-    api 'com.dft.android:onyx-camera:5.1.7'
-//    debugImplementation project(':onyxcamera') // For setting up locally
+//    api 'com.dft.android:onyx-camera:5.1.6-SNAPSHOT'
+    implementation project(':onyxcamera') // For setting up locally
+    implementation 'com.dft.android:onyx-core:4.4.4' // For setting up locally
 }

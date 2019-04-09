@@ -19,7 +19,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.dft.onyx50demo.OnyxActivity" />
+        <activity android:name="com.dft.onyx50demo.OnyxActivity"
+            android:theme="@android:style/Theme.NoTitleBar" />
     </application>
 
 </manifest>
