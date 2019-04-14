@@ -1,7 +1,12 @@
 package com.dft.onyx50demo;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -12,6 +17,29 @@ import java.io.IOException;
 
 public class FileUtil {
     private static final String TAG = "FileUtil";
+
+    /**
+     * Method to check if external storage has write permission
+     */
+    public boolean getWriteExternalStoragePermission(Activity activity) {
+        boolean hasPermission;
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (activity.checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                Log.v(TAG,"Permission is granted");
+                hasPermission = true;
+            } else {
+                Log.v(TAG,"Permission is revoked");
+                ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                hasPermission = false;
+            }
+        }
+        else { //permission is automatically granted on sdk<23 upon installation
+            Log.v(TAG,"Permission is granted");
+            hasPermission = true;
+        }
+        return hasPermission;
+    }
 
     /**
      * Method to check whether external media available and writable. This is adapted from
@@ -43,7 +71,7 @@ public class FileUtil {
      * WRITE_EXTERNAL_STORAGE permission to the manifest file or this method will throw
      * a FileNotFound Exception because you won't have write permission.
      */
-    public void writeToSDFile(Activity a, byte[] wsqBytes) {
+    public void writeToSDFile(Activity a, byte[] wsqBytes, String fileName) {
         // Find the root of the external storage.
         // See http://developer.android.com/guide/topics/data/data-  storage.html#filesExternal
         File root = android.os.Environment.getExternalStorageDirectory();
@@ -51,7 +79,7 @@ public class FileUtil {
 
         File dir = new File(root.getAbsolutePath() + "/wsq");
         dir.mkdirs();
-        File file = new File(dir, "myWSQ.wsq");
+        File file = new File(dir, fileName + ".wsq");
 
         try {
             FileOutputStream out = new FileOutputStream(file);

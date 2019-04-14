@@ -48,18 +48,13 @@ import static com.dft.onyx50demo.ValuesUtil.getUseManualCapture;
 import static com.dft.onyx50demo.ValuesUtil.getUseOnyxLive;
 
 public class OnyxSetupActivity extends Activity implements ProviderInstaller.ProviderInstallListener {
-    private static final String TAG = "OnyxSetupActivity";
+    private static final String TAG = OnyxSetupActivity.class.getName();
     private static final int ONYX_REQUEST_CODE = 1337;
     MainApplication application = new MainApplication();
     private Activity activity;
     private ImageView fingerprintView;
-    private Animation fadeIn;
-    private Animation fadeOut;
     private Button startOnyxButton;
     private AlertDialog alertDialog;
-    private ImageView rawImageView;
-    private ImageView processedImageView;
-    private ImageView enhancedImageView;
     private TextView livenessResultTextView;
     private TextView nfiqScoreTextView;
 
@@ -71,7 +66,8 @@ public class OnyxSetupActivity extends Activity implements ProviderInstaller.Pro
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ProviderInstaller.installIfNeededAsync(this, this); // This is needed in order for SSL to work on Android 5.1 devices and lower
-        getWriteExternalStoragePermission(); // This is for file writing permission on SDK >= 23
+        FileUtil fileUtil = new FileUtil();
+        fileUtil.getWriteExternalStoragePermission(this); // This is for file writing permission on SDK >= 23
         setupUI();
         setupCallbacks();
     }
@@ -171,55 +167,11 @@ public class OnyxSetupActivity extends Activity implements ProviderInstaller.Pro
     }
 
     private void displayResults(OnyxResult onyxResult) {
-        FileUtil fileUtil = new FileUtil();
-        fileUtil.checkExternalMedia(this);
-        rawImageView.setImageDrawable(null);
-        processedImageView.setImageDrawable(null);
-        enhancedImageView.setImageDrawable(null);
-        if (!onyxResult.getRawFingerprintImages().isEmpty()) {
-            rawImageView.setImageBitmap(onyxResult.getRawFingerprintImages().get(0));
-        }
-        if (!onyxResult.getProcessedFingerprintImages().isEmpty()) {
-            processedImageView.setImageBitmap(onyxResult.getProcessedFingerprintImages().get(0));
-            fingerprintView.setImageBitmap(onyxResult.getProcessedFingerprintImages().get(0));
-            showFingerprintAnimation();
-        }
-        if (!onyxResult.getEnhancedFingerprintImages().isEmpty()) {
-            enhancedImageView.setImageBitmap(onyxResult.getEnhancedFingerprintImages().get(0));
-        }
-        if (!onyxResult.getWsqData().isEmpty() && getWriteExternalStoragePermission()) {
-            fileUtil.writeToSDFile(this, onyxResult.getWsqData().get(0));
-        }
+        startActivity(new Intent(this, OnyxImageryActivity.class));
         if (onyxResult.getMetrics() != null) {
             livenessResultTextView.setText(Double.toString(onyxResult.getMetrics().getLivenessConfidence()));
 //            nfiqScoreTextView.setText(Integer.toString(onyxResult.getMetrics().getNfiqMetrics().getNfiqScore()));
         }
-    }
-
-    private void showFingerprintAnimation() {
-        createFadeInAnimation();
-        createFadeOutAnimation();
-        fingerprintView.startAnimation(fadeIn);
-    }
-
-    private boolean getWriteExternalStoragePermission() {
-        boolean hasPermission;
-        if (Build.VERSION.SDK_INT >= 23) {
-            if (this.checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    == PackageManager.PERMISSION_GRANTED) {
-                Log.v(TAG,"Permission is granted");
-                hasPermission = true;
-            } else {
-                Log.v(TAG,"Permission is revoked");
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-                hasPermission = false;
-            }
-        }
-        else { //permission is automatically granted on sdk<23 upon installation
-            Log.v(TAG,"Permission is granted");
-            hasPermission = true;
-        }
-        return hasPermission;
     }
 
     @Override
@@ -236,9 +188,6 @@ public class OnyxSetupActivity extends Activity implements ProviderInstaller.Pro
         fingerprintView = new ImageView(this);
         LayoutParams layoutParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         addContentView(fingerprintView, layoutParams);
-        rawImageView = findViewById(R.id.rawImageView);
-        processedImageView = findViewById(R.id.processedImageView);
-        enhancedImageView = findViewById(R.id.enhancedImageView);
         livenessResultTextView = findViewById(R.id.livenessResult);
         nfiqScoreTextView = findViewById(R.id.nfiqScore);
         startOnyxButton = findViewById(R.id.start_onyx);
@@ -350,61 +299,5 @@ public class OnyxSetupActivity extends Activity implements ProviderInstaller.Pro
         // App should consider all HTTP communication to be vulnerable, and take
         // appropriate action.
         Log.i("OnyxSetupActivity","ProviderInstaller not available, device cannot make secure network calls.");
-    }
-
-    public void createFadeInAnimation() {
-        fadeIn = (new AlphaAnimation(0.0f, 1.0f));
-        fadeIn.setDuration(500);
-        fadeIn.setAnimationListener(new Animation.AnimationListener() {
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                new CountDownTimer(1000, 1000) {
-
-                    @Override
-                    public void onFinish() {
-                        final OnyxResult onyxResult = MainApplication.getOnyxResult();
-                        if (!onyxResult.getFingerprintTemplates().isEmpty()) {
-                            fingerprintView.startAnimation(fadeOut);
-                        }
-                    }
-
-                    @Override
-                    public void onTick(long millisUntilFinished) {
-                    }
-
-                }.start();
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-            }
-
-            @Override
-            public void onAnimationStart(Animation animation) {
-                fingerprintView.setVisibility(View.VISIBLE);
-            }
-        });
-    }
-
-    public void createFadeOutAnimation() {
-        fadeOut = new AlphaAnimation(1.0f, 0.0f);
-        fadeOut.setDuration(500);
-        fadeOut.setAnimationListener(new Animation.AnimationListener() {
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                fingerprintView.setVisibility(View.INVISIBLE);
-                new EnrollUtil().createEnrollQuestionDialog(activity);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-            }
-
-            @Override
-            public void onAnimationStart(Animation animation) {
-            }
-        });
     }
 }
