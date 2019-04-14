@@ -40,7 +40,7 @@
         android:id="@+id/returnEnhancedBitmap"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:checked="true"
+        android:checked="false"
         android:text="Return Enhanced Image"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/returnProcessedBitmap" />
@@ -49,7 +49,7 @@
         android:id="@+id/returnWSQ"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:checked="false"
+        android:checked="true"
         android:text="Return WSQ Image"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/returnEnhancedBitmap" />
@@ -58,7 +58,7 @@
         android:id="@+id/returnFingerprintTemplate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:checked="true"
+        android:checked="false"
         android:text="Return Fingerprint Template"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/returnWSQ" />
