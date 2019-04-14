@@ -176,19 +176,19 @@ public class OnyxSetupActivity extends Activity implements ProviderInstaller.Pro
         rawImageView.setImageDrawable(null);
         processedImageView.setImageDrawable(null);
         enhancedImageView.setImageDrawable(null);
-        if (onyxResult.getRawFingerprintImage() != null) {
-            rawImageView.setImageBitmap(onyxResult.getRawFingerprintImage());
+        if (!onyxResult.getRawFingerprintImages().isEmpty()) {
+            rawImageView.setImageBitmap(onyxResult.getRawFingerprintImages().get(0));
         }
-        if (onyxResult.getProcessedFingerprintImage() != null) {
-            processedImageView.setImageBitmap(onyxResult.getProcessedFingerprintImage());
-            fingerprintView.setImageBitmap(onyxResult.getProcessedFingerprintImage());
+        if (!onyxResult.getProcessedFingerprintImages().isEmpty()) {
+            processedImageView.setImageBitmap(onyxResult.getProcessedFingerprintImages().get(0));
+            fingerprintView.setImageBitmap(onyxResult.getProcessedFingerprintImages().get(0));
             showFingerprintAnimation();
         }
-        if (onyxResult.getEnhancedFingerprintImage() != null) {
-            enhancedImageView.setImageBitmap(onyxResult.getEnhancedFingerprintImage());
+        if (!onyxResult.getEnhancedFingerprintImages().isEmpty()) {
+            enhancedImageView.setImageBitmap(onyxResult.getEnhancedFingerprintImages().get(0));
         }
-        if (onyxResult.getWsqData() != null && getWriteExternalStoragePermission()) {
-            fileUtil.writeToSDFile(this, onyxResult.getWsqData());
+        if (!onyxResult.getWsqData().isEmpty() && getWriteExternalStoragePermission()) {
+            fileUtil.writeToSDFile(this, onyxResult.getWsqData().get(0));
         }
         if (onyxResult.getMetrics() != null) {
             livenessResultTextView.setText(Double.toString(onyxResult.getMetrics().getLivenessConfidence()));
@@ -364,7 +364,7 @@ public class OnyxSetupActivity extends Activity implements ProviderInstaller.Pro
                     @Override
                     public void onFinish() {
                         final OnyxResult onyxResult = MainApplication.getOnyxResult();
-                        if (onyxResult.getFingerprintTemplate() != null) {
+                        if (!onyxResult.getFingerprintTemplates().isEmpty()) {
                             fingerprintView.startAnimation(fadeOut);
                         }
                     }

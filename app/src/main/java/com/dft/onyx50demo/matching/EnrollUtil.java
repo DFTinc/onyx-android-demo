@@ -28,7 +28,7 @@ public class EnrollUtil {
 
     public void createEnrollQuestionDialog(final Context context) {
         final OnyxResult onyxResult = MainApplication.getOnyxResult();
-        if (onyxResult.getFingerprintTemplate() != null && onyxResult.getProcessedFingerprintImage() != null) {
+        if (!onyxResult.getFingerprintTemplates().isEmpty() && !onyxResult.getProcessedFingerprintImages().isEmpty()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setTitle(R.string.enroll_title);
             String enrollQuestion = context.getResources().getString(R.string.enroll_question);
@@ -37,7 +37,7 @@ public class EnrollUtil {
             builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    EnrollUtil.this.enrollCurrentTemplate(context, onyxResult.getFingerprintTemplate());
+                    EnrollUtil.this.enrollCurrentTemplate(context, onyxResult.getFingerprintTemplates().get(0));
                     dialog.dismiss();
                 }
             });
@@ -49,7 +49,7 @@ public class EnrollUtil {
                         dialog.dismiss();
                         if (enrolledTemplate != null) {
                             VerifyTask verifyTask = new VerifyTask(context);
-                            verifyTask.execute(new VerifyPayload(enrolledTemplate, onyxResult.getProcessedFingerprintImage()));
+                            verifyTask.execute(new VerifyPayload(enrolledTemplate, onyxResult.getProcessedFingerprintImages().get(0)));
                         }
                     }
                 });
