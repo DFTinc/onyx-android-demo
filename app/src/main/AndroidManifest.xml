@@ -21,6 +21,8 @@
         </activity>
         <activity android:name="com.dft.onyx50demo.OnyxActivity"
             android:theme="@android:style/Theme.NoTitleBar" />
+        <activity android:name="com.dft.onyx50demo.OnyxImageryActivity"
+            android:theme="@android:style/Theme.NoTitleBar" />
     </application>
 
 </manifest>
