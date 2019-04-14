@@ -44,6 +44,10 @@ public class OnyxImageryActivity extends Activity {
         processedImage4.setImageDrawable(null);
 
         OnyxResult onyxResult = MainApplication.getOnyxResult();
+        if(onyxResult == null) {
+            return;
+        }
+
         ArrayList<Bitmap> rawImages = onyxResult.getRawFingerprintImages();
         ArrayList<Bitmap> processedImages = onyxResult.getProcessedFingerprintImages();
         for (int i = 0; i < rawImages.size(); i++) {
