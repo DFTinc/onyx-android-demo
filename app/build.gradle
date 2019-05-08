@@ -11,7 +11,7 @@ android {
         release {
             keyAlias 'onyx50demo'
             keyPassword 'onyx50demo'
-            storeFile file('C:/AndroidstudioProjects/onyx-5.0-demo/onyx50demo.jks')
+            storeFile file('./onyx50demo.jks')
             storePassword 'onyx50demo'
         }
     }
