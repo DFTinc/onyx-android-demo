@@ -33,29 +33,31 @@ public class OnyxActivity extends Activity {
         // Get the configured Onyx that was returned from the OnyxCallback
         configuredOnyx = MainApplication.getConfiguredOnyx();
 
-        // Set a view with a manual capture button if manual capture was specified
-        if (configuredOnyx.getOnyxConfig().isManualCapture()) {
-            setContentView(R.layout.activity_onyx);
-        }
+        if (configuredOnyx != null) {
+            // Set a view with a manual capture button if manual capture was specified
+            if (configuredOnyx.getOnyxConfig().isManualCapture()) {
+                setContentView(R.layout.activity_onyx);
+            }
 
-        // Creates Onyx in this activity
-        configuredOnyx.create(this);
+            // Creates Onyx in this activity
+            configuredOnyx.create(this);
 
-        // Make Onyx start the capture process
-        // Important: configuredOnyx.capture() must occur after configuredOnyx.create() has been called
-        if (!configuredOnyx.getOnyxConfig().isManualCapture()) {
-            // Start the capture with auto capture process
-            configuredOnyx.capture();
-        } else {
-            // Start the capture when the capture button is pressed
-            Button button = findViewById(R.id.capture_button);
-            button.setText("Capture");
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    configuredOnyx.capture();
-                }
-            });
+            // Make Onyx start the capture process
+            // Important: configuredOnyx.capture() must occur after configuredOnyx.create() has been called
+            if (!configuredOnyx.getOnyxConfig().isManualCapture()) {
+                // Start the capture with auto capture process
+                configuredOnyx.capture();
+            } else {
+                // Start the capture when the capture button is pressed
+                Button button = findViewById(R.id.capture_button);
+                button.setText("Capture");
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        configuredOnyx.capture();
+                    }
+                });
+            }
         }
 
     }
