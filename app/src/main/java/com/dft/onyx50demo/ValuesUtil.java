@@ -46,8 +46,8 @@ public class ValuesUtil {
         return ((CheckBox) a.findViewById(R.id.useFlash)).isChecked();
     }
 
-    public static boolean getShouldSegment(Activity a) {
-        return ((CheckBox) a.findViewById(R.id.shouldSegment)).isChecked();
+    public static boolean getThresholdImage(Activity a) {
+        return ((CheckBox) a.findViewById(R.id.thresholdImage)).isChecked();
     }
 
     public static Integer getImageRotation(Activity a) {
@@ -86,14 +86,6 @@ public class ValuesUtil {
     public static Float getCropFactor(Activity a) {
         if (((CheckBox) a.findViewById(R.id.cropFactor)).isChecked()) {
             return Float.valueOf(((EditText) a.findViewById(R.id.cropFactorEditText)).getText().toString());
-        } else {
-            return 1.0f;
-        }
-    }
-
-    public static Float getReticleScale(Activity a) {
-        if (((CheckBox) a.findViewById(R.id.reticleScale)).isChecked()) {
-            return Float.valueOf(((EditText) a.findViewById(R.id.reticleScaleEditText)).getText().toString());
         } else {
             return 1.0f;
         }

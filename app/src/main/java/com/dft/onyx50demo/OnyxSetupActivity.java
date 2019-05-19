@@ -1,25 +1,18 @@
 package com.dft.onyx50demo;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.dft.onyx50demo.matching.EnrollUtil;
 import com.dft.onyxcamera.config.Onyx;
 import com.dft.onyxcamera.config.OnyxConfiguration;
 import com.dft.onyxcamera.config.OnyxConfigurationBuilder;
@@ -32,17 +25,15 @@ import static com.dft.onyx50demo.ValuesUtil.getCropFactor;
 import static com.dft.onyx50demo.ValuesUtil.getCropSizeHeight;
 import static com.dft.onyx50demo.ValuesUtil.getCropSizeWidth;
 import static com.dft.onyx50demo.ValuesUtil.getImageRotation;
-import static com.dft.onyx50demo.ValuesUtil.getLayoutPreference;
 import static com.dft.onyx50demo.ValuesUtil.getReticleAngle;
 import static com.dft.onyx50demo.ValuesUtil.getReticleOrientation;
-import static com.dft.onyx50demo.ValuesUtil.getReticleScale;
 import static com.dft.onyx50demo.ValuesUtil.getReturnEnhancedImage;
 import static com.dft.onyx50demo.ValuesUtil.getReturnFingerprintTemplate;
 import static com.dft.onyx50demo.ValuesUtil.getReturnProcessedImage;
 import static com.dft.onyx50demo.ValuesUtil.getReturnRawImage;
 import static com.dft.onyx50demo.ValuesUtil.getReturnWSQ;
-import static com.dft.onyx50demo.ValuesUtil.getShouldSegment;
 import static com.dft.onyx50demo.ValuesUtil.getShowLoadingSpinner;
+import static com.dft.onyx50demo.ValuesUtil.getThresholdImage;
 import static com.dft.onyx50demo.ValuesUtil.getUseFlash;
 import static com.dft.onyx50demo.ValuesUtil.getUseManualCapture;
 import static com.dft.onyx50demo.ValuesUtil.getUseOnyxLive;
@@ -121,18 +112,16 @@ public class OnyxSetupActivity extends Activity implements ProviderInstaller.Pro
                 .setReturnEnhancedImage(getReturnEnhancedImage(this))
                 .setReturnWSQ(getReturnWSQ(this))
                 .setReturnFingerprintTemplate(getReturnFingerprintTemplate(this))
+                .setThresholdProcessedImage(getThresholdImage(this))
                 .setShowLoadingSpinner(getShowLoadingSpinner(this))
                 .setUseOnyxLive(getUseOnyxLive(this))
                 .setUseFlash(getUseFlash(this))
-                .setShouldSegment(getShouldSegment(this))
                 .setImageRotation(getImageRotation(this))
                 .setReticleOrientation(getReticleOrientation(this))
                 .setCropSize(getCropSizeWidth(this), getCropSizeHeight(this))
                 .setCropFactor(getCropFactor(this))
                 .setUseFourFingerReticle(true)
-                .setReticleScale(getReticleScale(this))
                 .setLayoutPreference(OnyxConfiguration.LayoutPreference.FULL)
-                .setFingerDetectMode(OnyxConfiguration.FingerDetectMode.LIVE_FINGER.ordinal())
                 .setSuccessCallback(successCallback)
                 .setErrorCallback(errorCallback)
                 .setOnyxCallback(onyxCallback);
