@@ -216,7 +216,7 @@ public class OnyxSetupActivity extends Activity implements ProviderInstaller.Pro
      * @param onyxError
      */
     private void showAlertDialog(OnyxError onyxError) {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);
         alertDialogBuilder.setCancelable(true);
         alertDialogBuilder.setTitle("Onyx Error");
         alertDialogBuilder.setMessage(onyxError.getErrorMessage());
@@ -232,10 +232,11 @@ public class OnyxSetupActivity extends Activity implements ProviderInstaller.Pro
                 alertDialog.dismiss();
             }
         });
-        alertDialog = alertDialogBuilder.create();
+
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                alertDialog = alertDialogBuilder.create();
                 alertDialog.show();
             }
         });
