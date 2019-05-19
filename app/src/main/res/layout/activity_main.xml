@@ -73,11 +73,11 @@
         app:layout_constraintTop_toBottomOf="@+id/returnFingerprintTemplate" />
 
     <CheckBox
-        android:id="@+id/shouldSegment"
+        android:id="@+id/thresholdImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:checked="false"
-        android:text="Segment image (experimental)"
+        android:text="Threshold Image"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/showLoadingSpinner" />
 
@@ -85,15 +85,17 @@
         android:id="@+id/cropSize"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:checked="false"
         android:text="Set crop size"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/shouldSegment" />
+        app:layout_constraintTop_toBottomOf="@+id/thresholdImage" />
 
     <EditText
         android:id="@+id/widthEditText"
-        android:layout_width="125dp"
-        android:layout_height="wrap_content"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="12dp"
         android:layout_weight="1"
         android:ems="10"
         android:inputType="number"
@@ -101,19 +103,21 @@
         android:textAlignment="center"
         app:layout_constraintBaseline_toBaselineOf="@id/cropSize"
         app:layout_constraintLeft_toRightOf="@+id/cropSize"
+        app:layout_constraintStart_toEndOf="@+id/cropSize"
         tools:text="width" />
 
     <EditText
         android:id="@+id/heightEditText"
-        android:layout_width="125dp"
-        android:layout_height="wrap_content"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="4dp"
         android:layout_weight="1"
         android:ems="10"
         android:inputType="number"
         android:text="300"
         android:textAlignment="center"
         app:layout_constraintBaseline_toBaselineOf="@id/cropSize"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintLeft_toRightOf="@+id/widthEditText"
         tools:text="height" />
 
@@ -121,6 +125,7 @@
         android:id="@+id/cropFactor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:checked="false"
         android:text="Set crop factor"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -128,38 +133,15 @@
 
     <EditText
         android:id="@+id/cropFactorEditText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
         android:layout_weight="1"
         android:ems="10"
         android:inputType="number"
         android:text="1.0"
         android:textAlignment="center"
         app:layout_constraintBaseline_toBaselineOf="@id/cropFactor"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/cropFactor" />
-
-    <CheckBox
-        android:id="@+id/reticleScale"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:checked="false"
-        android:text="Set reticle scale"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cropFactor" />
-
-    <EditText
-        android:id="@+id/reticleScaleEditText"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:layout_weight="1"
-        android:ems="10"
-        android:inputType="number"
-        android:text="1.0"
-        android:textAlignment="center"
-        app:layout_constraintBaseline_toBaselineOf="@id/reticleScale"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintLeft_toRightOf="@+id/reticleScale" />
 
     <CheckBox
         android:id="@+id/layoutPreferenceFullScreen"
@@ -168,7 +150,7 @@
         android:checked="false"
         android:text="Use full screen layout"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/reticleScale" />
+        app:layout_constraintTop_toBottomOf="@+id/cropFactor" />
 
     <CheckBox
         android:id="@+id/useManualCapture"
@@ -185,7 +167,7 @@
         android:layout_height="wrap_content"
         android:paddingRight="5dp"
         android:text="Image Rotation"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Spinner
@@ -195,7 +177,7 @@
         android:entries="@array/image_rotation"
         android:paddingRight="5dp"
         android:tooltipText="Image Rotation"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/imageRotationTextView" />
 
     <TextView
@@ -204,7 +186,7 @@
         android:layout_height="wrap_content"
         android:paddingRight="5dp"
         android:text="Reticle Orientation"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/imageRotation" />
 
     <Spinner
@@ -213,7 +195,7 @@
         android:layout_height="wrap_content"
         android:entries="@array/reticle_orientation"
         android:paddingRight="5dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/reticleOrientationTextView" />
 
     <TextView
@@ -222,7 +204,7 @@
         android:layout_height="wrap_content"
         android:paddingRight="5dp"
         android:text="Reticle Angle"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/reticleOrientationSpinner" />
 
     <EditText
@@ -235,7 +217,7 @@
         android:inputType="number"
         android:paddingRight="5dp"
         android:textAlignment="viewEnd"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/reticleAngleTextView"
         tools:text="replaces orientation" />
 
@@ -246,8 +228,8 @@
         android:checked="false"
         android:paddingRight="5dp"
         android:text="Use Onyx Live"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/reticleAngleEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/useManualCapture"
+        tools:layout_editor_absoluteX="1dp" />
 
     <CheckBox
         android:id="@+id/useFlash"
@@ -255,8 +237,8 @@
         android:layout_height="wrap_content"
         android:checked="true"
         android:text="Use Flash"
-        app:layout_constraintStart_toStartOf="@id/useOnyxLive"
-        app:layout_constraintTop_toBottomOf="@+id/useOnyxLive" />
+        app:layout_constraintTop_toBottomOf="@+id/useOnyxLive"
+        tools:layout_editor_absoluteX="1dp" />
 
     <TextView
         android:id="@+id/livenessResult"
@@ -264,9 +246,8 @@
         android:layout_height="21dp"
         android:text="Liveness Result"
         android:visibility="visible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/layoutPreferenceFullScreen"
-        app:layout_constraintTop_toBottomOf="@+id/reticleScaleEditText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nfiq"
         tools:text="Liveness Result" />
 
     <LinearLayout
@@ -303,34 +284,27 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/metrics_layout"
-        android:layout_width="0dp"
+
+    <TextView
+        android:id="@+id/nfiq"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:gravity="center_horizontal|center"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/useManualCapture"
-        app:layout_constraintTop_toBottomOf="@+id/layoutPreferenceFullScreen">
+        android:layout_marginTop="8dp"
+        android:text="NFIQ Score:"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/useFlash"
+        tools:text="NFIQ Score:" />
 
-        <TextView
-            android:id="@+id/nfiq"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="NFIQ Score:"
-            tools:text="NFIQ Score:" />
-
-        <TextView
-            android:id="@+id/nfiqScore"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:textStyle="bold" />
-
-    </LinearLayout>
+    <TextView
+        android:id="@+id/nfiqScore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/nfiq"
+        app:layout_constraintTop_toBottomOf="@+id/useFlash" />
 
     <LinearLayout
         android:id="@+id/button_layout"
@@ -355,7 +329,7 @@
 
         <Button
             android:id="@+id/start_onyx"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:enabled="false"
             android:text="Start Onyx"
