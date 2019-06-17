@@ -8,7 +8,7 @@ If you don't already have Android Studio, you can download it <a href="http://de
 
 Once Android Studio is installed, please contact us to purchase your ONYX license key <a href="http://www.diamondfortress.com/contact" target="_blank">here</a>. <br />
 **Note: Make sure you have updated to the latest Android SDK via the SDK Manager.**
-Please contact Diamond Fortress Technologies here www.diamondfortress.com to purchase a license key
+
 You should receive a license of the form XXXX-XXXX-XXXX-X-X at your provided e-mail address.
 <br />
 Next, you can clone our sample repository on the command-line using the following commands:
