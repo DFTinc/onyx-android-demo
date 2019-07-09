@@ -20,7 +20,7 @@ Alternatively, you can clone the project via Android Studio:
 <br/>
 Select `VCS >> Checkout from Version Control >> GitHub`, and follow the on-screen instructions.
 
-Place the trial key into `app/src/main/res/values/strings.xml` shown below:
+Place your license key into `app/src/main/res/values/strings.xml` shown below:
 
     ...
     <string name="onyx_license">XXXX-XXXX-XXXX-X-X</string>
