@@ -25,7 +25,7 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         ndk {
-            abiFilters "armeabi", "armeabi-v7a", "x86", "mips"
+            abiFilters "arm64-v8a", "armeabi-v7a"
         }
     }
     buildTypes {
@@ -70,7 +70,7 @@ configurations.all {
 dependencies {
     api 'com.android.support.constraint:constraint-layout:1.1.3'
     api 'com.google.android.gms:play-services-base:16.1.0'
-    api 'com.dft.android:onyx-camera:6.0.0'
-//    api 'com.dft.android:onyx-core:5.0.1' // For setting up locally
+    api 'com.dft.android:onyx-camera:6.0.2-SNAPSHOT'
+//    api 'com.dft.android:onyx-core:5.0.7' // For setting up locally
 //    debugImplementation project(':onyxcamera') // For setting up locally
 }

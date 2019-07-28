@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.dft.onyxcamera.config.OnyxResult;
 
@@ -34,6 +35,7 @@ public class OnyxImageryActivity extends Activity {
         ImageView processedImage3 = findViewById(R.id.processedImage3);
         ImageView rawImage4 = findViewById(R.id.rawImage4);
         ImageView processedImage4 = findViewById(R.id.processedImage4);
+        TextView livenessTextView = findViewById(R.id.livenessText);
         rawImage1.setImageDrawable(null);
         processedImage1.setImageDrawable(null);
         rawImage2.setImageDrawable(null);
@@ -50,6 +52,7 @@ public class OnyxImageryActivity extends Activity {
 
         ArrayList<Bitmap> rawImages = onyxResult.getRawFingerprintImages();
         ArrayList<Bitmap> processedImages = onyxResult.getProcessedFingerprintImages();
+        livenessTextView.setText(String.format("Liveness: %.2f",onyxResult.getMetrics().getLivenessConfidence()));
         for (int i = 0; i < rawImages.size(); i++) {
             switch (i) {
                 case 0:
