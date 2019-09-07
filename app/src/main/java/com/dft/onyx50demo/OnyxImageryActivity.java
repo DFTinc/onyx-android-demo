@@ -11,10 +11,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.dft.onyx.NfiqMetrics;
 import com.dft.onyxcamera.config.OnyxResult;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class OnyxImageryActivity extends Activity {
     private static final String TAG = OnyxImageryActivity.class.getName();
@@ -28,20 +31,28 @@ public class OnyxImageryActivity extends Activity {
         activity = this;
         ImageView rawImage1 = findViewById(R.id.rawImage1);
         ImageView processedImage1 = findViewById(R.id.processedImage1);
+        TextView nfiqScore1 = findViewById(R.id.nfiqScore1);
         ImageView rawImage2 = findViewById(R.id.rawImage2);
         ImageView processedImage2 = findViewById(R.id.processedImage2);
+        TextView nfiqScore2 = findViewById(R.id.nfiqScore2);
         ImageView rawImage3 = findViewById(R.id.rawImage3);
         ImageView processedImage3 = findViewById(R.id.processedImage3);
+        TextView nfiqScore3 = findViewById(R.id.nfiqScore3);
         ImageView rawImage4 = findViewById(R.id.rawImage4);
         ImageView processedImage4 = findViewById(R.id.processedImage4);
+        TextView nfiqScore4 = findViewById(R.id.nfiqScore4);
         rawImage1.setImageDrawable(null);
         processedImage1.setImageDrawable(null);
+        nfiqScore1.setText("");
         rawImage2.setImageDrawable(null);
         processedImage2.setImageDrawable(null);
+        nfiqScore2.setText("");
         rawImage3.setImageDrawable(null);
         processedImage3.setImageDrawable(null);
+        nfiqScore3.setText("");
         rawImage4.setImageDrawable(null);
         processedImage4.setImageDrawable(null);
+        nfiqScore4.setText("");
 
         OnyxResult onyxResult = MainApplication.getOnyxResult();
         if(onyxResult == null) {
@@ -50,6 +61,7 @@ public class OnyxImageryActivity extends Activity {
 
         ArrayList<Bitmap> rawImages = onyxResult.getRawFingerprintImages();
         ArrayList<Bitmap> processedImages = onyxResult.getProcessedFingerprintImages();
+        List<NfiqMetrics> nfiqMetricsArrayList = onyxResult.getMetrics().getNfiqMetrics();
         for (int i = 0; i < rawImages.size(); i++) {
             switch (i) {
                 case 0:
@@ -59,6 +71,9 @@ public class OnyxImageryActivity extends Activity {
                     if (processedImages.get(i) != null) {
                         processedImage1.setImageBitmap(processedImages.get(i));
                     }
+                    if (!nfiqMetricsArrayList.isEmpty()) {
+                        nfiqScore1.setText("NFIQ: " + nfiqMetricsArrayList.get(i).getNfiqScore());
+                    }
                     break;
                 case 1:
                     if (rawImages.get(i) != null) {
@@ -66,6 +81,9 @@ public class OnyxImageryActivity extends Activity {
                     }
                     if (processedImages.get(i) != null) {
                         processedImage2.setImageBitmap(processedImages.get(i));
+                    }
+                    if (!nfiqMetricsArrayList.isEmpty()) {
+                        nfiqScore2.setText("NFIQ: " + nfiqMetricsArrayList.get(i).getNfiqScore());
                     }
                     break;
                 case 2:
@@ -75,6 +93,9 @@ public class OnyxImageryActivity extends Activity {
                     if (processedImages.get(i) != null) {
                         processedImage3.setImageBitmap(processedImages.get(i));
                     }
+                    if (!nfiqMetricsArrayList.isEmpty()) {
+                        nfiqScore3.setText("NFIQ: " + nfiqMetricsArrayList.get(i).getNfiqScore());
+                    }
                     break;
                 case 3:
                     if (rawImages.get(i) != null) {
@@ -82,6 +103,9 @@ public class OnyxImageryActivity extends Activity {
                     }
                     if (processedImages.get(i) != null) {
                         processedImage4.setImageBitmap(processedImages.get(i));
+                    }
+                    if (!nfiqMetricsArrayList.isEmpty()) {
+                        nfiqScore4.setText("NFIQ: " + nfiqMetricsArrayList.get(i).getNfiqScore());
                     }
                     break;
             }

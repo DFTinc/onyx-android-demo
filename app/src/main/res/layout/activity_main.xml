@@ -240,15 +240,22 @@
         app:layout_constraintTop_toBottomOf="@+id/useOnyxLive"
         tools:layout_editor_absoluteX="1dp" />
 
-    <TextView
-        android:id="@+id/livenessResult"
+    <CheckBox
+        android:id="@+id/computeNfiqs"
         android:layout_width="wrap_content"
-        android:layout_height="21dp"
-        android:text="Liveness Result"
-        android:visibility="visible"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nfiq"
-        tools:text="Liveness Result" />
+        android:layout_height="wrap_content"
+        android:checked="false"
+        app:layout_constraintTop_toBottomOf="@+id/useFlash"
+        android:text="Compute NFIQs" />
+
+    <CheckBox
+        android:id="@+id/thumbCapture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="Thumb Capture"
+        app:layout_constraintTop_toBottomOf="@+id/computeNfiqs" />
+
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -283,28 +290,6 @@
             android:scaleType="fitXY" />
 
     </LinearLayout>
-
-
-    <TextView
-        android:id="@+id/nfiq"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="NFIQ Score:"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/useFlash"
-        tools:text="NFIQ Score:" />
-
-    <TextView
-        android:id="@+id/nfiqScore"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/nfiq"
-        app:layout_constraintTop_toBottomOf="@+id/useFlash" />
 
     <LinearLayout
         android:id="@+id/button_layout"

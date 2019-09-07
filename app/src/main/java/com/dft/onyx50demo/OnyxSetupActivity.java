@@ -11,8 +11,8 @@ import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 
+import com.dft.onyx.NfiqMetrics;
 import com.dft.onyxcamera.config.Onyx;
 import com.dft.onyxcamera.config.OnyxConfiguration;
 import com.dft.onyxcamera.config.OnyxConfigurationBuilder;
@@ -21,6 +21,9 @@ import com.dft.onyxcamera.config.OnyxResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.security.ProviderInstaller;
 
+import java.util.List;
+
+import static com.dft.onyx50demo.ValuesUtil.getComputeNfiqMetrics;
 import static com.dft.onyx50demo.ValuesUtil.getCropFactor;
 import static com.dft.onyx50demo.ValuesUtil.getCropSizeHeight;
 import static com.dft.onyx50demo.ValuesUtil.getCropSizeWidth;
@@ -34,6 +37,7 @@ import static com.dft.onyx50demo.ValuesUtil.getReturnRawImage;
 import static com.dft.onyx50demo.ValuesUtil.getReturnWSQ;
 import static com.dft.onyx50demo.ValuesUtil.getShowLoadingSpinner;
 import static com.dft.onyx50demo.ValuesUtil.getThresholdImage;
+import static com.dft.onyx50demo.ValuesUtil.getThumbCapture;
 import static com.dft.onyx50demo.ValuesUtil.getUseFlash;
 import static com.dft.onyx50demo.ValuesUtil.getUseManualCapture;
 import static com.dft.onyx50demo.ValuesUtil.getUseOnyxLive;
@@ -46,8 +50,6 @@ public class OnyxSetupActivity extends Activity implements ProviderInstaller.Pro
     private ImageView fingerprintView;
     private Button startOnyxButton;
     private AlertDialog alertDialog;
-    private TextView livenessResultTextView;
-    private TextView nfiqScoreTextView;
 
     private OnyxConfiguration.SuccessCallback successCallback;
     private OnyxConfiguration.ErrorCallback errorCallback;
@@ -116,11 +118,13 @@ public class OnyxSetupActivity extends Activity implements ProviderInstaller.Pro
                 .setShowLoadingSpinner(getShowLoadingSpinner(this))
                 .setUseOnyxLive(getUseOnyxLive(this))
                 .setUseFlash(getUseFlash(this))
+                .setComputeNfiqMetrics(getComputeNfiqMetrics(this))
                 .setImageRotation(getImageRotation(this))
                 .setReticleOrientation(getReticleOrientation(this))
                 .setCropSize(getCropSizeWidth(this), getCropSizeHeight(this))
                 .setCropFactor(getCropFactor(this))
                 .setUseFourFingerReticle(true)
+                .setThumbCapture(getThumbCapture(this))
                 .setLayoutPreference(OnyxConfiguration.LayoutPreference.FULL)
                 .setSuccessCallback(successCallback)
                 .setErrorCallback(errorCallback)
@@ -129,9 +133,13 @@ public class OnyxSetupActivity extends Activity implements ProviderInstaller.Pro
         if (getReticleAngle(this) != null) {
             onyxConfigurationBuilder.setReticleAngle(getReticleAngle(this));
         }
-        if (getUseManualCapture(this)) {
+        if (getUseManualCapture(this) || getThumbCapture(this)) {
             onyxConfigurationBuilder.setUseManualCapture(true);
         }
+        if (getThumbCapture(this)) {
+            onyxConfigurationBuilder.setUseFourFingerReticle(false);
+        }
+
         // Finally, build the OnyxConfiguration
         onyxConfigurationBuilder.buildOnyxConfiguration();
     }
@@ -157,10 +165,6 @@ public class OnyxSetupActivity extends Activity implements ProviderInstaller.Pro
 
     private void displayResults(OnyxResult onyxResult) {
         startActivity(new Intent(this, OnyxImageryActivity.class));
-        if (onyxResult.getMetrics() != null) {
-            livenessResultTextView.setText(Double.toString(onyxResult.getMetrics().getLivenessConfidence()));
-//            nfiqScoreTextView.setText(Integer.toString(onyxResult.getMetrics().getNfiqMetrics().getNfiqScore()));
-        }
     }
 
     @Override
@@ -177,8 +181,6 @@ public class OnyxSetupActivity extends Activity implements ProviderInstaller.Pro
         fingerprintView = new ImageView(this);
         LayoutParams layoutParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         addContentView(fingerprintView, layoutParams);
-        livenessResultTextView = findViewById(R.id.livenessResult);
-        nfiqScoreTextView = findViewById(R.id.nfiqScore);
         startOnyxButton = findViewById(R.id.start_onyx);
         startOnyxButton.setEnabled(false);
         startOnyxButton.bringToFront();
