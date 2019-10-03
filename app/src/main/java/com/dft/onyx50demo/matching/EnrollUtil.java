@@ -32,8 +32,8 @@ public class EnrollUtil {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setTitle(R.string.enroll_title);
             String enrollQuestion = context.getResources().getString(R.string.enroll_question);
-            builder.setMessage(enrollQuestion + "\n\n" +
-                    "(NFIQ is " + onyxResult.getMetrics().getNfiqMetrics().getNfiqScore() + ")");
+//            builder.setMessage(enrollQuestion + "\n\n" +
+//                    "(NFIQ is " + onyxResult.getMetrics().getNfiqMetrics().getNfiqScore() + ")");
             builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
