@@ -1,13 +1,8 @@
 package com.dft.onyx50demo;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.os.Build;
-import android.support.v4.app.ActivityCompat;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -62,58 +57,60 @@ public class OnyxImageryActivity extends Activity {
         ArrayList<Bitmap> rawImages = onyxResult.getRawFingerprintImages();
         ArrayList<Bitmap> processedImages = onyxResult.getProcessedFingerprintImages();
         List<NfiqMetrics> nfiqMetricsArrayList = onyxResult.getMetrics().getNfiqMetrics();
-        for (int i = 0; i < rawImages.size(); i++) {
-            switch (i) {
-                case 0:
-                    if (rawImages.get(i) != null) {
-                        rawImage1.setImageBitmap(rawImages.get(i));
-                    }
-                    if (processedImages.get(i) != null) {
-                        processedImage1.setImageBitmap(processedImages.get(i));
-                    }
-                    if (!nfiqMetricsArrayList.isEmpty()) {
-                        nfiqScore1.setText("NFIQ: " + nfiqMetricsArrayList.get(i).getNfiqScore());
-                    }
-                    break;
-                case 1:
-                    if (rawImages.get(i) != null) {
-                        rawImage2.setImageBitmap(rawImages.get(i));
-                    }
-                    if (processedImages.get(i) != null) {
-                        processedImage2.setImageBitmap(processedImages.get(i));
-                    }
-                    if (!nfiqMetricsArrayList.isEmpty()) {
-                        nfiqScore2.setText("NFIQ: " + nfiqMetricsArrayList.get(i).getNfiqScore());
-                    }
-                    break;
-                case 2:
-                    if (rawImages.get(i) != null) {
-                        rawImage3.setImageBitmap(rawImages.get(i));
-                    }
-                    if (processedImages.get(i) != null) {
-                        processedImage3.setImageBitmap(processedImages.get(i));
-                    }
-                    if (!nfiqMetricsArrayList.isEmpty()) {
-                        nfiqScore3.setText("NFIQ: " + nfiqMetricsArrayList.get(i).getNfiqScore());
-                    }
-                    break;
-                case 3:
-                    if (rawImages.get(i) != null) {
-                        rawImage4.setImageBitmap(rawImages.get(i));
-                    }
-                    if (processedImages.get(i) != null) {
-                        processedImage4.setImageBitmap(processedImages.get(i));
-                    }
-                    if (!nfiqMetricsArrayList.isEmpty()) {
-                        nfiqScore4.setText("NFIQ: " + nfiqMetricsArrayList.get(i).getNfiqScore());
-                    }
-                    break;
+        if (rawImages != null) {
+            for (int i = 0; i < rawImages.size(); i++) {
+                switch (i) {
+                    case 0:
+                        if (rawImages.get(i) != null) {
+                            rawImage1.setImageBitmap(rawImages.get(i));
+                        }
+                        if (processedImages.get(i) != null) {
+                            processedImage1.setImageBitmap(processedImages.get(i));
+                        }
+                        if (!nfiqMetricsArrayList.isEmpty()) {
+                            nfiqScore1.setText("NFIQ: " + nfiqMetricsArrayList.get(i).getNfiqScore());
+                        }
+                        break;
+                    case 1:
+                        if (rawImages.get(i) != null) {
+                            rawImage2.setImageBitmap(rawImages.get(i));
+                        }
+                        if (processedImages.get(i) != null) {
+                            processedImage2.setImageBitmap(processedImages.get(i));
+                        }
+                        if (!nfiqMetricsArrayList.isEmpty()) {
+                            nfiqScore2.setText("NFIQ: " + nfiqMetricsArrayList.get(i).getNfiqScore());
+                        }
+                        break;
+                    case 2:
+                        if (rawImages.get(i) != null) {
+                            rawImage3.setImageBitmap(rawImages.get(i));
+                        }
+                        if (processedImages.get(i) != null) {
+                            processedImage3.setImageBitmap(processedImages.get(i));
+                        }
+                        if (!nfiqMetricsArrayList.isEmpty()) {
+                            nfiqScore3.setText("NFIQ: " + nfiqMetricsArrayList.get(i).getNfiqScore());
+                        }
+                        break;
+                    case 3:
+                        if (rawImages.get(i) != null) {
+                            rawImage4.setImageBitmap(rawImages.get(i));
+                        }
+                        if (processedImages.get(i) != null) {
+                            processedImage4.setImageBitmap(processedImages.get(i));
+                        }
+                        if (!nfiqMetricsArrayList.isEmpty()) {
+                            nfiqScore4.setText("NFIQ: " + nfiqMetricsArrayList.get(i).getNfiqScore());
+                        }
+                        break;
+                }
             }
         }
 
         FileUtil fileUtil = new FileUtil();
         fileUtil.checkExternalMedia(this);
-        if (!onyxResult.getWsqData().isEmpty() && fileUtil.getWriteExternalStoragePermission(this)) {
+        if (onyxResult.getWsqData() != null && !onyxResult.getWsqData().isEmpty() && fileUtil.getWriteExternalStoragePermission(this)) {
             for (int i = 0; i < onyxResult.getWsqData().size(); i++) {
                 fileUtil.writeToSDFile(this, onyxResult.getWsqData().get(i), "wsq" + i);
             }
