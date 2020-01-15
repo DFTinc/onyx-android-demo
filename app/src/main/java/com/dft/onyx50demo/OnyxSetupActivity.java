@@ -33,6 +33,7 @@ import static com.dft.onyx50demo.ValuesUtil.getReturnProcessedImage;
 import static com.dft.onyx50demo.ValuesUtil.getReturnRawImage;
 import static com.dft.onyx50demo.ValuesUtil.getReturnWSQ;
 import static com.dft.onyx50demo.ValuesUtil.getShowLoadingSpinner;
+import static com.dft.onyx50demo.ValuesUtil.getTargetPixelsPerInch;
 import static com.dft.onyx50demo.ValuesUtil.getThresholdImage;
 import static com.dft.onyx50demo.ValuesUtil.getUseFlash;
 import static com.dft.onyx50demo.ValuesUtil.getUseManualCapture;
@@ -120,6 +121,7 @@ public class OnyxSetupActivity extends Activity implements ProviderInstaller.Pro
                 .setReticleOrientation(getReticleOrientation(this))
                 .setCropSize(getCropSizeWidth(this), getCropSizeHeight(this))
                 .setCropFactor(getCropFactor(this))
+                .setTargetPixelsPerInch(getTargetPixelsPerInch(this))
                 .setUseFourFingerReticle(true)
                 .setLayoutPreference(OnyxConfiguration.LayoutPreference.FULL)
                 .setSuccessCallback(successCallback)

@@ -144,13 +144,35 @@
         app:layout_constraintLeft_toRightOf="@+id/cropFactor" />
 
     <CheckBox
+        android:id="@+id/targetPixelsPerInch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:checked="false"
+        android:text="Set target PPI"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cropFactor" />
+
+    <EditText
+        android:id="@+id/targetPixelsPerInchEditText"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:layout_weight="1"
+        android:ems="10"
+        android:inputType="number"
+        android:text="500.0"
+        android:textAlignment="center"
+        app:layout_constraintBaseline_toBaselineOf="@+id/targetPixelsPerInch"
+        app:layout_constraintLeft_toRightOf="@+id/targetPixelsPerInch" />
+
+    <CheckBox
         android:id="@+id/layoutPreferenceFullScreen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:checked="false"
         android:text="Use full screen layout"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cropFactor" />
+        app:layout_constraintTop_toBottomOf="@+id/targetPixelsPerInch" />
 
     <CheckBox
         android:id="@+id/useManualCapture"
