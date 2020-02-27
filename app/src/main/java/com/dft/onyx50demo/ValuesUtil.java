@@ -91,6 +91,14 @@ public class ValuesUtil {
         }
     }
 
+    public static Double getTargetPixelsPerInch(Activity a) {
+        if(((CheckBox) a.findViewById(R.id.targetPixelsPerInch)).isChecked()) {
+            return Double.valueOf(((EditText) a.findViewById(R.id.targetPixelsPerInchEditText)).getText().toString());
+        } else {
+            return -1.0;
+        }
+    }
+
     public static OnyxConfiguration.LayoutPreference getLayoutPreference(Activity a) {
         if (((CheckBox) a.findViewById(R.id.layoutPreferenceFullScreen)).isChecked()) {
             return OnyxConfiguration.LayoutPreference.FULL;
