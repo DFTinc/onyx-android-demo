@@ -5,7 +5,9 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.os.IBinder;
+import android.os.ResultReceiver;
 import android.os.StrictMode;
 import android.support.annotation.Nullable;
 import android.util.Base64;
@@ -34,6 +36,10 @@ import timber.log.Timber;
 
 public class VerifyService extends IntentService implements IdentifyFingerprintCallback {
     private Context mContext;
+    private ResultReceiver receiver;
+    public static final int IDENTIFY_SUCCESS = 1;
+    public static final int IDENTIFY_FAILURE = 2;
+    public static final int IDENTIFY_ERROR = 3;
     private ArrayList<Bitmap> processedImages;
     private OnyxResult onyxResult;
     private static IdentifyFingerprintCallback identifyFingerprintCallback;
@@ -82,11 +88,17 @@ public class VerifyService extends IntentService implements IdentifyFingerprintC
 
     @Override
     public void onIdentifyFingerprint(boolean fingerprintIdentified, float score) {
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("matchResult", success);
         // Evaluate result and continue or break loop based on match result
         if (fingerprintIdentified) {
             success = true;
             // TODO: If it gets a hit you can attempt scales of +0.05 and -0.05 to see if they improve
-            Timber.i("Successfully matched.");
+            String message = "Successfully matched.";
+            Timber.i(message);
+            bundle.putDouble("imageScale", currentImageScale);
+            bundle.putFloat("score", score);
+            receiver.send(IDENTIFY_SUCCESS, bundle);
         }
 
         if (!success && wsqScaleCounter != imageScales.length) {
@@ -95,7 +107,9 @@ public class VerifyService extends IntentService implements IdentifyFingerprintC
             wsqScaleCounter++;
             doProgressiveImagePyramid(processedImages.get(0), imageScale);
         } else if (wsqScaleCounter == imageScales.length) {
-            Timber.i("Did not get a match.");
+            String message = "Did not get a match.";
+            Timber.i(message);
+            receiver.send(IDENTIFY_FAILURE, bundle);
         }
     }
 
@@ -131,12 +145,15 @@ public class VerifyService extends IntentService implements IdentifyFingerprintC
         } catch (IOException e) {
             e.printStackTrace();
             Timber.e("IOException while doing JSONAsyncTask");
+            receiver.send(IDENTIFY_ERROR, Bundle.EMPTY);
         } catch (JSONException e) {
             e.printStackTrace();
             Timber.e("JSONException while doing JSONAsyncTask");
+            receiver.send(IDENTIFY_ERROR, Bundle.EMPTY);
         } catch (Exception e) {
             e.printStackTrace();
             Timber.e("Exception executing client request.");
+            receiver.send(IDENTIFY_ERROR, Bundle.EMPTY);
         }
     }
 
@@ -148,6 +165,7 @@ public class VerifyService extends IntentService implements IdentifyFingerprintC
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
+        receiver = intent.getParcelableExtra("receiver");
         mContext = this;
         identifyFingerprintCallback = this;
         currentImageScale = 1.0;

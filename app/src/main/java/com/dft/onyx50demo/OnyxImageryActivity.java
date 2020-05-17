@@ -7,13 +7,18 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.ResultReceiver;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.dft.onyx.MatVector;
 import com.dft.onyx.core;
@@ -27,6 +32,7 @@ import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
@@ -37,6 +43,8 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import timber.log.Timber;
 
+import static android.provider.FontsContract.Columns.RESULT_CODE_OK;
+
 public class OnyxImageryActivity extends Activity {
     private static final String TAG = OnyxImageryActivity.class.getName();
 
@@ -44,13 +52,22 @@ public class OnyxImageryActivity extends Activity {
     private OnyxResult onyxResult;
     private ArrayList<Bitmap> processedImages;
 
+    private static Mat mat = new Mat();
+    private double[] imageScales = new double[]{0.5, 0.6, 0.7, 0.8, 0.9, 1.1, 1.2, 1.3, 1.4, 1.5, 0.4, 0.3};
+    private static double imageScale;
+    private static int wsqScaleCounter;
+    private static boolean success;
+    private static float score;
 
+    private static ProgressBar spinner;
 
     @Override
     protected void onCreate(Bundle onSavedInstanceState) {
         super.onCreate(onSavedInstanceState);
         setContentView(R.layout.activity_imagery);
         activity = this;
+        spinner = findViewById(R.id.progressBar);
+        spinner.setVisibility(View.VISIBLE);
         onyxResult = MainApplication.getOnyxResult();
         if (onyxResult == null) {
             return;
@@ -131,9 +148,75 @@ public class OnyxImageryActivity extends Activity {
         });
 
         if (onyxResult.getMetrics().getFocusQuality() > 1) {
-            startService(new Intent(this, VerifyService.class));
+            IdentifyResultReceiver identifyResultReceiver = new IdentifyResultReceiver(new Handler());
+            Intent startIntent =new Intent(this, VerifyService.class);
+            startIntent.putExtra("receiver", identifyResultReceiver);
+            startService(startIntent);
         } else {
             Timber.e("Focus quality was less than 1.");
+        }
+    }
+
+    private class IdentifyResultReceiver extends ResultReceiver {
+
+        /**
+         * Create a new ResultReceive to receive results.  Your
+         * {@link #onReceiveResult} method will be called from the thread running
+         * <var>handler</var> if given, or from an arbitrary thread if null.
+         *
+         * @param handler
+         */
+        public IdentifyResultReceiver(Handler handler) {
+            super(handler);
+        }
+
+        @Override
+        protected void onReceiveResult(int resultCode, Bundle resultData) {
+            success = resultData.getBoolean("matchResult");
+            switch (resultCode) {
+                case VerifyService.IDENTIFY_ERROR:
+                    Toast.makeText(getApplicationContext(), "Error in Identification",
+                            Toast.LENGTH_SHORT).show();
+                    break;
+
+                case VerifyService.IDENTIFY_SUCCESS:
+                    imageScale = resultData.getDouble("imageScale");
+                    score = resultData.getFloat("score");
+                    break;
+                case VerifyService.IDENTIFY_FAILURE:
+                    new IdentifyFingerprintDialogFragment().show(activity.getFragmentManager(), TAG);
+                    break;
+            }
+            super.onReceiveResult(resultCode, resultData);
+        }
+    }
+
+    public static class IdentifyFingerprintDialogFragment extends DialogFragment {
+        public static final String TAG = "FingerprintCaptureFailureDialogFragment";
+        Activity mActivity;
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            mActivity = getActivity();
+            spinner.setVisibility(View.GONE);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+            String message;
+            if (success) {
+                message = "Identification of fingerprint was a success.  Score was " + score + ". Image scale was " + imageScale + ".";
+            } else {
+                message = "Identification of fingerprint was not a success.";
+            }
+            builder.setTitle(getResources().getString(R.string.identify_fingerprint_result))
+                    .setMessage(message)
+                    .setPositiveButton(getResources().getString(android.R.string.ok), new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+//                            mActivity.finish();
+                        }
+                    });
+            return builder.create();
         }
     }
 
