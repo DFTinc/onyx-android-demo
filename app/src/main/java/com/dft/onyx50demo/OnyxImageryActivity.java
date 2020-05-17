@@ -1,29 +1,60 @@
 package com.dft.onyx50demo;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.ProgressBar;
 
-import com.dft.onyx.NfiqMetrics;
+import com.dft.onyx.MatVector;
+import com.dft.onyx.core;
 import com.dft.onyxcamera.config.OnyxResult;
+import com.google.android.gms.common.api.internal.IStatusCallback;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.opencv.android.Utils;
+import org.opencv.core.Mat;
+import org.opencv.imgproc.Imgproc;
+
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import timber.log.Timber;
 
 public class OnyxImageryActivity extends Activity {
     private static final String TAG = OnyxImageryActivity.class.getName();
 
     private Activity activity;
+    private OnyxResult onyxResult;
+    private ArrayList<Bitmap> processedImages;
+
+
 
     @Override
-    public void onResume() {
-        super.onResume();
+    protected void onCreate(Bundle onSavedInstanceState) {
+        super.onCreate(onSavedInstanceState);
         setContentView(R.layout.activity_imagery);
         activity = this;
+        onyxResult = MainApplication.getOnyxResult();
+        if (onyxResult == null) {
+            return;
+        }
         ImageView rawImage1 = findViewById(R.id.rawImage1);
         ImageView processedImage1 = findViewById(R.id.processedImage1);
         ImageView rawImage2 = findViewById(R.id.rawImage2);
@@ -41,13 +72,8 @@ public class OnyxImageryActivity extends Activity {
         rawImage4.setImageDrawable(null);
         processedImage4.setImageDrawable(null);
 
-        OnyxResult onyxResult = MainApplication.getOnyxResult();
-        if(onyxResult == null) {
-            return;
-        }
-
         ArrayList<Bitmap> rawImages = onyxResult.getRawFingerprintImages();
-        ArrayList<Bitmap> processedImages = onyxResult.getProcessedFingerprintImages();
+        processedImages = onyxResult.getProcessedFingerprintImages();
         if (rawImages != null) {
             for (int i = 0; i < rawImages.size(); i++) {
                 switch (i) {
@@ -100,9 +126,15 @@ public class OnyxImageryActivity extends Activity {
             @Override
             public void onClick(View v) {
                 MainApplication.setOnyxResult(null);
-                startActivity(new Intent(activity, OnyxSetupActivity.class));
+                startActivity(new Intent(activity, OnyxSetupActivity.class).setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_NEW_TASK));
             }
         });
+
+        if (onyxResult.getMetrics().getFocusQuality() > 1) {
+            startService(new Intent(this, VerifyService.class));
+        } else {
+            Timber.e("Focus quality was less than 1.");
+        }
     }
 
 }
