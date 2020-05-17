@@ -154,6 +154,8 @@ public class OnyxImageryActivity extends Activity {
             startService(startIntent);
         } else {
             Timber.e("Focus quality was less than 1.");
+            Toast.makeText(getApplicationContext(), "Focus quality was less than 1, please try again.",
+                    Toast.LENGTH_LONG).show();
         }
     }
 
