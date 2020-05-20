@@ -7,43 +7,22 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
-import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.dft.onyx.MatVector;
-import com.dft.onyx.core;
 import com.dft.onyxcamera.config.OnyxResult;
-import com.google.android.gms.common.api.internal.IStatusCallback;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.opencv.android.Utils;
 import org.opencv.core.Mat;
-import org.opencv.imgproc.Imgproc;
 
-import java.io.IOException;
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 
-import okhttp3.FormBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 import timber.log.Timber;
-
-import static android.provider.FontsContract.Columns.RESULT_CODE_OK;
 
 public class OnyxImageryActivity extends Activity {
     private static final String TAG = OnyxImageryActivity.class.getName();
@@ -156,6 +135,7 @@ public class OnyxImageryActivity extends Activity {
             Timber.e("Focus quality was less than 1.");
             Toast.makeText(getApplicationContext(), "Focus quality was less than 1, please try again.",
                     Toast.LENGTH_LONG).show();
+            new FocusQualityTooLowDialogFragment().show(activity.getFragmentManager(), TAG);
         }
     }
 
@@ -210,6 +190,30 @@ public class OnyxImageryActivity extends Activity {
                 message = "Identification of fingerprint was not a success.";
             }
             builder.setTitle(getResources().getString(R.string.identify_fingerprint_result))
+                    .setMessage(message)
+                    .setPositiveButton(getResources().getString(android.R.string.ok), new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+//                            mActivity.finish();
+                        }
+                    });
+            return builder.create();
+        }
+    }
+
+    public static class FocusQualityTooLowDialogFragment extends DialogFragment {
+        public static final String TAG = "FocusQualityDialogFragment";
+        Activity mActivity;
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            mActivity = getActivity();
+            spinner.setVisibility(View.GONE);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+            String message = "Focus quality was < 1.0.";
+            builder.setTitle("Focus quality was too low.")
                     .setMessage(message)
                     .setPositiveButton(getResources().getString(android.R.string.ok), new DialogInterface.OnClickListener() {
 
