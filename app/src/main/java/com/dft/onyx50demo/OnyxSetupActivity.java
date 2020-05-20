@@ -188,7 +188,7 @@ public class OnyxSetupActivity extends Activity implements ProviderInstaller.Pro
             @Override
             public void onClick(View v) {
                 MainApplication.setOnyxResult(null);
-                startActivityForResult(new Intent(activity, OnyxActivity.class), ONYX_REQUEST_CODE);
+                startActivityForResult(new Intent(activity, OnyxActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK), ONYX_REQUEST_CODE);
             }
         });
         Button refreshConfigButton = findViewById(R.id.refresh_config);

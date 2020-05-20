@@ -133,14 +133,14 @@ public class VerifyService extends IntentService implements IdentifyFingerprintC
                 if (null != data) {
                     JSONObject jObject = new JSONObject(data);
                     // Get the data object from the status object
-                    boolean success = jObject.getBoolean(SUCCESS);
+                    success = jObject.getBoolean(SUCCESS);
                     if (success) {
                         score = jObject.getInt(SCORE);
                     }
 
                 }
             }
-            Timber.i("Scale: " + currentImageScale + ". Success: " + success);
+            Timber.d("Scale: " + currentImageScale + ". Success: " + success);
             identifyFingerprintCallback.onIdentifyFingerprint(success, score);
         } catch (IOException e) {
             e.printStackTrace();

@@ -1,9 +1,12 @@
 package com.dft.onyx50demo;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -122,11 +125,17 @@ public class OnyxImageryActivity extends Activity {
             @Override
             public void onClick(View v) {
                 MainApplication.setOnyxResult(null);
-                startActivity(new Intent(activity, OnyxSetupActivity.class).setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_NEW_TASK));
+                Intent mStartActivity = new Intent(activity, MainApplication.class);
+                int mPendingIntentId = 123456;
+                PendingIntent mPendingIntent = PendingIntent.getActivity(activity, mPendingIntentId,    mStartActivity, PendingIntent.FLAG_CANCEL_CURRENT);
+                AlarmManager mgr = (AlarmManager)activity.getSystemService(Context.ALARM_SERVICE);
+                mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, mPendingIntent);
+                System.exit(0);
             }
         });
 
         if (onyxResult.getMetrics().getFocusQuality() > 1) {
+            Timber.e("Focus quality is: " + onyxResult.getMetrics().getFocusQuality());
             IdentifyResultReceiver identifyResultReceiver = new IdentifyResultReceiver(new Handler());
             Intent startIntent =new Intent(this, VerifyService.class);
             startIntent.putExtra("receiver", identifyResultReceiver);
@@ -164,6 +173,7 @@ public class OnyxImageryActivity extends Activity {
                 case VerifyService.IDENTIFY_SUCCESS:
                     imageScale = resultData.getDouble("imageScale");
                     score = resultData.getFloat("score");
+                    new IdentifyFingerprintDialogFragment().show(activity.getFragmentManager(), TAG);
                     break;
                 case VerifyService.IDENTIFY_FAILURE:
                     new IdentifyFingerprintDialogFragment().show(activity.getFragmentManager(), TAG);
