@@ -122,7 +122,7 @@ public class OnyxSetupActivity extends Activity implements ProviderInstaller.Pro
                 .setCropSize(getCropSizeWidth(this), getCropSizeHeight(this))
                 .setCropFactor(getCropFactor(this))
                 .setTargetPixelsPerInch(getTargetPixelsPerInch(this))
-                .setUseFourFingerReticle(true)
+                .setUseFourFingerReticle(true, false)
                 .setLayoutPreference(OnyxConfiguration.LayoutPreference.FULL)
                 .setSuccessCallback(successCallback)
                 .setErrorCallback(errorCallback)

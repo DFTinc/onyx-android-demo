@@ -14,7 +14,19 @@
         android:supportsRtl="true"
         android:name="com.dft.onyx50demo.MainApplication" >
         <activity android:name="com.dft.onyx50demo.OnyxSetupActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity">
+        </activity>
+        <activity android:name="com.dft.onyx50demo.OnyxActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar"
+            tools:ignore="LockedOrientationActivity" />
+        <activity android:name="com.dft.onyx50demo.OnyxImageryActivity"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:noHistory="true"/>
+        <activity android:name=".SpeakerActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
@@ -22,12 +34,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.dft.onyx50demo.OnyxActivity"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar" />
-        <activity android:name="com.dft.onyx50demo.OnyxImageryActivity"
-            android:theme="@android:style/Theme.NoTitleBar"
-            android:noHistory="true"/>
         <service
             android:name="com.dft.onyx50demo.VerifyService"
             />

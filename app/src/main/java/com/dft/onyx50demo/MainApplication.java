@@ -21,6 +21,7 @@ public class MainApplication extends Application {
     private static OnyxResult onyxResult;
     private static OnyxError onyxError;
     private static Activity activityForRunningOnyx;
+    private static String speaker;
 
     static {
         if (!OpenCVLoader.initDebug()) {
@@ -37,6 +38,14 @@ public class MainApplication extends Application {
 
     public static Activity getActivityForRunningOnyx() {
         return activityForRunningOnyx;
+    }
+
+    public static void setSpeaker(String speaker) {
+        MainApplication.speaker = speaker;
+    }
+
+    public static String getSpeaker() {
+        return speaker;
     }
 
     public void setConfiguredOnyx(Onyx configuredOnyx) {

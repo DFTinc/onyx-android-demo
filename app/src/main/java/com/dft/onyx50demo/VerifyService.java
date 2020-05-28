@@ -1,17 +1,14 @@
 package com.dft.onyx50demo;
 
 import android.app.IntentService;
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.ResultReceiver;
-import android.os.StrictMode;
 import android.support.annotation.Nullable;
 import android.util.Base64;
-import android.view.View;
 
 import com.dft.onyx.MatVector;
 import com.dft.onyx.core;
@@ -23,11 +20,13 @@ import org.opencv.android.Utils;
 import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 
 import okhttp3.FormBody;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -46,19 +45,26 @@ public class VerifyService extends IntentService implements IdentifyFingerprintC
     private final static String VERIFICATION_URL =
             "https://afis.diamondfortress.com/api/v1/onyx/wsq/identify";
 
+    private final static String START_SESSION_URL =
+            "https://cloud-dev.koalavsp.com/kivoxWeb/rest/finger/start-session";
+    private final static String VERIFY_MF_URL = "https://cloud-dev.koalavsp.com/kivoxWeb/rest/finger/verify-mf";
+
     private double[] imageScales = new double[]{0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.1, 1.2, 1.3};
 
     private double currentImageScale;
     private int wsqScaleCounter;
     private boolean success;
-    private float score;
+    private String outcome;
+    private String speaker;
 
-    final String API_KEY = "api_key";
-    final String WSQ_IMAGE = "wsqImage";
-    final String SUCCESS = "success";
-    final String FINGERPRINT_ID = "fingerprintId";
-    final String SCORE = "score";
-    final String MESSAGE = "message";
+    final String ENTERPRISE_ID = "enterpriseId";
+    final String CONFIGURATION = "configuration";
+    final String SESSION = "session";
+    final String SPEAKER = "speaker";
+    final String RIGHT_INDEX = "right-index";
+    final String STATUS = "status";
+    final String OUTCOME = "outcome";
+
 
     private OkHttpClient client = new OkHttpClient.Builder()
             .build();
@@ -68,6 +74,7 @@ public class VerifyService extends IntentService implements IdentifyFingerprintC
     }
 
     private void doProgressiveImagePyramid(Bitmap processedBitmap, double[] imageScales) {
+        speaker = MainApplication.getSpeaker();
         byte[] scaledWSQ;
         if (imageScales[0] == 1.0) {
             // Submit at 1.0 scale first
@@ -87,7 +94,7 @@ public class VerifyService extends IntentService implements IdentifyFingerprintC
     }
 
     @Override
-    public void onIdentifyFingerprint(boolean fingerprintIdentified, float score) {
+    public void onIdentifyFingerprint(boolean fingerprintIdentified, String outcome) {
         Bundle bundle = new Bundle();
         bundle.putBoolean("matchResult", success);
         // Evaluate result and continue or break loop based on match result
@@ -97,7 +104,7 @@ public class VerifyService extends IntentService implements IdentifyFingerprintC
             String message = "Successfully matched.";
             Timber.i(message);
             bundle.putDouble("imageScale", currentImageScale);
-            bundle.putFloat("score", score);
+            bundle.putString("outcome", outcome);
             receiver.send(IDENTIFY_SUCCESS, bundle);
         }
 
@@ -115,14 +122,15 @@ public class VerifyService extends IntentService implements IdentifyFingerprintC
 
     private void doIdentification(byte[] wsq) {
         try {
-            String base64EncodedWSQ = Base64.encodeToString(wsq, 0).trim();
+            String session;
             RequestBody formBody = new FormBody.Builder()
-                    .add(API_KEY, "e25c23f1fbef3e54c9553ae185e20e45")
-                    .add(WSQ_IMAGE, base64EncodedWSQ)
+                    .add(ENTERPRISE_ID, getResources().getString(R.string.koala_enterprise_id))
+                    .add(CONFIGURATION, "FINGER_4F")
                     .build();
 
             Request request = new Request.Builder()
-                    .url(VERIFICATION_URL)
+                    .header("Content-Type", "application/x-www-form-urlencoded")
+                    .url(START_SESSION_URL)
                     .post(formBody)
                     .build();
             Response response = client.newCall(request).execute();
@@ -133,15 +141,43 @@ public class VerifyService extends IntentService implements IdentifyFingerprintC
                 if (null != data) {
                     JSONObject jObject = new JSONObject(data);
                     // Get the data object from the status object
-                    success = jObject.getBoolean(SUCCESS);
-                    if (success) {
-                        score = jObject.getInt(SCORE);
-                    }
+                    String status = jObject.getString(STATUS);
+                    if (status.equalsIgnoreCase("SUCCESS")) {
+                        session = jObject.getString(SESSION);
 
+                        // Make a new verify request using the session id
+                        final MediaType MEDIA_TYPE_OCTET_STREAM = MediaType.parse("application/octet-stream");
+                        RequestBody requestBody = new MultipartBody.Builder()
+                                .setType(MultipartBody.FORM)
+                                .addFormDataPart(RIGHT_INDEX, "rightIndex.wsq",
+                                        RequestBody.create(MEDIA_TYPE_OCTET_STREAM, wsq))
+                                .addFormDataPart(SESSION, session)
+                                .addFormDataPart(SPEAKER, speaker)
+                                .build();
+
+                        Request verifyRequest = new Request.Builder()
+                                .header("Content-Type", "multipart/form-data")
+                                .url(VERIFY_MF_URL)
+                                .post(requestBody).build();
+                        Response verifyResponse = client.newCall(verifyRequest).execute();
+                        if (verifyResponse.isSuccessful()) {
+                            assert verifyResponse.body() != null;
+                            String verifyData = verifyResponse.body().source().readUtf8();
+
+                            if (null != verifyData) {
+                                JSONObject jsonObject = new JSONObject(verifyData);
+                                String verifyOutcome = jsonObject.getString(OUTCOME);
+                                if (verifyOutcome.equalsIgnoreCase("ACCEPTED")) {
+                                    success = true;
+                                }
+                                outcome = jsonObject.getString(OUTCOME);
+                            }
+                        }
+                    }
                 }
             }
             Timber.d("Scale: " + currentImageScale + ". Success: " + success);
-            identifyFingerprintCallback.onIdentifyFingerprint(success, score);
+            identifyFingerprintCallback.onIdentifyFingerprint(success, outcome);
         } catch (IOException e) {
             e.printStackTrace();
             Timber.e("IOException while doing JSONAsyncTask");
@@ -171,7 +207,7 @@ public class VerifyService extends IntentService implements IdentifyFingerprintC
         currentImageScale = 1.0;
         wsqScaleCounter = 0;
         success = false;
-        score = 0.0f;
+        outcome = "";
         onyxResult = MainApplication.getOnyxResult();
         if (onyxResult == null) {
             return;

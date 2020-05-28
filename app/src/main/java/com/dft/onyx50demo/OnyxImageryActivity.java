@@ -34,14 +34,13 @@ public class OnyxImageryActivity extends Activity {
     private OnyxResult onyxResult;
     private ArrayList<Bitmap> processedImages;
 
-    private static Mat mat = new Mat();
-    private double[] imageScales = new double[]{0.5, 0.6, 0.7, 0.8, 0.9, 1.1, 1.2, 1.3, 1.4, 1.5, 0.4, 0.3};
     private static double imageScale;
-    private static int wsqScaleCounter;
     private static boolean success;
-    private static float score;
+    private static String outcome;
 
     private static ProgressBar spinner;
+
+    private String speaker;
 
     @Override
     protected void onCreate(Bundle onSavedInstanceState) {
@@ -54,6 +53,7 @@ public class OnyxImageryActivity extends Activity {
         if (onyxResult == null) {
             return;
         }
+        speaker = MainApplication.getSpeaker();
         ImageView rawImage1 = findViewById(R.id.rawImage1);
         ImageView processedImage1 = findViewById(R.id.processedImage1);
         ImageView rawImage2 = findViewById(R.id.rawImage2);
@@ -125,7 +125,7 @@ public class OnyxImageryActivity extends Activity {
             @Override
             public void onClick(View v) {
                 MainApplication.setOnyxResult(null);
-                Intent mStartActivity = new Intent(activity, MainApplication.class);
+                Intent mStartActivity = new Intent(activity, SpeakerActivity.class);
                 int mPendingIntentId = 123456;
                 PendingIntent mPendingIntent = PendingIntent.getActivity(activity, mPendingIntentId,    mStartActivity, PendingIntent.FLAG_CANCEL_CURRENT);
                 AlarmManager mgr = (AlarmManager)activity.getSystemService(Context.ALARM_SERVICE);
@@ -139,6 +139,7 @@ public class OnyxImageryActivity extends Activity {
             IdentifyResultReceiver identifyResultReceiver = new IdentifyResultReceiver(new Handler());
             Intent startIntent =new Intent(this, VerifyService.class);
             startIntent.putExtra("receiver", identifyResultReceiver);
+            startIntent.putExtra("speaker", speaker);
             startService(startIntent);
         } else {
             Timber.e("Focus quality was less than 1.");
@@ -172,7 +173,7 @@ public class OnyxImageryActivity extends Activity {
 
                 case VerifyService.IDENTIFY_SUCCESS:
                     imageScale = resultData.getDouble("imageScale");
-                    score = resultData.getFloat("score");
+                    outcome = resultData.getString("outcome");
                     new IdentifyFingerprintDialogFragment().show(activity.getFragmentManager(), TAG);
                     break;
                 case VerifyService.IDENTIFY_FAILURE:
@@ -195,9 +196,9 @@ public class OnyxImageryActivity extends Activity {
             AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
             String message;
             if (success) {
-                message = "Identification of fingerprint was a success.  Score was " + score + ". Image scale was " + imageScale + ".";
+                message = "Verification of fingerprint was a success.  Outcome was " + outcome + ". Image scale was " + imageScale + ".";
             } else {
-                message = "Identification of fingerprint was not a success.";
+                message = "Verification of fingerprint was not a success.";
             }
             builder.setTitle(getResources().getString(R.string.identify_fingerprint_result))
                     .setMessage(message)
