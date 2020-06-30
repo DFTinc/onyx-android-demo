@@ -18,8 +18,8 @@ import com.dft.onyxcamera.config.OnyxConfiguration;
 import com.dft.onyxcamera.config.OnyxConfigurationBuilder;
 import com.dft.onyxcamera.config.OnyxError;
 import com.dft.onyxcamera.config.OnyxResult;
-import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.security.ProviderInstaller;
+//import com.google.android.gms.common.GoogleApiAvailability;
+//import com.google.android.gms.security.ProviderInstaller;
 
 import static com.dft.onyx50demo.ValuesUtil.getCropFactor;
 import static com.dft.onyx50demo.ValuesUtil.getCropSizeHeight;
@@ -39,7 +39,7 @@ import static com.dft.onyx50demo.ValuesUtil.getUseFlash;
 import static com.dft.onyx50demo.ValuesUtil.getUseManualCapture;
 import static com.dft.onyx50demo.ValuesUtil.getUseOnyxLive;
 
-public class OnyxSetupActivity extends Activity implements ProviderInstaller.ProviderInstallListener {
+public class OnyxSetupActivity extends Activity { // implements ProviderInstaller.ProviderInstallListener {
     private static final String TAG = OnyxSetupActivity.class.getName();
     private static final int ONYX_REQUEST_CODE = 1337;
     MainApplication application = new MainApplication();
@@ -57,9 +57,9 @@ public class OnyxSetupActivity extends Activity implements ProviderInstaller.Pro
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ProviderInstaller.installIfNeededAsync(this, this); // This is needed in order for SSL to work on Android 5.1 devices and lower
-        FileUtil fileUtil = new FileUtil();
-        fileUtil.getWriteExternalStoragePermission(this); // This is for file writing permission on SDK >= 23
+//        ProviderInstaller.installIfNeededAsync(this, this); // This is needed in order for SSL to work on Android 5.1 devices and lower
+//        FileUtil fileUtil = new FileUtil();
+//        fileUtil.getWriteExternalStoragePermission(this); // This is for file writing permission on SDK >= 23
         setupUI();
         setupCallbacks();
     }
@@ -146,16 +146,16 @@ public class OnyxSetupActivity extends Activity implements ProviderInstaller.Pro
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == ERROR_DIALOG_REQUEST_CODE) {
-            // Adding a fragment via GoogleApiAvailability.showErrorDialogFragment
-            // before the instance state is restored throws an error. So instead,
-            // set a flag here, which will cause the fragment to delay until
-            // onPostResume.
-            mRetryProviderInstall = true;
-        }
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        if (requestCode == ERROR_DIALOG_REQUEST_CODE) {
+//            // Adding a fragment via GoogleApiAvailability.showErrorDialogFragment
+//            // before the instance state is restored throws an error. So instead,
+//            // set a flag here, which will cause the fragment to delay until
+//            // onPostResume.
+//            mRetryProviderInstall = true;
+//        }
+//    }
 
     private void displayResults(OnyxResult onyxResult) {
         startActivity(new Intent(this, OnyxImageryActivity.class));
@@ -233,63 +233,63 @@ public class OnyxSetupActivity extends Activity implements ProviderInstaller.Pro
         });
     }
 
-    /**
-     * The below is for updating the device's security provider to protect against SSL exploits
-     * See https://developer.android.com/training/articles/security-gms-provider#java
-     */
-    private static final int ERROR_DIALOG_REQUEST_CODE = 11111;
-    private boolean mRetryProviderInstall;
-
-    /**
-     * This method is only called if the provider is successfully updated
-     * (or is already up-to-date).
-     */
-    @Override
-    public void onProviderInstalled() {
-        Log.i("OnyxSetupActivity","Provider is up-to-date, app can make secure network calls.");
-    }
-
-    /**
-     * This method is called if updating fails; the error code indicates
-     * whether the error is recoverable.
-     */
-    @Override
-    public void onProviderInstallFailed(int errorCode, Intent recoveryIntent) {
-        GoogleApiAvailability availability = GoogleApiAvailability.getInstance();
-        if (availability.isUserResolvableError(errorCode)) {
-            // Recoverable error. Show a dialog prompting the user to
-            // install/update/enable Google Play services.
-            availability.showErrorDialogFragment(
-                    this,
-                    errorCode,
-                    ERROR_DIALOG_REQUEST_CODE,
-                    new DialogInterface.OnCancelListener() {
-                        @Override
-                        public void onCancel(DialogInterface dialog) {
-                            // The user chose not to take the recovery action
-                            onProviderInstallerNotAvailable();
-                        }
-                    });
-        } else {
-            // Google Play services is not available.
-            onProviderInstallerNotAvailable();
-        }
-    }
-
-    @Override
-    protected void onPostResume() {
-        super.onPostResume();
-        if (mRetryProviderInstall) {
-            // We can now safely retry installation.
-            ProviderInstaller.installIfNeededAsync(this, this);
-        }
-        mRetryProviderInstall = false;
-    }
-
-    private void onProviderInstallerNotAvailable() {
-        // This is reached if the provider cannot be updated for some reason.
-        // App should consider all HTTP communication to be vulnerable, and take
-        // appropriate action.
-        Log.i("OnyxSetupActivity","ProviderInstaller not available, device cannot make secure network calls.");
-    }
+//    /**
+//     * The below is for updating the device's security provider to protect against SSL exploits
+//     * See https://developer.android.com/training/articles/security-gms-provider#java
+//     */
+//    private static final int ERROR_DIALOG_REQUEST_CODE = 11111;
+//    private boolean mRetryProviderInstall;
+//
+//    /**
+//     * This method is only called if the provider is successfully updated
+//     * (or is already up-to-date).
+//     */
+//    @Override
+//    public void onProviderInstalled() {
+//        Log.i("OnyxSetupActivity","Provider is up-to-date, app can make secure network calls.");
+//    }
+//
+//    /**
+//     * This method is called if updating fails; the error code indicates
+//     * whether the error is recoverable.
+//     */
+//    @Override
+//    public void onProviderInstallFailed(int errorCode, Intent recoveryIntent) {
+//        GoogleApiAvailability availability = GoogleApiAvailability.getInstance();
+//        if (availability.isUserResolvableError(errorCode)) {
+//            // Recoverable error. Show a dialog prompting the user to
+//            // install/update/enable Google Play services.
+//            availability.showErrorDialogFragment(
+//                    this,
+//                    errorCode,
+//                    ERROR_DIALOG_REQUEST_CODE,
+//                    new DialogInterface.OnCancelListener() {
+//                        @Override
+//                        public void onCancel(DialogInterface dialog) {
+//                            // The user chose not to take the recovery action
+//                            onProviderInstallerNotAvailable();
+//                        }
+//                    });
+//        } else {
+//            // Google Play services is not available.
+//            onProviderInstallerNotAvailable();
+//        }
+//    }
+//
+//    @Override
+//    protected void onPostResume() {
+//        super.onPostResume();
+//        if (mRetryProviderInstall) {
+//            // We can now safely retry installation.
+//            ProviderInstaller.installIfNeededAsync(this, this);
+//        }
+//        mRetryProviderInstall = false;
+//    }
+//
+//    private void onProviderInstallerNotAvailable() {
+//        // This is reached if the provider cannot be updated for some reason.
+//        // App should consider all HTTP communication to be vulnerable, and take
+//        // appropriate action.
+//        Log.i("OnyxSetupActivity","ProviderInstaller not available, device cannot make secure network calls.");
+//    }
 }
