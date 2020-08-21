@@ -125,6 +125,7 @@ public class OnyxImageryActivity extends Activity {
             @Override
             public void onClick(View v) {
                 MainApplication.setOnyxResult(null);
+                startActivity(new Intent(activity, OnyxSetupActivity.class).setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_NEW_TASK));
                 Intent mStartActivity = new Intent(activity, SpeakerActivity.class);
                 int mPendingIntentId = 123456;
                 PendingIntent mPendingIntent = PendingIntent.getActivity(activity, mPendingIntentId,    mStartActivity, PendingIntent.FLAG_CANCEL_CURRENT);

@@ -34,7 +34,6 @@ import okhttp3.Response;
 import timber.log.Timber;
 
 public class VerifyService extends IntentService implements IdentifyFingerprintCallback {
-    private Context mContext;
     private ResultReceiver receiver;
     public static final int IDENTIFY_SUCCESS = 1;
     public static final int IDENTIFY_FAILURE = 2;
@@ -202,7 +201,7 @@ public class VerifyService extends IntentService implements IdentifyFingerprintC
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
         receiver = intent.getParcelableExtra("receiver");
-        mContext = this;
+        Context mContext = this;
         identifyFingerprintCallback = this;
         currentImageScale = 1.0;
         wsqScaleCounter = 0;
