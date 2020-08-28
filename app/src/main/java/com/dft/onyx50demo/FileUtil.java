@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
@@ -72,7 +73,7 @@ public class FileUtil {
      * WRITE_EXTERNAL_STORAGE permission to the manifest file or this method will throw
      * a FileNotFound Exception because you won't have write permission.
      */
-    public void writeToSDFile(Activity a, byte[] wsqBytes, String fileName) {
+    public void writeWSQToSDFile(Activity a, byte[] wsqBytes, String fileName) {
         // Find the root of the external storage.
         // See http://developer.android.com/guide/topics/data/data-  storage.html#filesExternal
         File root = android.os.Environment.getExternalStorageDirectory();
@@ -85,6 +86,36 @@ public class FileUtil {
         try {
             FileOutputStream out = new FileOutputStream(file);
             out.write(wsqBytes);
+            out.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            Log.i(TAG, "******* File not found. Did you" +
+                    " add a WRITE_EXTERNAL_STORAGE permission to the   manifest?");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Toast.makeText(a, "File written to " + file, Toast.LENGTH_LONG).show();
+    }
+
+    /**
+     * Method to write a bitmap to file on SD card. Note that you must add a
+     * WRITE_EXTERNAL_STORAGE permission to the manifest file or this method will throw
+     * a FileNotFound Exception because you won't have write permission.
+     */
+    public void writeBitmapToSDFile(Activity a, Bitmap bitmap, String fileName) {
+        // Find the root of the external storage.
+        // See http://developer.android.com/guide/topics/data/data-  storage.html#filesExternal
+        File root = android.os.Environment.getExternalStorageDirectory();
+        Toast.makeText(a, "External file system root: " + root, Toast.LENGTH_LONG).show();
+
+        File dir = new File(root.getAbsolutePath() + "/png");
+        dir.mkdirs();
+        File file = new File(dir, fileName + ".png");
+
+        try {
+            FileOutputStream out = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+            out.flush();
             out.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();

@@ -12,7 +12,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="331dp"
         app:layout_constraintGuide_end="5dp" />
 
     <CheckBox
@@ -22,7 +21,6 @@
         android:checked="true"
         android:text="Return Raw Image"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
@@ -40,7 +38,7 @@
         android:id="@+id/returnEnhancedBitmap"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:checked="false"
+        android:checked="true"
         android:text="Return Enhanced Image"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/returnProcessedBitmap" />
@@ -49,7 +47,7 @@
         android:id="@+id/returnWSQ"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:checked="true"
+        android:checked="false"
         android:text="Return WSQ Image"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/returnEnhancedBitmap" />
@@ -76,7 +74,7 @@
         android:id="@+id/thresholdImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:checked="false"
+        android:checked="true"
         android:text="Threshold Image"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/showLoadingSpinner" />
@@ -86,7 +84,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:checked="false"
+        android:checked="true"
         android:text="Crop size"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/thresholdImage" />
@@ -99,7 +97,7 @@
         android:layout_weight="1"
         android:ems="10"
         android:inputType="number"
-        android:text="512"
+        android:text="400"
         android:textAlignment="center"
         app:layout_constraintBaseline_toBaselineOf="@id/cropSize"
         app:layout_constraintLeft_toRightOf="@+id/cropSize"
@@ -114,7 +112,7 @@
         android:layout_weight="1"
         android:ems="10"
         android:inputType="number"
-        android:text="300"
+        android:text="400"
         android:textAlignment="center"
         app:layout_constraintBaseline_toBaselineOf="@id/cropSize"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
@@ -262,7 +260,8 @@
         android:paddingRight="5dp"
         android:text="Use Onyx Live"
         app:layout_constraintTop_toBottomOf="@+id/useManualCapture"
-        tools:layout_editor_absoluteX="1dp" />
+        tools:layout_editor_absoluteX="1dp"
+        tools:ignore="MissingConstraints" />
 
     <CheckBox
         android:id="@+id/useFlash"
@@ -271,7 +270,8 @@
         android:checked="true"
         android:text="Flash"
         app:layout_constraintTop_toBottomOf="@+id/useOnyxLive"
-        tools:layout_editor_absoluteX="1dp" />
+        tools:layout_editor_absoluteX="1dp"
+        tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/livenessResult"

@@ -6,13 +6,10 @@ import android.graphics.Bitmap;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.dft.onyx.NfiqMetrics;
 import com.dft.onyxcamera.config.OnyxResult;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class OnyxImageryActivity extends Activity {
     private static final String TAG = OnyxImageryActivity.class.getName();
@@ -89,9 +86,17 @@ public class OnyxImageryActivity extends Activity {
 
         FileUtil fileUtil = new FileUtil();
         fileUtil.checkExternalMedia(this);
-        if (onyxResult.getWsqData() != null && !onyxResult.getWsqData().isEmpty() && fileUtil.getWriteExternalStoragePermission(this)) {
+        if (onyxResult.getWsqData() != null && !onyxResult.getWsqData().isEmpty()
+                && fileUtil.getWriteExternalStoragePermission(this)) {
             for (int i = 0; i < onyxResult.getWsqData().size(); i++) {
-                fileUtil.writeToSDFile(this, onyxResult.getWsqData().get(i), "wsq" + i);
+                fileUtil.writeWSQToSDFile(this, onyxResult.getWsqData().get(i), "wsq" + i);
+            }
+        }
+
+        if (onyxResult.getProcessedFingerprintImages() != null && !onyxResult.getProcessedFingerprintImages().isEmpty()
+                && fileUtil.getWriteExternalStoragePermission(this)) {
+            for (int i = 0; i < onyxResult.getProcessedFingerprintImages().size(); i++) {
+                fileUtil.writeBitmapToSDFile(this, onyxResult.getProcessedFingerprintImages().get(i), "png" + i);
             }
         }
 

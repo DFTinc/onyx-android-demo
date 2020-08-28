@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Onyx 5.0 Demo</string>
+    <string name="too_close_text">Reculer les doigts</string>
+    <string name="too_far_text">Rapprochez les doigts</string>
+    <string name="capture_text">Tenez fermement vos doigts</string>
+</resources>

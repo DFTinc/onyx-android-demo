@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Onyx 5.0 Demo</string>
-    <string name="onyx_license">@string/license_key_value</string>
-    <string name="enroll_title">Enrollment</string>
-    <string name="enroll_question">Would you like to enroll this fingerprint?</string>
+    <string name="onyx_license" translatable="false">@string/license_key_value</string>
+    <string name="enroll_title" translatable="false">Enrollment</string>
+    <string name="enroll_question" translatable="false">Would you like to enroll this fingerprint?</string>
+    <string name="too_close_text">Move fingers back</string>
+    <string name="too_far_text">Move fingers closer</string>
+    <string name="capture_text">Hold fingers steady</string>
 </resources>
