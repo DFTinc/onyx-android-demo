@@ -38,6 +38,7 @@ import static com.dft.onyx50demo.ValuesUtil.getThresholdImage;
 import static com.dft.onyx50demo.ValuesUtil.getUseFlash;
 import static com.dft.onyx50demo.ValuesUtil.getUseManualCapture;
 import static com.dft.onyx50demo.ValuesUtil.getUseOnyxLive;
+import static com.dft.onyx50demo.ValuesUtil.getUseRightHandLayout;
 
 public class OnyxSetupActivity extends Activity implements ProviderInstaller.ProviderInstallListener {
     private static final String TAG = OnyxSetupActivity.class.getName();
@@ -123,6 +124,7 @@ public class OnyxSetupActivity extends Activity implements ProviderInstaller.Pro
                 .setCropFactor(getCropFactor(this))
                 .setTargetPixelsPerInch(getTargetPixelsPerInch(this))
                 .setUseFourFingerReticle(true, false)
+                .setUseRightHandLayout(getUseRightHandLayout(this))
                 .setLayoutPreference(OnyxConfiguration.LayoutPreference.FULL)
                 .setSuccessCallback(successCallback)
                 .setErrorCallback(errorCallback)

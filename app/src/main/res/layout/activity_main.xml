@@ -87,7 +87,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:checked="false"
-        android:text="Set crop size"
+        android:text="Crop size"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/thresholdImage" />
 
@@ -127,7 +127,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:checked="false"
-        android:text="Set crop factor"
+        android:text="Crop factor"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cropSize" />
 
@@ -149,7 +149,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:checked="false"
-        android:text="Set target PPI"
+        android:text="Target PPI"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cropFactor" />
 
@@ -170,8 +170,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:checked="false"
-        android:text="Use full screen layout"
+        android:text="Full screen layout"
         app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/targetPixelsPerInch" />
+
+    <CheckBox
+        android:id="@+id/useRightHandLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:checked="false"
+        android:text="Right hand layout"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toEndOf="@+id/layoutPreferenceFullScreen"
         app:layout_constraintTop_toBottomOf="@+id/targetPixelsPerInch" />
 
     <CheckBox
@@ -179,7 +190,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:checked="false"
-        android:text="Use manual capture"
+        android:text="Manual capture"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layoutPreferenceFullScreen" />
 
@@ -258,7 +269,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:checked="true"
-        android:text="Use Flash"
+        android:text="Flash"
         app:layout_constraintTop_toBottomOf="@+id/useOnyxLive"
         tools:layout_editor_absoluteX="1dp" />
 
@@ -275,8 +286,8 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:gravity="bottom|center_vertical|center_horizontal"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/button_layout"
@@ -332,8 +343,8 @@
         android:id="@+id/button_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:gravity="bottom|center_vertical|center_horizontal"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
