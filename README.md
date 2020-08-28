@@ -31,9 +31,13 @@ The license.xml file should be excluded from version control.
 There are customizable string resources that can be overriden from the onyx-camera library by adding
 the strings to the `app/src/main/res/values/strings.xml` file.
 The strings and their values are:
+
 `<string name="too_close_text">Move fingers back</string>`
+
 `<string name="too_far_text">Move fingers closer</string>`
+
 `<string name="capture_text">Hold fingers steady</string>`
+
 
 Simply replace the strings with the translation that is desired, or use the Android Studio
 Translations Editor: https://developer.android.com/studio/write/translations-editor
