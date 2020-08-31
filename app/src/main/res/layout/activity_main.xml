@@ -112,7 +112,7 @@
         android:layout_weight="1"
         android:ems="10"
         android:inputType="number"
-        android:text="400"
+        android:text="260"
         android:textAlignment="center"
         app:layout_constraintBaseline_toBaselineOf="@id/cropSize"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
