@@ -141,6 +141,7 @@ public class OnyxSetupActivity extends Activity implements ProviderInstaller.Pro
                 .setUseFourFingerReticle(true, false)
                 .setUseRightHandLayout(getUseRightHandLayout(this))
                 .setLayoutPreference(OnyxConfiguration.LayoutPreference.FULL)
+                .setLensFocusDistanceCamera2(10.0f)
                 .setSuccessCallback(successCallback)
                 .setErrorCallback(errorCallback)
                 .setOnyxCallback(onyxCallback);
