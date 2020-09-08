@@ -1,8 +1,10 @@
 package com.dft.onyx50demo;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.hardware.usb.UsbManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -10,6 +12,11 @@ import android.widget.ImageView;
 import com.dft.onyxcamera.config.OnyxResult;
 
 import java.util.ArrayList;
+
+import SecuGen.FDxSDKPro.JSGFPLib;
+import SecuGen.FDxSDKPro.SGFDxDeviceName;
+import SecuGen.FDxSDKPro.SGFDxSecurityLevel;
+import SecuGen.FDxSDKPro.SGISOTemplateInfo;
 
 public class OnyxImageryActivity extends Activity {
     private static final String TAG = OnyxImageryActivity.class.getName();
@@ -39,7 +46,7 @@ public class OnyxImageryActivity extends Activity {
         processedImage4.setImageDrawable(null);
 
         OnyxResult onyxResult = MainApplication.getOnyxResult();
-        if(onyxResult == null) {
+        if (onyxResult == null) {
             return;
         }
 
@@ -99,6 +106,8 @@ public class OnyxImageryActivity extends Activity {
                 fileUtil.writeBitmapToSDFile(this, onyxResult.getProcessedFingerprintImages().get(i), "png" + i);
             }
         }
+
+
 
         Button finishButton = findViewById(R.id.finishButton);
         finishButton.setOnClickListener(new View.OnClickListener() {

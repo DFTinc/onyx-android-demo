@@ -2,10 +2,13 @@ package com.dft.onyx50demo;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.hardware.usb.UsbManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
@@ -20,6 +23,18 @@ import com.dft.onyxcamera.config.OnyxError;
 import com.dft.onyxcamera.config.OnyxResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.security.ProviderInstaller;
+
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+import SecuGen.FDxSDKPro.JSGFPLib;
+import SecuGen.FDxSDKPro.SGFDxDeviceName;
+import SecuGen.FDxSDKPro.SGFDxSecurityLevel;
+import SecuGen.FDxSDKPro.SGISOTemplateInfo;
 
 import static com.dft.onyx50demo.ValuesUtil.getCropFactor;
 import static com.dft.onyx50demo.ValuesUtil.getCropSizeHeight;
@@ -293,5 +308,37 @@ public class OnyxSetupActivity extends Activity implements ProviderInstaller.Pro
         // App should consider all HTTP communication to be vulnerable, and take
         // appropriate action.
         Log.i("OnyxSetupActivity","ProviderInstaller not available, device cannot make secure network calls.");
+    }
+
+    private int sgISOMatch(byte[] template1, byte[] template2) {
+        JSGFPLib jsgfplib = new JSGFPLib((UsbManager) getSystemService(Context.USB_SERVICE));
+        long initError = jsgfplib.Init(SGFDxDeviceName.SG_DEV_AUTO);
+        long err;
+        boolean[] matched = new boolean[1];
+        matched[0] = false;
+        // ISO19794-2
+        SGISOTemplateInfo sample_info = new SGISOTemplateInfo();
+        err = jsgfplib.GetIsoTemplateInfo(template1, sample_info);
+        int found_finger = -1;
+        for (int i = 0; i < sample_info.TotalSamples; i++) {
+            // ISO19794-2
+            err = jsgfplib.MatchIsoTemplate(template1,
+                    i,
+                    template2,
+                    0, SGFDxSecurityLevel.SL_NORMAL, matched);
+            if (matched[0]) {
+                found_finger = sample_info.SampleInfo[i].FingerNumber;
+                break;
+            }
+        }
+
+        Long closeError = jsgfplib.Close();
+        return found_finger;
+    }
+
+    private File getExternalFile(String filename) {
+        final File file = new File(Environment.getExternalStorageDirectory()
+                .getAbsolutePath(), filename);
+        return file;
     }
 }
