@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,12 +7,11 @@
     app:layout_constraintEnd_toEndOf="parent"
     tools:context="com.dft.onyx50demo.OnyxSetupActivity">
 
-    <android.support.constraint.Guideline
+    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="331dp"
         app:layout_constraintGuide_end="5dp" />
 
     <CheckBox
@@ -262,7 +261,8 @@
         android:paddingRight="5dp"
         android:text="Use Onyx Live"
         app:layout_constraintTop_toBottomOf="@+id/useManualCapture"
-        tools:layout_editor_absoluteX="1dp" />
+        tools:layout_editor_absoluteX="1dp"
+        tools:ignore="MissingConstraints" />
 
     <CheckBox
         android:id="@+id/useFlash"
@@ -271,7 +271,8 @@
         android:checked="true"
         android:text="Flash"
         app:layout_constraintTop_toBottomOf="@+id/useOnyxLive"
-        tools:layout_editor_absoluteX="1dp" />
+        tools:layout_editor_absoluteX="1dp"
+        tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/livenessResult"
@@ -372,4 +373,4 @@
 
     </LinearLayout>
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

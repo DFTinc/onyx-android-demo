@@ -6,13 +6,11 @@ import android.graphics.Bitmap;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.dft.onyx.NfiqMetrics;
 import com.dft.onyxcamera.config.OnyxResult;
+import com.dft.onyxcamera.util.UploadMatchResult;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class OnyxImageryActivity extends Activity {
     private static final String TAG = OnyxImageryActivity.class.getName();
@@ -85,6 +83,14 @@ public class OnyxImageryActivity extends Activity {
                         break;
                 }
             }
+        }
+
+        if (onyxResult.getMetrics() != null && onyxResult.getMetrics().getTransactionId() != null) {
+            String transactionId = onyxResult.getMetrics().getTransactionId();
+            UploadMatchResult uploadMatchResult = new UploadMatchResult(this,
+                    transactionId,
+                    false,
+                    "INES");
         }
 
         FileUtil fileUtil = new FileUtil();

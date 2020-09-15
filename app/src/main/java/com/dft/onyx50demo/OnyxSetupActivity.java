@@ -126,6 +126,10 @@ public class OnyxSetupActivity extends Activity implements ProviderInstaller.Pro
                 .setUseFourFingerReticle(true, false)
                 .setUseRightHandLayout(getUseRightHandLayout(this))
                 .setLayoutPreference(OnyxConfiguration.LayoutPreference.FULL)
+                .setUniqueUserID("testUserId")
+                .setPerformQualityCheckMatch(true)
+                .setUploadMetrics(true)
+                .setWaitForMetricsUpload(true)
                 .setSuccessCallback(successCallback)
                 .setErrorCallback(errorCallback)
                 .setOnyxCallback(onyxCallback);
