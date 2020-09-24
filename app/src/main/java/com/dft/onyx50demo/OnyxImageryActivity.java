@@ -91,6 +91,7 @@ public class OnyxImageryActivity extends Activity {
                     transactionId,
                     false,
                     "INES");
+            uploadMatchResult.uploadMatchResult();
         }
 
         FileUtil fileUtil = new FileUtil();
