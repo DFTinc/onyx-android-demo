@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/AndroidStudioProjects-onyx-5.0-demo.iml" filepath="$PROJECT_DIR$/.idea/modules/AndroidStudioProjects-onyx-5.0-demo.iml" group="onyx-5.0-demo" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/AndroidStudioProjects-onyx-5.0-demo-app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/AndroidStudioProjects-onyx-5.0-demo-app.iml" group="onyx-5.0-demo/app" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/StudioProjects-onyx-5.0-demo.iml" filepath="$PROJECT_DIR$/.idea/modules/StudioProjects-onyx-5.0-demo.iml" group="onyx-5.0-demo" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="onyx-5.0-demo/app" />
       <module fileurl="file://$PROJECT_DIR$/onyx-5.0-demo.iml" filepath="$PROJECT_DIR$/onyx-5.0-demo.iml" group="onyx-5.0-demo" />
