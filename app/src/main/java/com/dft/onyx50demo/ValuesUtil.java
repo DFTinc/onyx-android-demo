@@ -71,7 +71,7 @@ public class ValuesUtil {
         if (((CheckBox) a.findViewById(R.id.cropSize)).isChecked()) {
             return Double.valueOf(((EditText) a.findViewById(R.id.widthEditText)).getText().toString());
         } else {
-            return 512.0;
+            return 300.0;
         }
     }
 
@@ -79,7 +79,7 @@ public class ValuesUtil {
         if (((CheckBox) a.findViewById(R.id.cropSize)).isChecked()) {
             return Double.valueOf(((EditText) a.findViewById(R.id.heightEditText)).getText().toString());
         } else {
-            return 300.0;
+            return 512.0;
         }
     }
 
