@@ -265,14 +265,22 @@
         tools:ignore="MissingConstraints" />
 
     <CheckBox
+        android:id="@+id/nfiqMetrics"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="NFIQ Metrics"
+        app:layout_constraintTop_toBottomOf="@+id/useOnyxLive"
+        tools:layout_editor_absoluteX="1dp" />
+
+    <CheckBox
         android:id="@+id/useFlash"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:checked="true"
         android:text="Flash"
-        app:layout_constraintTop_toBottomOf="@+id/useOnyxLive"
-        tools:layout_editor_absoluteX="1dp"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintTop_toBottomOf="@+id/nfiqMetrics"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="1dp" />
 
     <TextView
         android:id="@+id/livenessResult"

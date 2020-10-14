@@ -21,6 +21,7 @@ import com.dft.onyxcamera.config.OnyxResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.security.ProviderInstaller;
 
+import static com.dft.onyx50demo.ValuesUtil.getComputeNfiqMetrics;
 import static com.dft.onyx50demo.ValuesUtil.getCropFactor;
 import static com.dft.onyx50demo.ValuesUtil.getCropSizeHeight;
 import static com.dft.onyx50demo.ValuesUtil.getCropSizeWidth;
@@ -117,6 +118,7 @@ public class OnyxSetupActivity extends Activity implements ProviderInstaller.Pro
                 .setThresholdProcessedImage(getThresholdImage(this))
                 .setShowLoadingSpinner(getShowLoadingSpinner(this))
                 .setUseOnyxLive(getUseOnyxLive(this))
+                .setComputeNfiqMetrics(getComputeNfiqMetrics(this))
                 .setUseFlash(getUseFlash(this))
                 .setImageRotation(getImageRotation(this))
                 .setReticleOrientation(getReticleOrientation(this))
@@ -163,7 +165,7 @@ public class OnyxSetupActivity extends Activity implements ProviderInstaller.Pro
         startActivity(new Intent(this, OnyxImageryActivity.class));
         if (onyxResult.getMetrics() != null) {
             livenessResultTextView.setText(Double.toString(onyxResult.getMetrics().getLivenessConfidence()));
-//            nfiqScoreTextView.setText(Integer.toString(onyxResult.getMetrics().getNfiqMetrics().getNfiqScore()));
+            //nfiqScoreTextView.setText(Integer.toString(onyxResult.getMetrics().getNfiqMetrics().getNfiqScore()));
         }
     }
 

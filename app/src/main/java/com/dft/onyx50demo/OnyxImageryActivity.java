@@ -6,11 +6,16 @@ import android.graphics.Bitmap;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.dft.onyx.NfiqMetrics;
 import com.dft.onyxcamera.config.OnyxResult;
 import com.dft.onyxcamera.util.UploadMatchResult;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import static java.lang.Integer.parseInt;
 
 public class OnyxImageryActivity extends Activity {
     private static final String TAG = OnyxImageryActivity.class.getName();
@@ -30,6 +35,11 @@ public class OnyxImageryActivity extends Activity {
         ImageView processedImage3 = findViewById(R.id.processedImage3);
         ImageView rawImage4 = findViewById(R.id.rawImage4);
         ImageView processedImage4 = findViewById(R.id.processedImage4);
+        TextView livenessTextView = findViewById(R.id.livenessText);
+        TextView nfiqTextView1 = findViewById(R.id.nfiqText1);
+        TextView nfiqTextView2 = findViewById(R.id.nfiqText2);
+        TextView nfiqTextView3 = findViewById(R.id.nfiqText3);
+        TextView nfiqTextView4 = findViewById(R.id.nfiqText4);
         rawImage1.setImageDrawable(null);
         processedImage1.setImageDrawable(null);
         rawImage2.setImageDrawable(null);
@@ -46,6 +56,30 @@ public class OnyxImageryActivity extends Activity {
 
         ArrayList<Bitmap> rawImages = onyxResult.getRawFingerprintImages();
         ArrayList<Bitmap> processedImages = onyxResult.getProcessedFingerprintImages();
+        livenessTextView.setText(String.format("Liveness: %.2f",onyxResult.getMetrics().getLivenessConfidence()));
+        if (onyxResult.getMetrics() != null && onyxResult.getMetrics().getNfiqMetrics() != null) {
+            List<NfiqMetrics> nfiqMetricsList = onyxResult.getMetrics().getNfiqMetrics();
+            for (int i = 0; i < nfiqMetricsList.size(); i++) {
+                switch (i) {
+                    case 0:
+                        if (nfiqMetricsList.get(i) != null) {
+                            nfiqTextView1.setText("NFIQ: " + String.valueOf(nfiqMetricsList.get(i).getNfiqScore()));
+                        }
+                    case 1:
+                        if (nfiqMetricsList.get(i) != null) {
+                            nfiqTextView2.setText("NFIQ: " + String.valueOf(nfiqMetricsList.get(i).getNfiqScore()));
+                        }
+                    case 2:
+                        if (nfiqMetricsList.get(i) != null) {
+                            nfiqTextView3.setText("NFIQ: " + String.valueOf(nfiqMetricsList.get(i).getNfiqScore()));
+                        }
+                    case 3:
+                        if (nfiqMetricsList.get(i) != null) {
+                            nfiqTextView4.setText("NFIQ: " + String.valueOf(nfiqMetricsList.get(i).getNfiqScore()));
+                        }
+                }
+            }
+        }
         if (rawImages != null) {
             for (int i = 0; i < rawImages.size(); i++) {
                 switch (i) {
