@@ -40,7 +40,7 @@ public class OnyxImageryActivity extends Activity {
         processedImage4.setImageDrawable(null);
 
         OnyxResult onyxResult = MainApplication.getOnyxResult();
-        if(onyxResult == null) {
+        if (onyxResult == null) {
             return;
         }
 
@@ -99,6 +99,13 @@ public class OnyxImageryActivity extends Activity {
         if (onyxResult.getWsqData() != null && !onyxResult.getWsqData().isEmpty() && fileUtil.getWriteExternalStoragePermission(this)) {
             for (int i = 0; i < onyxResult.getWsqData().size(); i++) {
                 fileUtil.writeToSDFile(this, onyxResult.getWsqData().get(i), "wsq" + i);
+            }
+        }
+
+        fileUtil.checkExternalMedia(this);
+        if (onyxResult.getProcessedFingerprintImages() != null && !onyxResult.getProcessedFingerprintImages().isEmpty() && fileUtil.getWriteExternalStoragePermission(this)) {
+            for (int i = 0; i < onyxResult.getProcessedFingerprintImages().size(); i++) {
+                fileUtil.writePNGToSDFile(this, onyxResult.getProcessedFingerprintImages().get(i), "png" + i);
             }
         }
 
