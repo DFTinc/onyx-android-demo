@@ -42,6 +42,10 @@ public class ValuesUtil {
         return ((CheckBox) a.findViewById(R.id.useOnyxLive)).isChecked();
     }
 
+    public static boolean getComputeNfiqMetrics(Activity a) {
+        return ((CheckBox) a.findViewById(R.id.nfiqMetrics)).isChecked();
+    }
+
     public static boolean getUseFlash(Activity a) {
         return ((CheckBox) a.findViewById(R.id.useFlash)).isChecked();
     }
@@ -71,7 +75,7 @@ public class ValuesUtil {
         if (((CheckBox) a.findViewById(R.id.cropSize)).isChecked()) {
             return Double.valueOf(((EditText) a.findViewById(R.id.widthEditText)).getText().toString());
         } else {
-            return 512.0;
+            return 300.0;
         }
     }
 
@@ -79,7 +83,7 @@ public class ValuesUtil {
         if (((CheckBox) a.findViewById(R.id.cropSize)).isChecked()) {
             return Double.valueOf(((EditText) a.findViewById(R.id.heightEditText)).getText().toString());
         } else {
-            return 300.0;
+            return 512.0;
         }
     }
 
