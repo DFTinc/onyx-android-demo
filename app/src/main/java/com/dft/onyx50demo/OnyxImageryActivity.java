@@ -98,7 +98,7 @@ public class OnyxImageryActivity extends Activity {
         fileUtil.checkExternalMedia(this);
         if (onyxResult.getWsqData() != null && !onyxResult.getWsqData().isEmpty() && fileUtil.getWriteExternalStoragePermission(this)) {
             for (int i = 0; i < onyxResult.getWsqData().size(); i++) {
-                fileUtil.writeToSDFile(this, onyxResult.getWsqData().get(i), "wsq" + i);
+                fileUtil.writeToSDFile(this, onyxResult.getProcessedFingerprintImages().get(i), "finger" + i);
             }
         }
 

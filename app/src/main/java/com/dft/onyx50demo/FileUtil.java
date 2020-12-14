@@ -4,10 +4,10 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 
@@ -62,9 +62,6 @@ public class FileUtil {
             // Can't read or write
             mExternalStorageAvailable = mExternalStorageWriteable = false;
         }
-        Toast.makeText(a, "External Media: readable="
-                + mExternalStorageAvailable + " writable=" + mExternalStorageWriteable,
-                Toast.LENGTH_LONG).show();
     }
 
     /**
@@ -72,19 +69,10 @@ public class FileUtil {
      * WRITE_EXTERNAL_STORAGE permission to the manifest file or this method will throw
      * a FileNotFound Exception because you won't have write permission.
      */
-    public void writeToSDFile(Activity a, byte[] wsqBytes, String fileName) {
-        // Find the root of the external storage.
-        // See http://developer.android.com/guide/topics/data/data-  storage.html#filesExternal
-        File root = android.os.Environment.getExternalStorageDirectory();
-        Toast.makeText(a, "External file system root: " + root, Toast.LENGTH_LONG).show();
-
-        File dir = new File(root.getAbsolutePath() + "/wsq");
-        dir.mkdirs();
-        File file = new File(dir, fileName + ".wsq");
-
+    public void writeToSDFile(Activity a, Bitmap bitmap, String fileName) {
         try {
-            FileOutputStream out = new FileOutputStream(file);
-            out.write(wsqBytes);
+            FileOutputStream out = a.openFileOutput(fileName + ".png", Context.MODE_PRIVATE);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
             out.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -93,6 +81,5 @@ public class FileUtil {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Toast.makeText(a, "File written to " + file, Toast.LENGTH_LONG).show();
     }
 }
