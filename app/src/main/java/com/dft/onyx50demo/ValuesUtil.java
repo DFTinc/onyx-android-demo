@@ -5,7 +5,6 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import com.dft.onyxcamera.config.OnyxConfiguration;
 import com.dft.onyxcamera.ui.reticles.Reticle;
 
 /**
@@ -55,8 +54,16 @@ public class ValuesUtil {
     }
 
     public static Reticle.Orientation getReticleOrientation(Activity a) {
-        return (((Spinner) a.findViewById(R.id.reticleOrientationSpinner)).getSelectedItem().toString().equalsIgnoreCase(Reticle.Orientation.LEFT.toString())) ?
-                Reticle.Orientation.LEFT : Reticle.Orientation.RIGHT;
+        String reticleOrientation = ((Spinner) a.findViewById(R.id.reticleOrientationSpinner)).getSelectedItem().toString();
+        Reticle.Orientation orientation = Reticle.Orientation.LEFT;
+        if (reticleOrientation.equalsIgnoreCase(Reticle.Orientation.LEFT.toString())) {
+            orientation = Reticle.Orientation.LEFT;
+        } else if (reticleOrientation.equalsIgnoreCase(Reticle.Orientation.RIGHT.toString())) {
+            orientation = Reticle.Orientation.RIGHT;
+        } else if (reticleOrientation.equalsIgnoreCase(Reticle.Orientation.THUMB_PORTRAIT.toString())) {
+            orientation = Reticle.Orientation.THUMB_PORTRAIT;
+        }
+        return orientation;
     }
 
     public static Float getReticleAngle(Activity a) {
@@ -96,14 +103,6 @@ public class ValuesUtil {
             return Double.valueOf(((EditText) a.findViewById(R.id.targetPixelsPerInchEditText)).getText().toString());
         } else {
             return -1.0;
-        }
-    }
-
-    public static OnyxConfiguration.LayoutPreference getLayoutPreference(Activity a) {
-        if (((CheckBox) a.findViewById(R.id.layoutPreferenceFullScreen)).isChecked()) {
-            return OnyxConfiguration.LayoutPreference.FULL;
-        } else {
-            return OnyxConfiguration.LayoutPreference.UPPER_THIRD;
         }
     }
 

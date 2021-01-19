@@ -10,6 +10,7 @@
     <string-array name="reticle_orientation">
         <item>LEFT</item>
         <item>RIGHT</item>
+        <item>THUMB_PORTRAIT</item>
     </string-array>
 
 </resources>

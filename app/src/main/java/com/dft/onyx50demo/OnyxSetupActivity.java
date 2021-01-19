@@ -118,12 +118,11 @@ public class OnyxSetupActivity extends Activity implements ProviderInstaller.Pro
                 .setUseOnyxLive(getUseOnyxLive(this))
                 .setUseFlash(getUseFlash(this))
                 .setImageRotation(getImageRotation(this))
-                .setReticleOrientation(getReticleOrientation(this))
                 .setCropSize(getCropSizeWidth(this), getCropSizeHeight(this))
                 .setCropFactor(getCropFactor(this))
                 .setTargetPixelsPerInch(getTargetPixelsPerInch(this))
-                .setUseFourFingerReticle(true, false)
-                .setLayoutPreference(OnyxConfiguration.LayoutPreference.FULL)
+                .setReticleOrientation(getReticleOrientation(this))
+                .setCaptureDistanceRange(19.5f, 29.5f)
                 .setSuccessCallback(successCallback)
                 .setErrorCallback(errorCallback)
                 .setOnyxCallback(onyxCallback);
@@ -159,10 +158,10 @@ public class OnyxSetupActivity extends Activity implements ProviderInstaller.Pro
 
     private void displayResults(OnyxResult onyxResult) {
         startActivity(new Intent(this, OnyxImageryActivity.class));
-        if (onyxResult.getMetrics() != null) {
-            livenessResultTextView.setText(Double.toString(onyxResult.getMetrics().getLivenessConfidence()));
+//        if (onyxResult.getMetrics() != null) {
+//            livenessResultTextView.setText(Double.toString(onyxResult.getMetrics().getLivenessConfidence()));
 //            nfiqScoreTextView.setText(Integer.toString(onyxResult.getMetrics().getNfiqMetrics().getNfiqScore()));
-        }
+//        }
     }
 
     @Override
@@ -179,8 +178,6 @@ public class OnyxSetupActivity extends Activity implements ProviderInstaller.Pro
         fingerprintView = new ImageView(this);
         LayoutParams layoutParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         addContentView(fingerprintView, layoutParams);
-        livenessResultTextView = findViewById(R.id.livenessResult);
-        nfiqScoreTextView = findViewById(R.id.nfiqScore);
         startOnyxButton = findViewById(R.id.start_onyx);
         startOnyxButton.setEnabled(false);
         startOnyxButton.bringToFront();
