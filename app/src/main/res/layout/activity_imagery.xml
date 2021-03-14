@@ -9,27 +9,31 @@
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="137dp"
+        tools:layout_editor_absoluteY="199dp">
+
         <TableLayout
             android:id="@+id/tableLayout"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
+            android:isScrollContainer="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:isScrollContainer="true">
+            app:layout_constraintTop_toTopOf="parent">
 
             <TableRow
-                android:layout_marginTop="5dp"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp">
+
                 <ImageView
                     android:id="@+id/rawImage1"
-                    android:scaleType="centerInside"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight=".5"
+                    android:scaleType="centerInside"
                     tools:src="@android:drawable/arrow_up_float" />
 
                 <TextView
@@ -40,24 +44,25 @@
 
                 <ImageView
                     android:id="@+id/processedImage1"
-                    android:scaleType="centerInside"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight=".5"
+                    android:scaleType="centerInside"
                     android:src="@android:drawable/arrow_up_float" />
 
             </TableRow>
 
             <TableRow
-                android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp">
+
                 <ImageView
                     android:id="@+id/rawImage2"
-                    android:scaleType="centerInside"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight=".5"
+                    android:scaleType="centerInside"
                     android:src="@android:drawable/arrow_up_float" />
 
                 <TextView
@@ -68,24 +73,25 @@
 
                 <ImageView
                     android:id="@+id/processedImage2"
-                    android:scaleType="centerInside"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight=".5"
+                    android:scaleType="centerInside"
                     android:src="@android:drawable/arrow_up_float" />
 
             </TableRow>
 
             <TableRow
-                android:layout_marginTop="5dp"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp">
+
                 <ImageView
                     android:id="@+id/rawImage3"
-                    android:scaleType="centerInside"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
+                    android:scaleType="centerInside"
                     android:src="@android:drawable/arrow_up_float" />
 
                 <TextView
@@ -96,23 +102,24 @@
 
                 <ImageView
                     android:id="@+id/processedImage3"
-                    android:scaleType="centerInside"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight=".5"
+                    android:scaleType="centerInside"
                     android:src="@android:drawable/arrow_up_float" />
             </TableRow>
 
             <TableRow
-                android:layout_marginTop="5dp"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp">
+
                 <ImageView
                     android:id="@+id/rawImage4"
-                    android:scaleType="centerInside"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight=".5"
+                    android:scaleType="centerInside"
                     android:src="@android:drawable/arrow_up_float" />
 
                 <TextView
@@ -123,10 +130,10 @@
 
                 <ImageView
                     android:id="@+id/processedImage4"
-                    android:scaleType="centerInside"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight=".5"
+                    android:scaleType="centerInside"
                     android:src="@android:drawable/arrow_up_float" />
             </TableRow>
         </TableLayout>

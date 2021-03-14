@@ -13,6 +13,7 @@ import com.dft.onyxcamera.config.OnyxResult;
 import com.dft.onyxcamera.util.UploadMatchResult;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static java.lang.Integer.parseInt;
@@ -56,65 +57,39 @@ public class OnyxImageryActivity extends Activity {
 
         ArrayList<Bitmap> rawImages = onyxResult.getRawFingerprintImages();
         ArrayList<Bitmap> processedImages = onyxResult.getProcessedFingerprintImages();
-        livenessTextView.setText(String.format("Liveness: %.2f",onyxResult.getMetrics().getLivenessConfidence()));
+        ArrayList<TextView> nfiqTextViews = new ArrayList<>(Arrays.asList(
+                nfiqTextView1,
+                nfiqTextView2,
+                nfiqTextView3,
+                nfiqTextView4
+        ));
+        ArrayList<ImageView> rawImageViews = new ArrayList<>(Arrays.asList(
+                rawImage1,
+                rawImage2,
+                rawImage3,
+                rawImage4
+        ));
+        ArrayList<ImageView> processedImageViews = new ArrayList<>(Arrays.asList(
+                processedImage1,
+                processedImage2,
+                processedImage3,
+                processedImage4
+        ));
+        livenessTextView.setText(String.format("Liveness: %.2f", onyxResult.getMetrics().getLivenessConfidence()));
         if (onyxResult.getMetrics() != null && onyxResult.getMetrics().getNfiqMetrics() != null) {
             List<NfiqMetrics> nfiqMetricsList = onyxResult.getMetrics().getNfiqMetrics();
             for (int i = 0; i < nfiqMetricsList.size(); i++) {
-                switch (i) {
-                    case 0:
-                        if (nfiqMetricsList.get(i) != null) {
-                            nfiqTextView1.setText("NFIQ: " + String.valueOf(nfiqMetricsList.get(i).getNfiqScore()));
-                        }
-                    case 1:
-                        if (nfiqMetricsList.get(i) != null) {
-                            nfiqTextView2.setText("NFIQ: " + String.valueOf(nfiqMetricsList.get(i).getNfiqScore()));
-                        }
-                    case 2:
-                        if (nfiqMetricsList.get(i) != null) {
-                            nfiqTextView3.setText("NFIQ: " + String.valueOf(nfiqMetricsList.get(i).getNfiqScore()));
-                        }
-                    case 3:
-                        if (nfiqMetricsList.get(i) != null) {
-                            nfiqTextView4.setText("NFIQ: " + String.valueOf(nfiqMetricsList.get(i).getNfiqScore()));
-                        }
-                }
+                nfiqTextViews.get(i).setText(nfiqMetricsList.get(i) == null ? "" : "NFIQ: " + String.valueOf(nfiqMetricsList.get(i).getNfiqScore()));
             }
         }
-        if (rawImages != null) {
+        if (rawImages != null && processedImages != null) {
             for (int i = 0; i < rawImages.size(); i++) {
-                switch (i) {
-                    case 0:
-                        if (rawImages.get(i) != null) {
-                            rawImage1.setImageBitmap(rawImages.get(i));
-                        }
-                        if (processedImages.get(i) != null) {
-                            processedImage1.setImageBitmap(processedImages.get(i));
-                        }
-                        break;
-                    case 1:
-                        if (rawImages.get(i) != null) {
-                            rawImage2.setImageBitmap(rawImages.get(i));
-                        }
-                        if (processedImages.get(i) != null) {
-                            processedImage2.setImageBitmap(processedImages.get(i));
-                        }
-                        break;
-                    case 2:
-                        if (rawImages.get(i) != null) {
-                            rawImage3.setImageBitmap(rawImages.get(i));
-                        }
-                        if (processedImages.get(i) != null) {
-                            processedImage3.setImageBitmap(processedImages.get(i));
-                        }
-                        break;
-                    case 3:
-                        if (rawImages.get(i) != null) {
-                            rawImage4.setImageBitmap(rawImages.get(i));
-                        }
-                        if (processedImages.get(i) != null) {
-                            processedImage4.setImageBitmap(processedImages.get(i));
-                        }
-                        break;
+                if (rawImages.get(i) != null) {
+                    rawImageViews.get(i).setImageBitmap(rawImages.get(i));
+                }
+
+                if (processedImages.get(i) != null) {
+                    processedImageViews.get(i).setImageBitmap(processedImages.get(i));
                 }
             }
         }
@@ -129,17 +104,9 @@ public class OnyxImageryActivity extends Activity {
         }
 
         FileUtil fileUtil = new FileUtil();
-        fileUtil.checkExternalMedia(this);
-        if (onyxResult.getWsqData() != null && !onyxResult.getWsqData().isEmpty() && fileUtil.getWriteExternalStoragePermission(this)) {
-            for (int i = 0; i < onyxResult.getWsqData().size(); i++) {
-                fileUtil.writePNGImage(this, onyxResult.getProcessedFingerprintImages().get(i), "finger" + i);
-            }
-        }
-
-        fileUtil.checkExternalMedia(this);
-        if (onyxResult.getProcessedFingerprintImages() != null && !onyxResult.getProcessedFingerprintImages().isEmpty() && fileUtil.getWriteExternalStoragePermission(this)) {
+        if (onyxResult.getProcessedFingerprintImages() != null && !onyxResult.getProcessedFingerprintImages().isEmpty()) {
             for (int i = 0; i < onyxResult.getProcessedFingerprintImages().size(); i++) {
-                fileUtil.writePNGToSDFile(this, onyxResult.getProcessedFingerprintImages().get(i), "png" + i);
+                fileUtil.writePNGImage(this, onyxResult.getProcessedFingerprintImages().get(i), "finger" + i);
             }
         }
 

@@ -16,11 +16,11 @@
 
     <CheckBox
         android:id="@+id/returnRawBitmap"
-        android:layout_height="wrap_content"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="true"
         android:text="Return Raw Image"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
@@ -253,14 +253,23 @@
         tools:layout_editor_absoluteX="1dp" />
 
     <CheckBox
-        android:checked="true"
-        android:id="@+id/useFlash"
-        android:layout_height="wrap_content"
+        android:id="@+id/nfiqMetrics"
         android:layout_width="wrap_content"
-        android:text="Flash"
+        android:layout_height="wrap_content"
+        android:text="NFIQ Metrics"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/useOnyxLive"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="1dp" />
+        tools:ignore="MissingConstraints" />
+
+    <CheckBox
+        android:id="@+id/useFlash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="Flash"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nfiqMetrics"
+        tools:ignore="MissingConstraints" />
 
     <LinearLayout
         android:gravity="center_horizontal"
