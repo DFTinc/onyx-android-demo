@@ -9,14 +9,12 @@
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
-        android:layout_height="wrap_content"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_end="5dp" />
 
-
     <CheckBox
-        android:checked="true"
         android:id="@+id/returnRawBitmap"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
@@ -195,8 +193,8 @@
     <Spinner
         android:entries="@array/image_rotation"
         android:id="@+id/imageRotation"
-        android:layout_height="wrap_content"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:paddingRight="5dp"
         android:tooltipText="Image Rotation"
         app:layout_constraintEnd_toStartOf="@+id/guideline"

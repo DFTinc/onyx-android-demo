@@ -78,5 +78,5 @@ dependencies {
     api 'androidx.constraintlayout:constraintlayout:2.0.4'
     api 'com.google.android.gms:play-services-base:17.6.0'
     api 'com.dft.android:onyx-camera:6.12.1-SNAPSHOT'
-    debugImplementation project(':onyxcamera') // For setting up locally
+//    debugImplementation project(':onyxcamera') // For setting up locally
 }

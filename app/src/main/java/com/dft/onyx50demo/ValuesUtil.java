@@ -41,6 +41,10 @@ public class ValuesUtil {
         return ((CheckBox) a.findViewById(R.id.useOnyxLive)).isChecked();
     }
 
+    public static boolean getComputeNfiqMetrics(Activity a) {
+        return ((CheckBox) a.findViewById(R.id.nfiqMetrics)).isChecked();
+    }
+
     public static boolean getUseFlash(Activity a) {
         return ((CheckBox) a.findViewById(R.id.useFlash)).isChecked();
     }

@@ -21,6 +21,7 @@ import com.dft.onyxcamera.config.OnyxResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.security.ProviderInstaller;
 
+import static com.dft.onyx50demo.ValuesUtil.getComputeNfiqMetrics;
 import static com.dft.onyx50demo.ValuesUtil.getCropFactor;
 import static com.dft.onyx50demo.ValuesUtil.getCropSizeHeight;
 import static com.dft.onyx50demo.ValuesUtil.getCropSizeWidth;
@@ -116,6 +117,7 @@ public class OnyxSetupActivity extends Activity implements ProviderInstaller.Pro
                 .setThresholdProcessedImage(getThresholdImage(this))
                 .setShowLoadingSpinner(getShowLoadingSpinner(this))
                 .setUseOnyxLive(getUseOnyxLive(this))
+                .setComputeNfiqMetrics(getComputeNfiqMetrics(this))
                 .setUseFlash(getUseFlash(this))
                 .setImageRotation(getImageRotation(this))
                 .setCropSize(getCropSizeWidth(this), getCropSizeHeight(this))
