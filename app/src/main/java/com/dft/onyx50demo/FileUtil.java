@@ -69,7 +69,26 @@ public class FileUtil {
      * WRITE_EXTERNAL_STORAGE permission to the manifest file or this method will throw
      * a FileNotFound Exception because you won't have write permission.
      */
-    public void writeToSDFile(Activity a, Bitmap bitmap, String fileName) {
+    public void writeWSQImage(Activity a, byte[] wsqBytes, String fileName) {
+        try {
+            FileOutputStream out = a.openFileOutput(fileName + ".wsq", Context.MODE_PRIVATE);
+            out.write(wsqBytes);
+            out.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            Log.i(TAG, "******* File not found. Did you" +
+                    " add a WRITE_EXTERNAL_STORAGE permission to the   manifest?");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Method to write PNG byte[] to file on SD card. Note that you must add a
+     * WRITE_EXTERNAL_STORAGE permission to the manifest file or this method will throw
+     * a FileNotFound Exception because you won't have write permission.
+     */
+    public void writePNGImage(Activity a, Bitmap bitmap, String fileName) {
         try {
             FileOutputStream out = a.openFileOutput(fileName + ".png", Context.MODE_PRIVATE);
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
