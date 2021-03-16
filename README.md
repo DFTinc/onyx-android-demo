@@ -1,5 +1,5 @@
 # onyx-android-demo
-Demo app for developers that demonstrates the features of Onyx 7.0 SDK
+Demo app for developers that demonstrates the features of Onyx Android SDK
 
 Getting Started
 ---------------
