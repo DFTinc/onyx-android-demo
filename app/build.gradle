@@ -2,22 +2,22 @@ apply plugin: 'com.android.application'
 
 android {
     signingConfigs {
-        onyx50demo {
-            keyAlias 'onyx50demo'
-            keyPassword 'onyx50demo'
-            storePassword 'onyx50demo'
-            storeFile file('./onyx50demo.jks')
+        onyxandroiddemo {
+            keyAlias 'onyxandroiddemo'
+            keyPassword 'onyxandroiddemo'
+            storePassword 'onyxandroiddemo'
+            storeFile file('./onyxandroiddemo.jks')
         }
         release {
-            keyAlias 'onyx50demo'
-            keyPassword 'onyx50demo'
-            storeFile file('./onyx50demo.jks')
-            storePassword 'onyx50demo'
+            keyAlias 'onyxandroiddemo'
+            keyPassword 'onyxandroiddemo'
+            storeFile file('./onyxandroiddemo.jks')
+            storePassword 'onyxandroiddemo'
         }
     }
     compileSdkVersion 30
     defaultConfig {
-        applicationId "com.dft.onyx50demo"
+        applicationId "com.dft.onyxandroiddemo"
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 1

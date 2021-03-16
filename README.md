@@ -1,5 +1,5 @@
-# onyx-5.0-demo
-Demo app for developers that demonstrates the features of Onyx 5.0 SDK
+# onyx-android-demo
+Demo app for developers that demonstrates the features of Onyx 7.0 SDK
 
 Getting Started
 ---------------
@@ -14,7 +14,7 @@ You should receive a license of the form XXXX-XXXX-XXXX-X-X at your provided e-m
 Next, you can clone our sample repository on the command-line using the following commands:
 
     > cd <YOUR_DEVELOPMENT_ROOT>
-    > git clone https://github.com/DFTinc/onyx-5.0-demo.git
+    > git clone https://github.com/DFTinc/onyx-android-demo.git
 
 Alternatively, you can clone the project via Android Studio:
 <br/>

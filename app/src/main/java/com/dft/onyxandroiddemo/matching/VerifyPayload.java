@@ -1,4 +1,4 @@
-package com.dft.onyx50demo.matching;
+package com.dft.onyxandroiddemo.matching;
 
 import android.graphics.Bitmap;
 

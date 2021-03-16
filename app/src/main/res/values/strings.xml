@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Onyx 5.0 Demo</string>
+    <string name="app_name">Onyx Android Demo</string>
     <string name="onyx_license" translatable="false">@string/license_key_value</string>
     <string name="enroll_title" translatable="false">Enrollment</string>
     <string name="enroll_question" translatable="false">Would you like to enroll this fingerprint?</string>

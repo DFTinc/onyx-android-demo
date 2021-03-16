@@ -1,4 +1,4 @@
-package com.dft.onyx50demo;
+package com.dft.onyxandroiddemo;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -21,24 +21,24 @@ import com.dft.onyxcamera.config.OnyxResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.security.ProviderInstaller;
 
-import static com.dft.onyx50demo.ValuesUtil.getComputeNfiqMetrics;
-import static com.dft.onyx50demo.ValuesUtil.getCropFactor;
-import static com.dft.onyx50demo.ValuesUtil.getCropSizeHeight;
-import static com.dft.onyx50demo.ValuesUtil.getCropSizeWidth;
-import static com.dft.onyx50demo.ValuesUtil.getImageRotation;
-import static com.dft.onyx50demo.ValuesUtil.getReticleAngle;
-import static com.dft.onyx50demo.ValuesUtil.getReticleOrientation;
-import static com.dft.onyx50demo.ValuesUtil.getReturnEnhancedImage;
-import static com.dft.onyx50demo.ValuesUtil.getReturnFingerprintTemplate;
-import static com.dft.onyx50demo.ValuesUtil.getReturnProcessedImage;
-import static com.dft.onyx50demo.ValuesUtil.getReturnRawImage;
-import static com.dft.onyx50demo.ValuesUtil.getReturnWSQ;
-import static com.dft.onyx50demo.ValuesUtil.getShowLoadingSpinner;
-import static com.dft.onyx50demo.ValuesUtil.getTargetPixelsPerInch;
-import static com.dft.onyx50demo.ValuesUtil.getThresholdImage;
-import static com.dft.onyx50demo.ValuesUtil.getUseFlash;
-import static com.dft.onyx50demo.ValuesUtil.getUseManualCapture;
-import static com.dft.onyx50demo.ValuesUtil.getUseOnyxLive;
+import static com.dft.onyxandroiddemo.ValuesUtil.getComputeNfiqMetrics;
+import static com.dft.onyxandroiddemo.ValuesUtil.getCropFactor;
+import static com.dft.onyxandroiddemo.ValuesUtil.getCropSizeHeight;
+import static com.dft.onyxandroiddemo.ValuesUtil.getCropSizeWidth;
+import static com.dft.onyxandroiddemo.ValuesUtil.getImageRotation;
+import static com.dft.onyxandroiddemo.ValuesUtil.getReticleAngle;
+import static com.dft.onyxandroiddemo.ValuesUtil.getReticleOrientation;
+import static com.dft.onyxandroiddemo.ValuesUtil.getReturnEnhancedImage;
+import static com.dft.onyxandroiddemo.ValuesUtil.getReturnFingerprintTemplate;
+import static com.dft.onyxandroiddemo.ValuesUtil.getReturnProcessedImage;
+import static com.dft.onyxandroiddemo.ValuesUtil.getReturnRawImage;
+import static com.dft.onyxandroiddemo.ValuesUtil.getReturnWSQ;
+import static com.dft.onyxandroiddemo.ValuesUtil.getShowLoadingSpinner;
+import static com.dft.onyxandroiddemo.ValuesUtil.getTargetPixelsPerInch;
+import static com.dft.onyxandroiddemo.ValuesUtil.getThresholdImage;
+import static com.dft.onyxandroiddemo.ValuesUtil.getUseFlash;
+import static com.dft.onyxandroiddemo.ValuesUtil.getUseManualCapture;
+import static com.dft.onyxandroiddemo.ValuesUtil.getUseOnyxLive;
 
 public class OnyxSetupActivity extends Activity implements ProviderInstaller.ProviderInstallListener {
     private static final String TAG = OnyxSetupActivity.class.getName();

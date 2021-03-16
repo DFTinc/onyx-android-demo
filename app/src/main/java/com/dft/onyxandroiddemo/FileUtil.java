@@ -1,4 +1,4 @@
-package com.dft.onyx50demo;
+package com.dft.onyxandroiddemo;
 
 import android.Manifest;
 import android.app.Activity;
@@ -11,7 +11,6 @@ import android.util.Log;
 
 import androidx.core.app.ActivityCompat;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;

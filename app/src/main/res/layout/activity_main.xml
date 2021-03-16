@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_constraintEnd_toEndOf="parent"
-    tools:context="com.dft.onyx50demo.OnyxSetupActivity">
+    tools:context="com.dft.onyxandroiddemo.OnyxSetupActivity">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"

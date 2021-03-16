@@ -1,14 +1,13 @@
-package com.dft.onyx50demo.matching;
+package com.dft.onyxandroiddemo.matching;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.dft.onyx.FingerprintTemplate;
-import com.dft.onyx50demo.MainApplication;
-import com.dft.onyx50demo.R;
+import com.dft.onyxandroiddemo.MainApplication;
+import com.dft.onyxandroiddemo.R;
 import com.dft.onyxcamera.config.OnyxResult;
 
 import java.io.File;

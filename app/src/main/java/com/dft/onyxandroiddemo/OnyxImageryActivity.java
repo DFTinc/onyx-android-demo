@@ -1,4 +1,4 @@
-package com.dft.onyx50demo;
+package com.dft.onyxandroiddemo;
 
 import android.app.Activity;
 import android.content.Intent;
