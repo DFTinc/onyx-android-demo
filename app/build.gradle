@@ -59,8 +59,6 @@ android {
 }
 
 repositories {
-    mavenCentral()
-
     maven {
         url 'http://nexus.diamondfortress.com/nexus/content/repositories/releases/'
     }
@@ -68,6 +66,8 @@ repositories {
     maven {
         url 'http://nexus.diamondfortress.com/nexus/content/repositories/snapshots/'
     }
+
+    mavenCentral()
 }
 
 configurations.all {
@@ -77,6 +77,6 @@ configurations.all {
 dependencies {
     api 'androidx.constraintlayout:constraintlayout:2.0.4'
     api 'com.google.android.gms:play-services-base:17.6.0'
-    api 'com.dft.android:onyx-camera:6.12.1-SNAPSHOT'
+    api 'com.dft.android:onyx-camera:7.0.0-SNAPSHOT'
 //    debugImplementation project(':onyxcamera') // For setting up locally
 }
