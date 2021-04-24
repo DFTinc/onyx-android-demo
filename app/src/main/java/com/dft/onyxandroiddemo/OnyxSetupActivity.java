@@ -8,10 +8,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.dft.onyxcamera.config.Onyx;
 import com.dft.onyxcamera.config.OnyxConfiguration;
@@ -21,23 +18,12 @@ import com.dft.onyxcamera.config.OnyxResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.security.ProviderInstaller;
 
-import static com.dft.onyxandroiddemo.ValuesUtil.getComputeNfiqMetrics;
-import static com.dft.onyxandroiddemo.ValuesUtil.getCropFactor;
-import static com.dft.onyxandroiddemo.ValuesUtil.getCropSizeHeight;
-import static com.dft.onyxandroiddemo.ValuesUtil.getCropSizeWidth;
-import static com.dft.onyxandroiddemo.ValuesUtil.getImageRotation;
-import static com.dft.onyxandroiddemo.ValuesUtil.getReticleAngle;
-import static com.dft.onyxandroiddemo.ValuesUtil.getReticleOrientation;
-import static com.dft.onyxandroiddemo.ValuesUtil.getReturnEnhancedImage;
+import timber.log.Timber;
+
 import static com.dft.onyxandroiddemo.ValuesUtil.getReturnFingerprintTemplate;
 import static com.dft.onyxandroiddemo.ValuesUtil.getReturnProcessedImage;
 import static com.dft.onyxandroiddemo.ValuesUtil.getReturnRawImage;
 import static com.dft.onyxandroiddemo.ValuesUtil.getReturnWSQ;
-import static com.dft.onyxandroiddemo.ValuesUtil.getShowLoadingSpinner;
-import static com.dft.onyxandroiddemo.ValuesUtil.getTargetPixelsPerInch;
-import static com.dft.onyxandroiddemo.ValuesUtil.getThresholdImage;
-import static com.dft.onyxandroiddemo.ValuesUtil.getUseFlash;
-import static com.dft.onyxandroiddemo.ValuesUtil.getUseManualCapture;
 import static com.dft.onyxandroiddemo.ValuesUtil.getUseOnyxLive;
 
 public class OnyxSetupActivity extends Activity implements ProviderInstaller.ProviderInstallListener {
@@ -45,11 +31,7 @@ public class OnyxSetupActivity extends Activity implements ProviderInstaller.Pro
     private static final int ONYX_REQUEST_CODE = 1337;
     MainApplication application = new MainApplication();
     private Activity activity;
-    private ImageView fingerprintView;
-    private Button startOnyxButton;
     private AlertDialog alertDialog;
-    private TextView livenessResultTextView;
-    private TextView nfiqScoreTextView;
 
     private OnyxConfiguration.SuccessCallback successCallback;
     private OnyxConfiguration.ErrorCallback errorCallback;
@@ -59,8 +41,7 @@ public class OnyxSetupActivity extends Activity implements ProviderInstaller.Pro
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ProviderInstaller.installIfNeededAsync(this, this); // This is needed in order for SSL to work on Android 5.1 devices and lower
-        FileUtil fileUtil = new FileUtil();
-        fileUtil.getWriteExternalStoragePermission(this); // This is for file writing permission on SDK >= 23
+        new FileUtil().getWriteExternalStoragePermission(this); // This is for file writing permission on SDK >= 23
         setupUI();
         setupCallbacks();
     }
@@ -91,7 +72,7 @@ public class OnyxSetupActivity extends Activity implements ProviderInstaller.Pro
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        startOnyxButton.setEnabled(true);
+                        startActivityForResult(new Intent(activity, OnyxActivity.class), ONYX_REQUEST_CODE);
                     }
                 });
             }
@@ -111,30 +92,14 @@ public class OnyxSetupActivity extends Activity implements ProviderInstaller.Pro
                 .setLicenseKey(getResources().getString(R.string.onyx_license))
                 .setReturnRawImage(getReturnRawImage(this))
                 .setReturnProcessedImage(getReturnProcessedImage(this))
-                .setReturnEnhancedImage(getReturnEnhancedImage(this))
                 .setReturnWSQ(getReturnWSQ(this))
                 .setReturnFingerprintTemplate(getReturnFingerprintTemplate(this))
-                .setThresholdProcessedImage(getThresholdImage(this))
-                .setShowLoadingSpinner(getShowLoadingSpinner(this))
                 .setUseOnyxLive(getUseOnyxLive(this))
-                .setComputeNfiqMetrics(getComputeNfiqMetrics(this))
-                .setUseFlash(getUseFlash(this))
-                .setImageRotation(getImageRotation(this))
-                .setCropSize(getCropSizeWidth(this), getCropSizeHeight(this))
-                .setCropFactor(getCropFactor(this))
-                .setTargetPixelsPerInch(getTargetPixelsPerInch(this))
-                .setReticleOrientation(getReticleOrientation(this))
-                .setCaptureDistanceRange(19.5f, 29.5f)
+                .setComputeNfiqMetrics(true)
                 .setSuccessCallback(successCallback)
                 .setErrorCallback(errorCallback)
                 .setOnyxCallback(onyxCallback);
-        // Reticle Angle overrides Reticle Orientation so have to set this separately
-        if (getReticleAngle(this) != null) {
-            onyxConfigurationBuilder.setReticleAngle(getReticleAngle(this));
-        }
-        if (getUseManualCapture(this)) {
-            onyxConfigurationBuilder.setUseManualCapture(true);
-        }
+
         // Finally, build the OnyxConfiguration
         onyxConfigurationBuilder.buildOnyxConfiguration();
     }
@@ -160,42 +125,26 @@ public class OnyxSetupActivity extends Activity implements ProviderInstaller.Pro
 
     private void displayResults(OnyxResult onyxResult) {
         startActivity(new Intent(this, OnyxImageryActivity.class));
-//        if (onyxResult.getMetrics() != null) {
-//            livenessResultTextView.setText(Double.toString(onyxResult.getMetrics().getLivenessConfidence()));
-//            nfiqScoreTextView.setText(Integer.toString(onyxResult.getMetrics().getNfiqMetrics().getNfiqScore()));
-//        }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(grantResults[0]== PackageManager.PERMISSION_GRANTED){
-            Log.v(TAG,"Permission: "+permissions[0]+ " was " + grantResults[0]);
+        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            Timber.v("Permission: " + permissions[0] + " was " + grantResults[0]);
         }
     }
 
     private void setupUI() {
         activity = this;
         setContentView(R.layout.activity_main);
-        fingerprintView = new ImageView(this);
-        LayoutParams layoutParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-        addContentView(fingerprintView, layoutParams);
-        startOnyxButton = findViewById(R.id.start_onyx);
-        startOnyxButton.setEnabled(false);
-        startOnyxButton.bringToFront();
-        startOnyxButton.setOnClickListener(new View.OnClickListener() {
+        Button captureButton = findViewById(R.id.captureButton);
+        captureButton.bringToFront();
+        captureButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 MainApplication.setOnyxResult(null);
-                startActivityForResult(new Intent(activity, OnyxActivity.class), ONYX_REQUEST_CODE);
-            }
-        });
-        Button refreshConfigButton = findViewById(R.id.refresh_config);
-        refreshConfigButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
                 setupOnyx(activity);
-                startOnyxButton.setEnabled(false);
             }
         });
     }
@@ -203,6 +152,7 @@ public class OnyxSetupActivity extends Activity implements ProviderInstaller.Pro
     /**
      * This displays an AlertDialog upon receiving an OnyxError, please handle appropriately for
      * your application
+     *
      * @param onyxError
      */
     private void showAlertDialog(OnyxError onyxError) {
@@ -245,7 +195,7 @@ public class OnyxSetupActivity extends Activity implements ProviderInstaller.Pro
      */
     @Override
     public void onProviderInstalled() {
-        Log.i("OnyxSetupActivity","Provider is up-to-date, app can make secure network calls.");
+        Timber.i("Provider is up-to-date, app can make secure network calls.");
     }
 
     /**
@@ -289,6 +239,6 @@ public class OnyxSetupActivity extends Activity implements ProviderInstaller.Pro
         // This is reached if the provider cannot be updated for some reason.
         // App should consider all HTTP communication to be vulnerable, and take
         // appropriate action.
-        Log.i("OnyxSetupActivity","ProviderInstaller not available, device cannot make secure network calls.");
+        Timber.i("ProviderInstaller not available, device cannot make secure network calls.");
     }
 }

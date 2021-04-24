@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -10,158 +8,180 @@
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="137dp"
-        tools:layout_editor_absoluteY="199dp">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <TableLayout
-            android:id="@+id/tableLayout"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:isScrollContainer="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:isScrollContainer="true">
 
-            <TableRow
-                android:layout_width="0dp"
+            <TextView
+                android:id="@+id/livenessText"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp">
+                android:text="Liveness confidence: "
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:id="@+id/LL1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toEndOf="@+id/livenessText"
+                app:layout_constraintTop_toBottomOf="@+id/livenessText">
 
                 <ImageView
                     android:id="@+id/rawImage1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight=".5"
-                    android:scaleType="centerInside"
-                    tools:src="@android:drawable/arrow_up_float" />
-
-                <TextView
-                    android:id="@+id/nfiqText1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="NFIQ:" />
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/common_google_signin_btn_icon_dark" />
 
                 <ImageView
                     android:id="@+id/processedImage1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight=".5"
-                    android:scaleType="centerInside"
-                    android:src="@android:drawable/arrow_up_float" />
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/common_google_signin_btn_icon_dark" />
 
-            </TableRow>
+                <TextView
+                    android:id="@+id/nfiqText1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:text="NFIQ:" />
+            </LinearLayout>
 
-            <TableRow
+            <LinearLayout
+                android:id="@+id/LL2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp">
+                android:orientation="horizontal"
+                app:layout_constraintStart_toEndOf="@+id/LL1"
+                app:layout_constraintTop_toBottomOf="@+id/LL1">
 
                 <ImageView
                     android:id="@+id/rawImage2"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight=".5"
-                    android:scaleType="centerInside"
-                    android:src="@android:drawable/arrow_up_float" />
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/common_google_signin_btn_icon_dark" />
+
+                <ImageView
+                    android:id="@+id/processedImage2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/common_google_signin_btn_icon_dark" />
 
                 <TextView
                     android:id="@+id/nfiqText2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
                     android:text="NFIQ:" />
+            </LinearLayout>
 
-                <ImageView
-                    android:id="@+id/processedImage2"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".5"
-                    android:scaleType="centerInside"
-                    android:src="@android:drawable/arrow_up_float" />
-
-            </TableRow>
-
-            <TableRow
-                android:layout_width="0dp"
+            <LinearLayout
+                android:id="@+id/LL3"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp">
+                android:orientation="horizontal"
+                app:layout_constraintStart_toEndOf="@+id/LL2"
+                app:layout_constraintTop_toBottomOf="@+id/LL2">
 
                 <ImageView
                     android:id="@+id/rawImage3"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
-                    android:scaleType="centerInside"
-                    android:src="@android:drawable/arrow_up_float" />
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/common_google_signin_btn_icon_dark" />
+
+                <ImageView
+                    android:id="@+id/processedImage3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/common_google_signin_btn_icon_dark" />
 
                 <TextView
                     android:id="@+id/nfiqText3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
                     android:text="NFIQ:" />
+            </LinearLayout>
 
-                <ImageView
-                    android:id="@+id/processedImage3"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".5"
-                    android:scaleType="centerInside"
-                    android:src="@android:drawable/arrow_up_float" />
-            </TableRow>
-
-            <TableRow
-                android:layout_width="0dp"
+            <LinearLayout
+                android:id="@+id/LL4"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp">
+                android:orientation="horizontal"
+                app:layout_constraintStart_toEndOf="@+id/LL3"
+                app:layout_constraintTop_toBottomOf="@+id/LL3">
 
                 <ImageView
                     android:id="@+id/rawImage4"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight=".5"
-                    android:scaleType="centerInside"
-                    android:src="@android:drawable/arrow_up_float" />
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/common_google_signin_btn_icon_dark" />
+
+                <ImageView
+                    android:id="@+id/processedImage4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/common_google_signin_btn_icon_dark" />
 
                 <TextView
                     android:id="@+id/nfiqText4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
                     android:text="NFIQ:" />
+            </LinearLayout>
 
-                <ImageView
-                    android:id="@+id/processedImage4"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".5"
-                    android:scaleType="centerInside"
-                    android:src="@android:drawable/arrow_up_float" />
-            </TableRow>
-        </TableLayout>
+            <Button
+                android:id="@+id/saveImages"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="Save Images to Camera"
+                app:layout_constraintStart_toEndOf="@+id/LL4"
+                app:layout_constraintTop_toBottomOf="@+id/LL4" />
 
+            <Button
+                android:id="@+id/emailResults"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="Email Results"
+                app:layout_constraintStart_toEndOf="@+id/saveImages"
+                app:layout_constraintTop_toBottomOf="@+id/saveImages" />
+
+            <Button
+                android:id="@+id/finishButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="Finish"
+                app:layout_constraintStart_toEndOf="@+id/emailResults"
+                app:layout_constraintTop_toBottomOf="@+id/emailResults" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
-
-    <Button
-        android:id="@+id/finishButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="Finish"
-        app:layout_constraintBottom_toBottomOf="@id/scrollView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/livenessText"
-        android:layout_width="wrap_content"
-        android:layout_height="25dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="16dp"
-        android:text="Liveness:"
-        app:layout_constraintBottom_toTopOf="@+id/finishButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

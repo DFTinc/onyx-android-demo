@@ -3,23 +3,28 @@ package com.dft.onyxandroiddemo;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dft.onyx.NfiqMetrics;
+import com.dft.onyxandroiddemo.matching.EnrollUtil;
 import com.dft.onyxcamera.config.OnyxResult;
 import com.dft.onyxcamera.util.UploadMatchResult;
 
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
-import static java.lang.Integer.parseInt;
+import timber.log.Timber;
 
 public class OnyxImageryActivity extends Activity {
-    private static final String TAG = OnyxImageryActivity.class.getName();
 
     private Activity activity;
 
@@ -50,7 +55,7 @@ public class OnyxImageryActivity extends Activity {
         rawImage4.setImageDrawable(null);
         processedImage4.setImageDrawable(null);
 
-        OnyxResult onyxResult = MainApplication.getOnyxResult();
+        final OnyxResult onyxResult = MainApplication.getOnyxResult();
         if (onyxResult == null) {
             return;
         }
@@ -75,19 +80,24 @@ public class OnyxImageryActivity extends Activity {
                 processedImage3,
                 processedImage4
         ));
-        livenessTextView.setText(String.format("Liveness: %.2f", onyxResult.getMetrics().getLivenessConfidence()));
+        if (onyxResult.getMetrics().getLivenessConfidence() != 0.00) {
+            livenessTextView.setText(String.format("Liveness confidence: %.2f", onyxResult.getMetrics().getLivenessConfidence()));
+        }
         if (onyxResult.getMetrics() != null && onyxResult.getMetrics().getNfiqMetrics() != null) {
             List<NfiqMetrics> nfiqMetricsList = onyxResult.getMetrics().getNfiqMetrics();
             for (int i = 0; i < nfiqMetricsList.size(); i++) {
                 nfiqTextViews.get(i).setText(nfiqMetricsList.get(i) == null ? "" : "NFIQ: " + String.valueOf(nfiqMetricsList.get(i).getNfiqScore()));
             }
         }
-        if (rawImages != null && processedImages != null) {
+        if (rawImages != null) {
             for (int i = 0; i < rawImages.size(); i++) {
                 if (rawImages.get(i) != null) {
                     rawImageViews.get(i).setImageBitmap(rawImages.get(i));
                 }
-
+            }
+        }
+        if (processedImages != null) {
+            for (int i = 0; i < processedImages.size(); i++) {
                 if (processedImages.get(i) != null) {
                     processedImageViews.get(i).setImageBitmap(processedImages.get(i));
                 }
@@ -103,12 +113,38 @@ public class OnyxImageryActivity extends Activity {
             uploadMatchResult.uploadMatchResult();
         }
 
-        FileUtil fileUtil = new FileUtil();
-        if (onyxResult.getProcessedFingerprintImages() != null && !onyxResult.getProcessedFingerprintImages().isEmpty()) {
-            for (int i = 0; i < onyxResult.getProcessedFingerprintImages().size(); i++) {
-                fileUtil.writePNGImage(this, onyxResult.getProcessedFingerprintImages().get(i), "finger" + i);
+        final FileUtil fileUtil = new FileUtil();
+        Button saveImagesButton = findViewById(R.id.saveImages);
+        saveImagesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String currentTimeMillis = String.valueOf(System.currentTimeMillis());
+                saveImages(onyxResult, fileUtil, currentTimeMillis);
             }
-        }
+        });
+
+        Button emailButton = findViewById(R.id.emailResults);
+        emailButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String currentTimeMillis = String.valueOf(System.currentTimeMillis());
+                ArrayList<Uri> uriList = (ArrayList<Uri>) saveImages(onyxResult, fileUtil, currentTimeMillis);
+
+                Intent i = new Intent(Intent.ACTION_SEND_MULTIPLE);
+                SimpleDateFormat DateFor = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+
+                i.setType("plain/text");
+                i.putExtra(Intent.EXTRA_EMAIL, new String[] {""});
+                i.putExtra(Intent.EXTRA_SUBJECT, "Onyx results: " + DateFor.format(new Date()));
+                i.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uriList);
+
+                try {
+                    startActivity(Intent.createChooser(i, "Send mail..."));
+                } catch (android.content.ActivityNotFoundException ex) {
+                    Toast.makeText(activity, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         Button finishButton = findViewById(R.id.finishButton);
         finishButton.setOnClickListener(new View.OnClickListener() {
@@ -118,6 +154,44 @@ public class OnyxImageryActivity extends Activity {
                 startActivity(new Intent(activity, OnyxSetupActivity.class));
             }
         });
+
+        new EnrollUtil().createEnrollQuestionDialog(this);
+    }
+
+    private List<Uri> saveImages(OnyxResult onyxResult, FileUtil fileUtil, String currentTimeMillis) {
+        ArrayList<Uri> uriList = new ArrayList<>();
+        try {
+            if (onyxResult.getRawFingerprintImages() != null && !onyxResult
+                    .getRawFingerprintImages().isEmpty()) {
+                for (int i = 0; i < onyxResult.getRawFingerprintImages().size(); i++) {
+                    uriList.add(fileUtil.saveImage(activity, onyxResult.getRawFingerprintImages()
+                                    .get(i),
+                            null,
+                            "raw" + i + "_" + currentTimeMillis));
+                }
+            }
+            if (onyxResult.getProcessedFingerprintImages() != null && !onyxResult
+                    .getProcessedFingerprintImages().isEmpty()) {
+                for (int i = 0; i < onyxResult.getProcessedFingerprintImages().size(); i++) {
+                    uriList.add(fileUtil.saveImage(activity, onyxResult.getProcessedFingerprintImages()
+                                    .get(i),
+                            null,
+                            "processed" + i + "_" + currentTimeMillis));
+                }
+            }
+            if (onyxResult.getWsqData() != null && !onyxResult.getWsqData().isEmpty()) {
+                for (int i = 0; i < onyxResult.getWsqData().size(); i++) {
+                    uriList.add(fileUtil.saveImage(activity,
+                            null,
+                            onyxResult.getWsqData().get(i),
+                            "wsq" + i + "_" + currentTimeMillis));
+                }
+            }
+        } catch (IOException e) {
+            Timber.e("Exception saving imagery.");
+            e.printStackTrace();
+        }
+        return uriList;
     }
 
 }
