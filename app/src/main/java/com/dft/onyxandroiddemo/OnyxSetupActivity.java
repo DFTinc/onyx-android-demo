@@ -20,6 +20,7 @@ import com.google.android.gms.security.ProviderInstaller;
 
 import timber.log.Timber;
 
+import static com.dft.onyxandroiddemo.ValuesUtil.getReticleOrientation;
 import static com.dft.onyxandroiddemo.ValuesUtil.getReturnFingerprintTemplate;
 import static com.dft.onyxandroiddemo.ValuesUtil.getReturnProcessedImage;
 import static com.dft.onyxandroiddemo.ValuesUtil.getReturnRawImage;
@@ -95,6 +96,7 @@ public class OnyxSetupActivity extends Activity implements ProviderInstaller.Pro
                 .setReturnWSQ(getReturnWSQ(this))
                 .setReturnFingerprintTemplate(getReturnFingerprintTemplate(this))
                 .setUseOnyxLive(getUseOnyxLive(this))
+                .setReticleOrientation(getReticleOrientation(this))
                 .setComputeNfiqMetrics(true)
                 .setSuccessCallback(successCallback)
                 .setErrorCallback(errorCallback)

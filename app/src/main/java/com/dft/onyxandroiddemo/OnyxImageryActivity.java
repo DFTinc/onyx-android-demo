@@ -46,6 +46,7 @@ public class OnyxImageryActivity extends Activity {
         TextView nfiqTextView2 = findViewById(R.id.nfiqText2);
         TextView nfiqTextView3 = findViewById(R.id.nfiqText3);
         TextView nfiqTextView4 = findViewById(R.id.nfiqText4);
+
         rawImage1.setImageDrawable(null);
         processedImage1.setImageDrawable(null);
         rawImage2.setImageDrawable(null);
@@ -101,6 +102,12 @@ public class OnyxImageryActivity extends Activity {
                 if (processedImages.get(i) != null) {
                     processedImageViews.get(i).setImageBitmap(processedImages.get(i));
                 }
+
+            }
+            if (processedImages.size() == 4) {
+                nfiqTextView2.setVisibility(View.VISIBLE);
+                nfiqTextView3.setVisibility(View.VISIBLE);
+                nfiqTextView4.setVisibility(View.VISIBLE);
             }
         }
 
