@@ -162,7 +162,9 @@ public class OnyxImageryActivity extends Activity {
             }
         });
 
-        new EnrollUtil().createEnrollQuestionDialog(this);
+        if(onyxResult.getFingerprintTemplates() != null) {
+            new EnrollUtil().createEnrollQuestionDialog(this);
+        }
     }
 
     private List<Uri> saveImages(OnyxResult onyxResult, FileUtil fileUtil, String currentTimeMillis) {
