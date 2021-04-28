@@ -47,6 +47,41 @@ This sample uses the Gradle build system. To build this project, use the
 
 Now plug in your compatible device, and select Run >> Run 'app'.
 
+# Customizing OnyxConfiguration
+The Onyx SDK is very highly configurable, and this section will briefly provide an overview of typical configuration.
+The typical configuration for OnyxConfiguration will be set to return a Processed image, or a WSQ image,
+depending on the needs of the biometric system being utilized.  If doing on device matching, then a
+proprietary FingerprintTemplate and matching algorithm from Innovatrics is provided.  The OnyxConfiguration
+can be configured to return the FingerprintTemplate, and the example code for doing on-device matching.
+
+If integrating with a 3rd party matching system, such as a national database, or from proprietary vendors,
+then the requirements will vary, but will most often require a WSQ image, as these are compressed for sending
+across networks.  The size of the output WSQ image can be controlled using the setCropSize() method on 
+OnyxConfigurationBuilder.  This will set the dimensions (width and height) of the image, such as to 512x512 or 500x500. 
+**It is important to set this configuration to what the 3rd party matching system requires for image dimensions
+
+Another important matter is the scale of an image.  This can be controlled using the setCropFactor() method
+on the OnyxConfigurationBuilder, and will scale the image up or down.  This can be important on some devices
+that may focus more closely or more further away than average device camera modules.  We have set the scale
+to 1.0f by default that works for most devices, but you may try adjusting this setting for devices that may
+focus more closely or more further away to get the scale to more closely match touch-based fingerprint scanners.
+
+The default settings for the options on the OnyxConfigurationBuilder should work fine out of the box.
+Here are a couple other settings that may be of use, however.
+**setUseOnyxLive() - this will perform a "liveness" check that returns a decimal that indicates the percentage
+certainty that the image is a real finger, and not a "fake" finger/fingerprint or image of a finger/fingerprint.
+
+**setManualCapture() - this will allow the user to touch the screen to initiate the capture process instead
+of using the auto-capture process
+
+The Javadoc code can be used in most modern IDE's, but a copy of the OnyxConfigurationBuilder is listed at
+the bottom of this document for more advanced usage.
+
+# Integration in to existing projects
+If you are integrating in to an existing project, you will want to make sure you have the below copied from this project:
+- **Copy the proguard.pro line items in to your project to allow release builds to work correctly!**
+- **For older devices it is important to include the gms provider sections below some where in your app!**
+
 Important addendum:  Update your security provider to protect against SSL exploits
 Please see the article here: https://developer.android.com/training/articles/security-gms-provider
 
@@ -386,9 +421,8 @@ public class OnyxConfigurationBuilder {
      * to enable the "Mitt" style four finger reticle.  The second argument determines if the
      * layout should be set to the right hand layout.
      */
-    public OnyxConfigurationBuilder setUseFourFingerReticle(boolean useFourFingerReticle, boolean useRightHandLayout) {
+    public OnyxConfigurationBuilder setUseFourFingerReticle(boolean useFourFingerReticle) {
         onyxConfig.setUseFourFingerReticle(useFourFingerReticle);
-        onyxConfig.setUseRightHandLayout(useRightHandLayout);
         return this;
     }
 
@@ -413,22 +447,6 @@ public class OnyxConfigurationBuilder {
      */
     public OnyxConfigurationBuilder setTargetPixelsPerInch(double pixelsPerInch) {
         onyxConfig.setTargetPixelsPerInch(pixelsPerInch);
-        return this;
-    }
-
-    /**
-     * This method configures Onyx to use the left hand layout
-     */
-    public OnyxConfigurationBuilder setUseLeftHandLayout(boolean useLeftHandLayout) {
-        onyxConfig.setUseLeftHandLayout(useLeftHandLayout);
-        return this;
-    }
-
-    /**
-     * This method configures Onyx to use the right hand layout
-     */
-    public OnyxConfigurationBuilder setUseRightHandLayout(boolean useRightHandLayout) {
-        onyxConfig.setUseRightHandLayout(useRightHandLayout);
         return this;
     }
 
@@ -495,6 +513,42 @@ public class OnyxConfigurationBuilder {
      */
     public OnyxConfigurationBuilder setEnableShutterSound(boolean isEnableShutterSound) {
         onyxConfig.setEnableShutterSound(isEnableShutterSound);
+        return this;
+    }
+
+    /**
+     * This method configures Onyx with the range to use for minimum and maximum capture distances
+     * This will usually be in a range from 19 to 32.
+     */
+    public OnyxConfigurationBuilder setCaptureDistanceRange(float minCaptureDistance, float maxCaptureDistance) {
+        onyxConfig.setMinFingerWidthDetection(minCaptureDistance);
+        onyxConfig.setMaxFingerWidthDetection(maxCaptureDistance);
+        return this;
+    }
+
+    /**
+     * This method configures Onyx with the thumb scale factor to use.
+     */
+    public OnyxConfigurationBuilder setThumbScaleFactor(double thumbScaleFactor) {
+        onyxConfig.setThumbScaleFactor(thumbScaleFactor);
+        return this;
+    }
+
+    /**
+     * Notice: This setting only works on devices that support FULL camera2 API support and
+     * possibly that have high enough hardware specs to run smoothly.  It may not work on all devices.
+     *
+     * This method configures Onyx to use the Camera2 API for preview image streaming instead
+     * of taking still picture image captures, and it takes a lower and upper FPS settings to
+     * control the frame rate.
+     */
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public OnyxConfigurationBuilder setUseCamera2PreviewStreaming(boolean useCamera2PreviewStreaming,
+                                                                  int lowerFps, int upperFps) {
+        onyxConfig.setUseCamera2PreviewStreaming(useCamera2PreviewStreaming);
+        Range<Integer>[] fps = new Range[1];
+        fps[0] = Range.create(lowerFps,upperFps);
+        onyxConfig.setCamera2PreviewStreamingFpsRange(fps);
         return this;
     }
 
