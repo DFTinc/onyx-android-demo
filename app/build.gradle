@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 
 android {
     signingConfigs {
@@ -77,6 +78,9 @@ configurations.all {
 dependencies {
     api 'androidx.constraintlayout:constraintlayout:2.0.4'
     api 'com.google.android.gms:play-services-base:17.6.0'
-//    api 'com.dft.android:onyx-camera:7.0.0'
-    debugImplementation project(':onyxcamera') // For setting up locally
+//    api 'com.dft.android:onyx-camera:7.1.0-SNAPSHOT'
+    debugImplementation project(':onyxcamera')
+    implementation "androidx.core:core-ktx:+"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    // For setting up locally
 }
