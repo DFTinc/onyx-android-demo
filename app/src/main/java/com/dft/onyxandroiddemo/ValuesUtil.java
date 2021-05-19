@@ -1,9 +1,8 @@
 package com.dft.onyxandroiddemo;
 
 import android.app.Activity;
-import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Switch;
 
 import com.dft.onyxcamera.ui.reticles.Reticle;
 
@@ -14,47 +13,23 @@ import com.dft.onyxcamera.ui.reticles.Reticle;
 public class ValuesUtil {
 
     public static boolean getReturnRawImage(Activity a) {
-        return ((CheckBox) a.findViewById(R.id.returnRawBitmap)).isChecked();
+        return ((Switch) a.findViewById(R.id.setReturnRawImage)).isChecked();
     }
 
     public static boolean getReturnProcessedImage(Activity a) {
-        return ((CheckBox) a.findViewById(R.id.returnProcessedBitmap)).isChecked();
-    }
-
-    public static boolean getReturnEnhancedImage(Activity a) {
-        return ((CheckBox) a.findViewById(R.id.returnEnhancedBitmap)).isChecked();
+        return ((Switch) a.findViewById(R.id.setReturnProcessedImage)).isChecked();
     }
 
     public static boolean getReturnWSQ(Activity a) {
-        return ((CheckBox) a.findViewById(R.id.returnWSQ)).isChecked();
+        return ((Switch) a.findViewById(R.id.setReturnWSQ)).isChecked();
     }
 
     public static boolean getReturnFingerprintTemplate(Activity a) {
-        return ((CheckBox) a.findViewById(R.id.returnFingerprintTemplate)).isChecked();
-    }
-
-    public static boolean getShowLoadingSpinner(Activity a) {
-        return ((CheckBox) a.findViewById(R.id.showLoadingSpinner)).isChecked();
+        return ((Switch) a.findViewById(R.id.setReturnFingerprintTemplate)).isChecked();
     }
 
     public static boolean getUseOnyxLive(Activity a) {
-        return ((CheckBox) a.findViewById(R.id.useOnyxLive)).isChecked();
-    }
-
-    public static boolean getComputeNfiqMetrics(Activity a) {
-        return ((CheckBox) a.findViewById(R.id.nfiqMetrics)).isChecked();
-    }
-
-    public static boolean getUseFlash(Activity a) {
-        return ((CheckBox) a.findViewById(R.id.useFlash)).isChecked();
-    }
-
-    public static boolean getThresholdImage(Activity a) {
-        return ((CheckBox) a.findViewById(R.id.thresholdImage)).isChecked();
-    }
-
-    public static Integer getImageRotation(Activity a) {
-        return Integer.valueOf(((Spinner) a.findViewById(R.id.imageRotation)).getSelectedItem().toString());
+        return ((Switch) a.findViewById(R.id.setUseOnyxLive)).isChecked();
     }
 
     public static Reticle.Orientation getReticleOrientation(Activity a) {
@@ -70,47 +45,4 @@ public class ValuesUtil {
         return orientation;
     }
 
-    public static Float getReticleAngle(Activity a) {
-        EditText reticleAngleEditText = a.findViewById(R.id.reticleAngleEditText);
-        if (reticleAngleEditText.getText() != null && !reticleAngleEditText.getText().toString().equals("")) {
-            return Float.valueOf(reticleAngleEditText.getText().toString());
-        }
-        return null;
-    }
-
-    public static Double getCropSizeWidth(Activity a) {
-        if (((CheckBox) a.findViewById(R.id.cropSize)).isChecked()) {
-            return Double.valueOf(((EditText) a.findViewById(R.id.widthEditText)).getText().toString());
-        } else {
-            return 300.0;
-        }
-    }
-
-    public static Double getCropSizeHeight(Activity a) {
-        if (((CheckBox) a.findViewById(R.id.cropSize)).isChecked()) {
-            return Double.valueOf(((EditText) a.findViewById(R.id.heightEditText)).getText().toString());
-        } else {
-            return 512.0;
-        }
-    }
-
-    public static Float getCropFactor(Activity a) {
-        if (((CheckBox) a.findViewById(R.id.cropFactor)).isChecked()) {
-            return Float.valueOf(((EditText) a.findViewById(R.id.cropFactorEditText)).getText().toString());
-        } else {
-            return 1.0f;
-        }
-    }
-
-    public static Double getTargetPixelsPerInch(Activity a) {
-        if(((CheckBox) a.findViewById(R.id.targetPixelsPerInch)).isChecked()) {
-            return Double.valueOf(((EditText) a.findViewById(R.id.targetPixelsPerInchEditText)).getText().toString());
-        } else {
-            return -1.0;
-        }
-    }
-
-    public static boolean getUseManualCapture(Activity a) {
-        return ((CheckBox) a.findViewById(R.id.useManualCapture)).isChecked();
-    }
 }
